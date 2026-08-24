@@ -5,12 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Me - Ismat Ismoilov</title>
+    <meta name="description" content="Learn more about Ismat Ismoilov, Python Backend Developer, speaker, and mentor from Uzbekistan.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- AOS CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    <noscript>
+        <style>
+            [data-aos] { opacity: 1 !important; transform: none !important; }
+        </style>
+    </noscript>
     
     <style>
         :root {
@@ -207,25 +213,25 @@
 <body>
 
     <!-- Header Navigation -->
-    <header data-aos="fade-down" data-aos-duration="1600">
+    <header data-aos="fade-down">
         <div class="container header-content">
             <a href="{% url 'index' %}" class="brand-logo">Ismat's blog</a>
             <ul class="nav-links">
-                <li><a href="https://acadium.uz" target="_blank" class="acadium-link">Acadium</a></li>
-                <li><a href="{% url 'index' %}">Blog</a></li>
-                <li><a href="#talks">Talks</a></li>
-                <li><a href="https://t.me/lazy_devv" target="_blank">Channel</a></li>
+                <li><a href="https://acadium.uz" target="_blank" rel="noopener noreferrer" class="acadium-link">Acadium</a></li>
+                <li><a href="{% url 'blogs' %}">Blog</a></li>
+                <li><a href="{% url 'talks' %}">Talks</a></li>
+                <li><a href="https://t.me/lazy_devv" target="_blank" rel="noopener noreferrer">Channel</a></li>
             </ul>
         </div>
     </header>
 
     <!-- Banner Title Section -->
-    <section class="section-banner" data-aos="fade-down" data-aos-duration="1800">
+    <section class="section-banner" data-aos="fade-up">
         <h1 class="section-title">ABOUT ME</h1>
     </section>
 
     <!-- Main Content Body -->
-    <main class="article-wrapper" data-aos="fade-down" data-aos-duration="1800">
+    <main class="article-wrapper" data-aos="fade-up">
         <p>
             I am Ismat Ismoilov, a <strong>Python Backend Developer</strong> from Uzbekistan, passionate about building high-performance backend systems, REST APIs, AI integrations, and automation tools.
         </p>
@@ -234,7 +240,7 @@
             I am always contributing to developer events by giving talks or acting as a mentor, especially helping beginners and students start their journey in tech. As a developer, I really want to see more innovation and growth in our tech community.
         </p>
 
-        <figure data-aos="fade-down" data-aos-duration="1800">
+        <figure data-aos="fade-up">
             <img src="{% static 'ismat_desk.jpg' %}" alt="Ismat Ismoilov Working at Desk" loading="lazy">
             <figcaption>Python & Backend Development, Tashkent</figcaption>
         </figure>
@@ -243,29 +249,29 @@
             I am actively engaged in tech communities, hackathons, and developer events across Uzbekistan, sharing knowledge and building innovative solutions with fellow engineers.
         </p>
 
-        <figure data-aos="fade-down" data-aos-duration="1800">
+        <figure data-aos="fade-up">
             <img src="{% static 'ismat_hackathon.jpg' %}" alt="National AI Hackathon Qarshi" loading="lazy">
             <figcaption>National AI Hackathon, Qarshi</figcaption>
         </figure>
 
         <p>
-            In short, it's me, Ismat, a friendly programmer from Uzbekistan. You can read my story of becoming a Backend developer<a href="https://github.com/ismoilov-dev" target="_blank">here</a>.
+            In short, it's me, Ismat, a friendly programmer from Uzbekistan. You can read my story of becoming a Backend developer <a href="https://github.com/ismoilov-dev" target="_blank" rel="noopener noreferrer">here</a>.
         </p>
     </main>
 
     <!-- Footer -->
-    <footer data-aos="fade-down" data-aos-duration="1800">
+    <footer data-aos="fade-up">
         &copy; 2026 <a href="{% url 'index' %}">ismat.dev</a>
     </footer>
 
     <!-- AOS JS -->
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
         AOS.init({
-            duration: 1800,
+            duration: 900,
             once: true,
             easing: 'ease-out',
-            offset: 30
+            offset: 80
         });
     </script>
 </body>

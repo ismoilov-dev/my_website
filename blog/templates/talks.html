@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ blog.title }} - Ismat Ismoilov</title>
-    <meta name="description" content="{{ blog.title }} - Article by Ismat Ismoilov">
+    <title>Talks - Ismat Ismoilov</title>
+    <meta name="description" content="Talks, presentations, and lectures by Ismat Ismoilov.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -21,6 +21,7 @@
     <style>
         :root {
             --bg-color: #ffffff;
+            --banner-bg: #fafafc;
             --text-heading: #111827;
             --text-primary: rgba(0, 0, 0, 0.78);
             --text-secondary: #71717a;
@@ -110,73 +111,71 @@
             color: var(--accent-hover, #0073e6);
         }
 
-        /* Article Detail Wrapper */
-        .article-container {
+        /* Section Title Banner */
+        .section-banner {
+            width: 100%;
+            background-color: var(--banner-bg);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 35px 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--text-heading);
+            text-transform: uppercase;
+        }
+
+        /* Talks Main Container */
+        .talks-wrapper {
             max-width: 680px;
             margin: 40px auto 60px auto;
             padding: 0 20px;
             flex: 1;
             width: 100%;
+            text-align: center;
         }
 
-        .article-meta {
-            font-size: 0.925rem;
-            color: var(--text-secondary);
-            margin-bottom: 12px;
+        .talks-card {
+            background-color: #fafafc;
+            border: 1px dashed #d1d5db;
+            border-radius: 16px;
+            padding: 50px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .talks-icon {
+            font-size: 3rem;
+            color: var(--accent-blue);
+            background-color: rgba(0, 132, 255, 0.1);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            margin-bottom: 8px;
         }
 
-        .article-title {
-            font-size: 2.25rem;
-            font-weight: 800;
+        .talks-headline {
+            font-size: 1.5rem;
+            font-weight: 700;
             color: var(--text-heading);
-            line-height: 1.25;
-            letter-spacing: -0.02em;
-            margin-bottom: 32px;
         }
 
-        .article-content {
-            font-size: 1.125rem;
-            line-height: 1.75;
-            color: var(--text-primary);
-            margin-bottom: 48px;
-        }
-
-        .article-content p {
-            margin-bottom: 24px;
-        }
-
-        .article-content a {
-            color: var(--accent-blue);
-            text-decoration: none;
-        }
-
-        .article-content a:hover {
-            text-decoration: underline;
-        }
-
-        .back-nav {
-            margin-top: 40px;
-            padding-top: 24px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--accent-blue);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.975rem;
-            transition: color 0.15s ease;
-        }
-
-        .back-link:hover {
-            color: var(--accent-hover);
-            text-decoration: underline;
+        .talks-subtext {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            max-width: 480px;
+            line-height: 1.6;
         }
 
         /* Footer */
@@ -199,11 +198,11 @@
         }
 
         @media (max-width: 640px) {
-            .article-title {
+            .section-title {
                 font-size: 1.75rem;
             }
-            .article-content {
-                font-size: 1rem;
+            .talks-headline {
+                font-size: 1.25rem;
             }
         }
     </style>
@@ -216,32 +215,28 @@
             <a href="{% url 'index' %}" class="brand-logo">Ismat's blog</a>
             <ul class="nav-links">
                 <li><a href="https://acadium.uz" target="_blank" rel="noopener noreferrer" class="acadium-link">Acadium</a></li>
-                <li><a href="{% url 'blogs' %}" class="active">Blog</a></li>
-                <li><a href="{% url 'talks' %}">Talks</a></li>
+                <li><a href="{% url 'blogs' %}">Blog</a></li>
+                <li><a href="{% url 'talks' %}" class="active">Talks</a></li>
                 <li><a href="https://t.me/lazy_devv" target="_blank" rel="noopener noreferrer">Channel</a></li>
             </ul>
         </div>
     </header>
 
-    <!-- Main Article Detail Content -->
-    <main class="article-container" data-aos="fade-up">
-        <div class="article-meta">
-            {{ blog.created_at|date:"d F, Y" }}
-            {% if blog.time %}
-                <span>• {{ blog.time }}</span>
-            {% endif %}
-        </div>
+    <!-- Banner Title Section -->
+    <section class="section-banner" data-aos="fade-up">
+        <h1 class="section-title">TALKS</h1>
+    </section>
 
-        <h1 class="article-title">{{ blog.title }}</h1>
-
-        <div class="article-content">
-            {{ blog.content|linebreaks }}
-        </div>
-
-        <div class="back-nav">
-            <a href="{% url 'blogs' %}" class="back-link">
-                <i class="fa-solid fa-arrow-left"></i> Barcha maqolalarga qaytish
-            </a>
+    <!-- Main Content Body -->
+    <main class="talks-wrapper" data-aos="fade-up">
+        <div class="talks-card">
+            <div class="talks-icon">
+                <i class="fa-solid fa-microphone-lines"></i>
+            </div>
+            <h2 class="talks-headline">Nasib bo'lsa Talk bersam chiqadi! 🚀</h2>
+            <p class="talks-subtext">
+                Kelgusida konferensiyalar, meetup va taqdimotlardagi ma'ruzalarim hamda videoyozuvlarim shu sahifada e'lon qilib boriladi.
+            </p>
         </div>
     </main>
 

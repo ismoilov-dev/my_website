@@ -14,6 +14,10 @@ def blogs(request):
     return render(request, 'blogs.html', {'blogs': blogs_list})
 
 
+def talks(request):
+    return render(request, 'talks.html')
+
+
 def blog_detail(request, pk):
     blog = get_object_or_404(Blog, pk=pk)
     return render(request, 'blog_detail.html', {'blog': blog})

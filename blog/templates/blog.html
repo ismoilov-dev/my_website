@@ -5,12 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ismoilov Ismat's Blog</title>
+    <meta name="description" content="Ismoilov Ismat's personal blog and portfolio. Python Backend Developer from Uzbekistan.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- AOS CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    <noscript>
+        <style>
+            [data-aos] { opacity: 1 !important; transform: none !important; }
+        </style>
+    </noscript>
     
     <style>
         :root {
@@ -282,18 +288,18 @@
 <body>
 
     <!-- Header Navigation -->
-    <header data-aos="fade-down" data-aos-duration="1600">
-        <a href="/" class="brand-logo">Ismat's blog</a>
+    <header data-aos="fade-down">
+        <a href="{% url 'index' %}" class="brand-logo">Ismat's blog</a>
         <ul class="nav-links">
-            <li><a href="https://acadium.uz" target="_blank" class="acadium-link">Acadium</a></li>
+            <li><a href="https://acadium.uz" target="_blank" rel="noopener noreferrer" class="acadium-link">Acadium</a></li>
             <li><a href="{% url 'blogs' %}">Blog</a></li>
-            <li><a href="#talks">Talks</a></li>
-            <li><a href="https://t.me/lazy_devv" target="_blank">Channel</a></li>
+            <li><a href="{% url 'talks' %}">Talks</a></li>
+            <li><a href="https://t.me/lazy_devv" target="_blank" rel="noopener noreferrer">Channel</a></li>
         </ul>
     </header>
 
     <!-- Main Profile Section -->
-    <main data-aos="fade-down" data-aos-duration="1800">
+    <main data-aos="fade-up">
         <div class="hero-profile">
             <div class="avatar-container">
                 <img src="{% static 'ismat.jpg' %}" alt="Ismoilov Ismat" class="avatar-img">
@@ -303,19 +309,19 @@
                 <p class="profile-title">Backend developer</p>
                 <div class="social-icons">
                     <!-- YouTube -->
-                    <a href="https://youtube.com/@ismoilov-dev" target="_blank" title="YouTube" aria-label="YouTube">
+                    <a href="https://youtube.com/@ismoilov-dev" target="_blank" rel="noopener noreferrer" title="YouTube" aria-label="YouTube">
                         <i class="fa-brands fa-youtube"></i>
                     </a>
                     <!-- GitHub -->
-                    <a href="https://github.com/ismoilov-dev" target="_blank" title="GitHub" aria-label="GitHub">
+                    <a href="https://github.com/ismoilov-dev" target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="GitHub">
                         <i class="fa-brands fa-github"></i>
                     </a>
                     <!-- LinkedIn -->
-                    <a href="https://linkedin.com/in/ismoilov-ismat" target="_blank" title="LinkedIn" aria-label="LinkedIn">
+                    <a href="https://linkedin.com/in/ismoilov-ismat" target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn">
                         <i class="fa-brands fa-linkedin"></i>
                     </a>
                     <!-- Telegram -->
-                    <a href="https://t.me/lazy_devv" target="_blank" title="Telegram" aria-label="Telegram">
+                    <a href="https://t.me/lazy_devv" target="_blank" rel="noopener noreferrer" title="Telegram" aria-label="Telegram">
                         <i class="fa-brands fa-telegram"></i>
                     </a>
                 </div>
@@ -333,18 +339,18 @@
     </main>
 
     <!-- Footer -->
-    <footer data-aos="fade-down" data-aos-duration="1800">
-        &copy; 2026 <a href="#">ismat.dev</a>
+    <footer data-aos="fade-up">
+        &copy; 2026 <a href="{% url 'index' %}">ismat.dev</a>
     </footer>
 
     <!-- AOS JS -->
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
         AOS.init({
-            duration: 1800,
+            duration: 900,
             once: true,
             easing: 'ease-out',
-            offset: 30
+            offset: 80
         });
     </script>
 </body>
