@@ -1,0 +1,272 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me - Ismat Ismoilov</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --banner-bg: #fafafc;
+            --text-primary: rgba(0, 0, 0, 0.78);
+            --text-heading: #111827;
+            --text-secondary: #71717a;
+            --text-caption: #79828B;
+            --text-muted: rgba(0, 0, 0, 0.5);
+            --accent-blue: #0084ff;
+            --border-color: rgba(0, 0, 0, 0.05);
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Container Max Width */
+        .container {
+            width: 100%;
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Navigation */
+        header {
+            padding: 1.75rem 0 1.25rem 0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-logo {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.15s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-heading);
+        }
+
+        .nav-links a.acadium-link {
+            font-weight: 600;
+            color: var(--accent-blue);
+            background-color: rgba(0, 132, 255, 0.08);
+            padding: 4px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a.acadium-link:hover {
+            background-color: rgba(0, 132, 255, 0.16);
+            color: var(--accent-blue);
+        }
+
+        /* Section Title Banner */
+        .section-banner {
+            width: 100%;
+            background-color: var(--banner-bg);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 35px 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--text-heading);
+            text-transform: uppercase;
+        }
+
+        /* Article Wrapper Container */
+        .article-wrapper {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 0 20px;
+            flex: 1;
+        }
+
+        .article-wrapper p {
+            font-size: 1.125rem;
+            line-height: 1.6;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            letter-spacing: 0.2px;
+        }
+
+        .article-wrapper p strong {
+            color: var(--text-heading);
+            font-weight: 700;
+        }
+
+        .article-wrapper a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+
+        .article-wrapper a:hover {
+            text-decoration: underline;
+        }
+
+        /* Figures & Images */
+        figure {
+            margin: 32px 0;
+            text-align: center;
+        }
+
+        figure img {
+            width: 100%;
+            max-height: 690px;
+            object-fit: cover;
+            border-radius: 4px;
+            display: block;
+        }
+
+        figcaption {
+            font-size: 0.95rem;
+            color: var(--text-caption);
+            margin-top: 12px;
+            font-weight: 400;
+        }
+
+        /* Footer */
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-top: 40px;
+        }
+
+        footer a {
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 640px) {
+            .section-title {
+                font-size: 1.75rem;
+            }
+            .article-wrapper p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header data-aos="fade-down" data-aos-duration="1600">
+        <div class="container header-content">
+            <a href="{% url 'index' %}" class="brand-logo">Ismat's blog</a>
+            <ul class="nav-links">
+                <li><a href="https://acadium.uz" target="_blank" class="acadium-link">Acadium</a></li>
+                <li><a href="{% url 'index' %}">Blog</a></li>
+                <li><a href="#talks">Talks</a></li>
+                <li><a href="https://t.me/lazy_devv" target="_blank">Channel</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Banner Title Section -->
+    <section class="section-banner" data-aos="fade-down" data-aos-duration="1800">
+        <h1 class="section-title">ABOUT ME</h1>
+    </section>
+
+    <!-- Main Content Body -->
+    <main class="article-wrapper" data-aos="fade-down" data-aos-duration="1800">
+        <p>
+            I am Ismat Ismoilov, a <strong>Python Backend Developer</strong> from Uzbekistan, passionate about building high-performance backend systems, REST APIs, AI integrations, and automation tools.
+        </p>
+
+        <p>
+            I am always contributing to developer events by giving talks or acting as a mentor, especially helping beginners and students start their journey in tech. As a developer, I really want to see more innovation and growth in our tech community.
+        </p>
+
+        <figure data-aos="fade-down" data-aos-duration="1800">
+            <img src="{% static 'ismat_desk.jpg' %}" alt="Ismat Ismoilov Working at Desk" loading="lazy">
+            <figcaption>Python & Backend Development, Tashkent</figcaption>
+        </figure>
+
+        <p>
+            I am actively engaged in tech communities, hackathons, and developer events across Uzbekistan, sharing knowledge and building innovative solutions with fellow engineers.
+        </p>
+
+        <figure data-aos="fade-down" data-aos-duration="1800">
+            <img src="{% static 'ismat_hackathon.jpg' %}" alt="National AI Hackathon Qarshi" loading="lazy">
+            <figcaption>National AI Hackathon, Qarshi</figcaption>
+        </figure>
+
+        <p>
+            In short, it's me, Ismat, a friendly programmer from Uzbekistan. You can read my story of becoming a Backend developer<a href="https://github.com/ismoilov-dev" target="_blank">here</a>.
+        </p>
+    </main>
+
+    <!-- Footer -->
+    <footer data-aos="fade-down" data-aos-duration="1800">
+        &copy; 2026 <a href="{% url 'index' %}">ismat.dev</a>
+    </footer>
+
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1800,
+            once: true,
+            easing: 'ease-out',
+            offset: 30
+        });
+    </script>
+</body>
+</html>

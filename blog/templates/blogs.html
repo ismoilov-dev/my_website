@@ -1,0 +1,371 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Ismat Ismoilov</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --banner-bg: #fafafc;
+            --text-heading: #111827;
+            --text-primary: rgba(0, 0, 0, 0.78);
+            --text-secondary: #71717a;
+            --text-muted: #9ca3af;
+            --accent-blue: #0084ff;
+            --accent-hover: #0073e6;
+            --border-color: rgba(0, 0, 0, 0.06);
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Container Max Width */
+        .container {
+            width: 100%;
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Navigation */
+        header {
+            padding: 1.75rem 0 1.25rem 0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-logo {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.15s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text-heading);
+        }
+
+        .nav-links a.acadium-link {
+            font-weight: 600;
+            color: var(--accent-blue);
+            background-color: rgba(0, 132, 255, 0.08);
+            padding: 4px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a.acadium-link:hover {
+            background-color: rgba(0, 132, 255, 0.16);
+            color: var(--accent-hover, #0073e6);
+        }
+
+        /* Section Title Banner */
+        .section-banner {
+            width: 100%;
+            background-color: var(--banner-bg);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 35px 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--text-heading);
+            text-transform: uppercase;
+        }
+
+        /* Main Content Layout (2-Column Grid) */
+        .main-layout {
+            display: flex;
+            gap: 60px;
+            flex: 1;
+            align-items: flex-start;
+            padding-bottom: 60px;
+        }
+
+        .posts-column {
+            flex: 1;
+            max-width: 680px;
+        }
+
+        .sidebar-column {
+            width: 280px;
+            flex-shrink: 0;
+        }
+
+        /* Year Group & Badge */
+        .year-group {
+            margin-bottom: 40px;
+        }
+
+        .year-badge {
+            display: inline-block;
+            background-color: #f3f4f6;
+            color: var(--text-heading);
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+        }
+
+        /* Month Group */
+        .month-group {
+            margin-bottom: 32px;
+        }
+
+        .month-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 16px;
+        }
+
+        /* Post Items List */
+        .post-list {
+            list-style: none;
+        }
+
+        .post-item {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .post-item:last-child {
+            border-bottom: none;
+        }
+
+        .post-date {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .read-time {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .post-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-heading);
+            text-decoration: none;
+            line-height: 1.4;
+            transition: color 0.15s ease;
+            display: inline-block;
+        }
+
+        .post-title:hover {
+            color: var(--accent-blue);
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            background-color: #ffffff;
+            position: sticky;
+            top: 20px;
+        }
+
+        .sidebar-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 12px;
+        }
+
+        .sidebar-desc {
+            font-size: 0.925rem;
+            color: var(--text-secondary);
+            line-height: 1.55;
+        }
+
+        .sidebar-desc a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .sidebar-desc a:hover {
+            text-decoration: underline;
+        }
+
+        /* Empty State */
+        .empty-state {
+            padding: 40px 0;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        /* Footer */
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        footer a {
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 820px) {
+            .main-layout {
+                flex-direction: column;
+                gap: 40px;
+            }
+            .sidebar-column {
+                width: 100%;
+                order: -1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header data-aos="fade-down" data-aos-duration="1600">
+        <div class="container header-content">
+            <a href="{% url 'index' %}" class="brand-logo">Ismat's blog</a>
+            <ul class="nav-links">
+                <li><a href="https://acadium.uz" target="_blank" class="acadium-link">Acadium</a></li>
+                <li><a href="{% url 'blogs' %}" class="active">Blog</a></li>
+                <li><a href="#talks">Talks</a></li>
+                <li><a href="https://t.me/lazy_devv" target="_blank">Channel</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Banner Title Section -->
+    <section class="section-banner" data-aos="fade-down" data-aos-duration="1800">
+        <h1 class="section-title">BLOG</h1>
+    </section>
+
+    <!-- Main Content Layout -->
+    <main class="container main-layout" data-aos="fade-down" data-aos-duration="1800">
+        
+        <!-- Left: Blog Posts List -->
+        <div class="posts-column">
+            {% if blogs %}
+                {% regroup blogs by created_at|date:"Y" as year_list %}
+                {% for year in year_list %}
+                    <div class="year-group">
+                        <span class="year-badge">{{ year.grouper }}</span>
+                        {% regroup year.list by created_at|date:"F" as month_list %}
+                        {% for month in month_list %}
+                            <div class="month-group">
+                                <h3 class="month-title">{{ month.grouper }}</h3>
+                                <ul class="post-list">
+                                    {% for post in month.list %}
+                                        <li class="post-item">
+                                            <div class="post-date">
+                                                {{ post.created_at|date:"d F, Y" }}
+                                                {% if post.time %}
+                                                    <span class="read-time">• {{ post.time }}</span>
+                                                {% endif %}
+                                            </div>
+                                            <a href="{% url 'blog_detail' post.pk %}" class="post-title">{{ post.title }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <p>Hozircha maqolalar mavjud emas. Tezgoraq yangi postlar joylanadi!</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Right: Sidebar -->
+        <div class="sidebar-column">
+            <aside class="sidebar">
+                <h2 class="sidebar-title">Obuna Bo'ling</h2>
+                <p class="sidebar-desc">
+                    Yangi maqola, ma'ruza va darslarimni <a href="https://t.me/lazy_devv" target="_blank">@lazy_devv</a> telegram kanalimda topishingiz mumkin.
+                </p>
+            </aside>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer data-aos="fade-down" data-aos-duration="1800">
+        &copy; 2026 <a href="{% url 'index' %}">ismat.dev</a>
+    </footer>
+
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1800,
+            once: true,
+            easing: 'ease-out',
+            offset: 30
+        });
+    </script>
+</body>
+</html>

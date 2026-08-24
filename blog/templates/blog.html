@@ -1,0 +1,351 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ismoilov Ismat's Blog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --accent-blue: #0084ff;
+            --accent-blue-hover: #0073e6;
+            --btn-secondary-bg: #ffffff;
+            --btn-secondary-border: #0084ff;
+            --btn-secondary-text: #0084ff;
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Header Navbar */
+        header {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2.5rem 2rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-logo {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a.acadium-link {
+            font-weight: 600;
+            color: var(--accent-blue);
+            background-color: rgba(0, 132, 255, 0.08);
+            padding: 4px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a.acadium-link:hover {
+            background-color: rgba(0, 132, 255, 0.16);
+            color: var(--accent-blue-hover, #0073e6);
+        }
+
+        /* Main Profile Section */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            width: 100%;
+        }
+
+        .hero-profile {
+            display: flex;
+            align-items: center;
+            gap: 1.75rem;
+            margin-bottom: 1.5rem;
+            width: 100%;
+        }
+
+        .avatar-container {
+            width: 115px;
+            height: 115px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            background-color: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .profile-name {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+        }
+
+        .profile-title {
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-top: 0.35rem;
+            margin-bottom: 0.65rem;
+        }
+
+        /* Social Icons */
+        .social-icons {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .social-icons a {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            text-decoration: none;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+        }
+
+        .social-icons a:hover {
+            transform: translateY(-2px);
+            opacity: 0.75;
+        }
+
+        /* Bio description */
+        .bio-text {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            text-align: left;
+            margin-top: 0.75rem;
+            margin-bottom: 1.75rem;
+            max-width: 520px;
+            line-height: 1.5;
+        }
+
+        /* CTA Buttons */
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.65rem 1.6rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-blue);
+            color: #ffffff;
+            border: 1px solid var(--accent-blue);
+            box-shadow: 0 2px 8px rgba(0, 132, 255, 0.25);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-blue-hover);
+            border-color: var(--accent-blue-hover);
+            box-shadow: 0 4px 12px rgba(0, 132, 255, 0.35);
+        }
+
+        .btn-secondary {
+            background-color: var(--btn-secondary-bg);
+            color: var(--btn-secondary-text);
+            border: 1.5px solid var(--btn-secondary-border);
+        }
+
+        .btn-secondary:hover {
+            background-color: #f0f7ff;
+            border-color: var(--accent-blue-hover);
+        }
+
+        /* Footer */
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 2rem 1rem;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        footer a {
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 640px) {
+            header {
+                padding: 1.5rem 1.25rem 1rem;
+            }
+            .hero-profile {
+                flex-direction: row;
+                text-align: left;
+                gap: 1rem;
+            }
+            .profile-info {
+                align-items: flex-start;
+            }
+            .social-icons {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header data-aos="fade-down" data-aos-duration="1600">
+        <a href="/" class="brand-logo">Ismat's blog</a>
+        <ul class="nav-links">
+            <li><a href="https://acadium.uz" target="_blank" class="acadium-link">Acadium</a></li>
+            <li><a href="{% url 'blogs' %}">Blog</a></li>
+            <li><a href="#talks">Talks</a></li>
+            <li><a href="https://t.me/lazy_devv" target="_blank">Channel</a></li>
+        </ul>
+    </header>
+
+    <!-- Main Profile Section -->
+    <main data-aos="fade-down" data-aos-duration="1800">
+        <div class="hero-profile">
+            <div class="avatar-container">
+                <img src="{% static 'ismat.jpg' %}" alt="Ismoilov Ismat" class="avatar-img">
+            </div>
+            <div class="profile-info">
+                <h1 class="profile-name">Ismoilov Ismat</h1>
+                <p class="profile-title">Backend developer</p>
+                <div class="social-icons">
+                    <!-- YouTube -->
+                    <a href="https://youtube.com/@ismoilov-dev" target="_blank" title="YouTube" aria-label="YouTube">
+                        <i class="fa-brands fa-youtube"></i>
+                    </a>
+                    <!-- GitHub -->
+                    <a href="https://github.com/ismoilov-dev" target="_blank" title="GitHub" aria-label="GitHub">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+                    <!-- LinkedIn -->
+                    <a href="https://linkedin.com/in/ismoilov-ismat" target="_blank" title="LinkedIn" aria-label="LinkedIn">
+                        <i class="fa-brands fa-linkedin"></i>
+                    </a>
+                    <!-- Telegram -->
+                    <a href="https://t.me/lazy_devv" target="_blank" title="Telegram" aria-label="Telegram">
+                        <i class="fa-brands fa-telegram"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <p class="bio-text">
+            I write about non-technical stuff in the technical world.
+        </p>
+
+        <div class="cta-buttons">
+            <a href="{% url 'blogs' %}" class="btn btn-primary">Read Blog</a>
+            <a href="{% url 'about' %}" class="btn btn-secondary">About Me</a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer data-aos="fade-down" data-aos-duration="1800">
+        &copy; 2026 <a href="#">ismat.dev</a>
+    </footer>
+
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1800,
+            once: true,
+            easing: 'ease-out',
+            offset: 30
+        });
+    </script>
+</body>
+</html>

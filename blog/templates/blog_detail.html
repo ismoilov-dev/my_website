@@ -1,0 +1,258 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ blog.title }} - Ismat Ismoilov</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-heading: #111827;
+            --text-primary: rgba(0, 0, 0, 0.78);
+            --text-secondary: #71717a;
+            --text-muted: #9ca3af;
+            --accent-blue: #0084ff;
+            --accent-hover: #0073e6;
+            --border-color: rgba(0, 0, 0, 0.06);
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Container Max Width */
+        .container {
+            width: 100%;
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Navigation */
+        header {
+            padding: 1.75rem 0 1.25rem 0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-logo {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.15s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text-heading);
+        }
+
+        .nav-links a.acadium-link {
+            font-weight: 600;
+            color: var(--accent-blue);
+            background-color: rgba(0, 132, 255, 0.08);
+            padding: 4px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a.acadium-link:hover {
+            background-color: rgba(0, 132, 255, 0.16);
+            color: var(--accent-hover, #0073e6);
+        }
+
+        /* Article Detail Wrapper */
+        .article-container {
+            max-width: 680px;
+            margin: 40px auto 60px auto;
+            padding: 0 20px;
+            flex: 1;
+            width: 100%;
+        }
+
+        .article-meta {
+            font-size: 0.925rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .article-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            line-height: 1.25;
+            letter-spacing: -0.02em;
+            margin-bottom: 32px;
+        }
+
+        .article-content {
+            font-size: 1.125rem;
+            line-height: 1.75;
+            color: var(--text-primary);
+            margin-bottom: 48px;
+        }
+
+        .article-content p {
+            margin-bottom: 24px;
+        }
+
+        .article-content a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+
+        .article-content a:hover {
+            text-decoration: underline;
+        }
+
+        .back-nav {
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.975rem;
+            transition: color 0.15s ease;
+        }
+
+        .back-link:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        footer a {
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 640px) {
+            .article-title {
+                font-size: 1.75rem;
+            }
+            .article-content {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header data-aos="fade-down" data-aos-duration="1600">
+        <div class="container header-content">
+            <a href="{% url 'index' %}" class="brand-logo">Ismat's blog</a>
+            <ul class="nav-links">
+                <li><a href="https://acadium.uz" target="_blank" class="acadium-link">Acadium</a></li>
+                <li><a href="{% url 'blogs' %}" class="active">Blog</a></li>
+                <li><a href="#talks">Talks</a></li>
+                <li><a href="https://t.me/lazy_devv" target="_blank">Channel</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Main Article Detail Content -->
+    <main class="article-container" data-aos="fade-down" data-aos-duration="1800">
+        <div class="article-meta">
+            {{ blog.created_at|date:"d F, Y" }}
+            {% if blog.time %}
+                <span>• {{ blog.time }}</span>
+            {% endif %}
+        </div>
+
+        <h1 class="article-title">{{ blog.title }}</h1>
+
+        <div class="article-content">
+            {{ blog.content|linebreaks }}
+        </div>
+
+        <div class="back-nav">
+            <a href="{% url 'blogs' %}" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i> Barcha maqolalarga qaytish
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer data-aos="fade-down" data-aos-duration="1800">
+        &copy; 2026 <a href="{% url 'index' %}">ismat.dev</a>
+    </footer>
+
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1800,
+            once: true,
+            easing: 'ease-out',
+            offset: 30
+        });
+    </script>
+</body>
+</html>
