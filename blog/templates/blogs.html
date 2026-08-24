@@ -8,7 +8,7 @@
     <meta name="description" content="Read articles, lectures, and insights on backend development and tech by Ismat Ismoilov.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- AOS CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
@@ -30,6 +30,7 @@
             --accent-hover: #0073e6;
             --border-color: rgba(0, 0, 0, 0.06);
             --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-nav: 'Source Sans 3', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         * {
@@ -55,7 +56,7 @@
             width: 100%;
             max-width: 1040px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 40px;
         }
 
         /* Header Navigation */
@@ -79,16 +80,17 @@
 
         .nav-links {
             display: flex;
-            gap: 1.5rem;
+            gap: 1.75rem;
             list-style: none;
             align-items: center;
         }
 
         .nav-links a {
             text-decoration: none;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            font-weight: 500;
+            color: rgba(0, 0, 0, 0.55);
+            font-family: var(--font-nav);
+            font-size: 1.05rem;
+            font-weight: 400;
             transition: color 0.15s ease;
         }
 
@@ -98,17 +100,12 @@
         }
 
         .nav-links a.acadium-link {
-            font-weight: 600;
-            color: var(--accent-blue);
-            background-color: rgba(0, 132, 255, 0.08);
-            padding: 4px 12px;
-            border-radius: 6px;
-            transition: all 0.2s ease;
+            font-style: italic;
+            font-weight: 400;
         }
 
         .nav-links a.acadium-link:hover {
-            background-color: rgba(0, 132, 255, 0.16);
-            color: var(--accent-hover, #0073e6);
+            color: var(--text-heading);
         }
 
         /* Section Title Banner */
@@ -298,6 +295,7 @@
                 <li><a href="https://acadium.uz" target="_blank" rel="noopener noreferrer" class="acadium-link">Acadium</a></li>
                 <li><a href="{% url 'blogs' %}" class="active">Blog</a></li>
                 <li><a href="{% url 'talks' %}">Talks</a></li>
+                <li><a href="{% url 'cv' %}">CV</a></li>
                 <li><a href="https://t.me/lazy_devv" target="_blank" rel="noopener noreferrer">Channel</a></li>
             </ul>
         </div>

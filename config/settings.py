@@ -147,9 +147,6 @@ STORAGES = {
     },
 }
 
-# Legacy fallback for older Django / WhiteNoise versions
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

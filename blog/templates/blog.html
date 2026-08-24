@@ -8,7 +8,7 @@
     <meta name="description" content="Ismoilov Ismat's personal blog and portfolio. Python Backend Developer from Uzbekistan.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- AOS CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
@@ -30,6 +30,7 @@
             --btn-secondary-border: #0084ff;
             --btn-secondary-text: #0084ff;
             --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-nav: 'Source Sans 3', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         * {
@@ -50,12 +51,21 @@
             overflow-x: hidden;
         }
 
+        /* Container Max Width */
+        .container {
+            width: 100%;
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
         /* Header Navbar */
         header {
             width: 100%;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 2.5rem 2rem 1rem;
+            padding: 2.25rem 0 1.25rem 0;
+        }
+
+        .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -71,16 +81,17 @@
 
         .nav-links {
             display: flex;
-            gap: 1.5rem;
+            gap: 1.75rem;
             list-style: none;
             align-items: center;
         }
 
         .nav-links a {
             text-decoration: none;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            font-weight: 500;
+            color: rgba(0, 0, 0, 0.55);
+            font-family: var(--font-nav);
+            font-size: 1.05rem;
+            font-weight: 400;
             transition: color 0.2s ease;
         }
 
@@ -89,17 +100,12 @@
         }
 
         .nav-links a.acadium-link {
-            font-weight: 600;
-            color: var(--accent-blue);
-            background-color: rgba(0, 132, 255, 0.08);
-            padding: 4px 12px;
-            border-radius: 6px;
-            transition: all 0.2s ease;
+            font-style: italic;
+            font-weight: 400;
         }
 
         .nav-links a.acadium-link:hover {
-            background-color: rgba(0, 132, 255, 0.16);
-            color: var(--accent-blue-hover, #0073e6);
+            color: var(--text-primary);
         }
 
         /* Main Profile Section */
@@ -109,23 +115,21 @@
             flex-direction: column;
             justify-content: center;
             align-items: flex-start;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 2rem 1.5rem;
+            padding: 80px 0;
             width: 100%;
         }
 
         .hero-profile {
             display: flex;
             align-items: center;
-            gap: 1.75rem;
-            margin-bottom: 1.5rem;
+            gap: 2.25rem;
+            margin-bottom: 1.75rem;
             width: 100%;
         }
 
         .avatar-container {
-            width: 115px;
-            height: 115px;
+            width: 125px;
+            height: 125px;
             border-radius: 50%;
             overflow: hidden;
             flex-shrink: 0;
@@ -151,7 +155,7 @@
         }
 
         .profile-name {
-            font-size: 2.25rem;
+            font-size: 2.35rem;
             font-weight: 800;
             color: var(--text-primary);
             line-height: 1.15;
@@ -163,27 +167,27 @@
             font-weight: 400;
             color: var(--text-secondary);
             margin-top: 0.35rem;
-            margin-bottom: 0.65rem;
+            margin-bottom: 0.75rem;
         }
 
         /* Social Icons */
         .social-icons {
             display: flex;
-            gap: 0.75rem;
+            gap: 0.85rem;
             align-items: center;
             justify-content: flex-start;
         }
 
         .social-icons a {
             color: var(--text-primary);
-            font-size: 1.25rem;
+            font-size: 1.35rem;
             text-decoration: none;
             transition: transform 0.2s ease, opacity 0.2s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 24px;
-            height: 24px;
+            width: 26px;
+            height: 26px;
         }
 
         .social-icons a:hover {
@@ -193,12 +197,12 @@
 
         /* Bio description */
         .bio-text {
-            font-size: 1rem;
+            font-size: 1.1rem;
             color: var(--text-secondary);
             text-align: left;
-            margin-top: 0.75rem;
-            margin-bottom: 1.75rem;
-            max-width: 520px;
+            margin-top: 0.5rem;
+            margin-bottom: 2rem;
+            max-width: 580px;
             line-height: 1.5;
         }
 
@@ -215,8 +219,8 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0.65rem 1.6rem;
-            font-size: 0.95rem;
+            padding: 0.7rem 1.75rem;
+            font-size: 0.975rem;
             font-weight: 600;
             border-radius: 8px;
             text-decoration: none;
@@ -252,7 +256,7 @@
         footer {
             width: 100%;
             text-align: center;
-            padding: 2rem 1rem;
+            padding: 2.5rem 1rem;
             color: var(--text-muted);
             font-size: 0.875rem;
         }
@@ -268,13 +272,16 @@
 
         /* Responsive Layout */
         @media (max-width: 640px) {
+            .container {
+                padding: 0 20px;
+            }
             header {
-                padding: 1.5rem 1.25rem 1rem;
+                padding: 1.5rem 0 1rem;
             }
             .hero-profile {
                 flex-direction: row;
                 text-align: left;
-                gap: 1rem;
+                gap: 1.25rem;
             }
             .profile-info {
                 align-items: flex-start;
@@ -289,52 +296,53 @@
 
     <!-- Header Navigation -->
     <header data-aos="fade-down">
-        <a href="{% url 'index' %}" class="brand-logo">Ismat's blog</a>
-        <ul class="nav-links">
-            <li><a href="https://acadium.uz" target="_blank" rel="noopener noreferrer" class="acadium-link">Acadium</a></li>
-            <li><a href="{% url 'blogs' %}">Blog</a></li>
-            <li><a href="{% url 'talks' %}">Talks</a></li>
-            <li><a href="https://t.me/lazy_devv" target="_blank" rel="noopener noreferrer">Channel</a></li>
-        </ul>
+        <div class="container header-content">
+            <a href="{% url 'index' %}" class="brand-logo">Ismat's blog</a>
+            <ul class="nav-links">
+                <li><a href="https://acadium.uz" target="_blank" rel="noopener noreferrer" class="acadium-link">Acadium</a></li>
+                <li><a href="{% url 'blogs' %}">Blog</a></li>
+                <li><a href="{% url 'talks' %}">Talks</a></li>
+                <li><a href="{% url 'cv' %}">CV</a></li>
+                <li><a href="https://t.me/lazy_devv" target="_blank" rel="noopener noreferrer">Channel</a></li>
+            </ul>
+        </div>
     </header>
 
     <!-- Main Profile Section -->
     <main data-aos="fade-up">
-        <div class="hero-profile">
-            <div class="avatar-container">
-                <img src="{% static 'ismat.jpg' %}" alt="Ismoilov Ismat" class="avatar-img">
-            </div>
-            <div class="profile-info">
-                <h1 class="profile-name">Ismoilov Ismat</h1>
-                <p class="profile-title">Backend developer</p>
-                <div class="social-icons">
-                    <!-- YouTube -->
-                    <a href="https://youtube.com/@ismoilov-dev" target="_blank" rel="noopener noreferrer" title="YouTube" aria-label="YouTube">
-                        <i class="fa-brands fa-youtube"></i>
-                    </a>
-                    <!-- GitHub -->
-                    <a href="https://github.com/ismoilov-dev" target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="GitHub">
-                        <i class="fa-brands fa-github"></i>
-                    </a>
-                    <!-- LinkedIn -->
-                    <a href="https://linkedin.com/in/ismoilov-ismat" target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn">
-                        <i class="fa-brands fa-linkedin"></i>
-                    </a>
-                    <!-- Telegram -->
-                    <a href="https://t.me/lazy_devv" target="_blank" rel="noopener noreferrer" title="Telegram" aria-label="Telegram">
-                        <i class="fa-brands fa-telegram"></i>
-                    </a>
+        <div class="container">
+            <div class="hero-profile">
+                <div class="avatar-container">
+                    <img src="{% static 'ismat.jpg' %}" alt="Ismoilov Ismat" class="avatar-img">
+                </div>
+                <div class="profile-info">
+                    <h1 class="profile-name">Ismoilov Ismat</h1>
+                    <p class="profile-title">Backend developer</p>
+                    <div class="social-icons">
+                        <a href="https://youtube.com/@ismoilov-dev" target="_blank" rel="noopener noreferrer" title="YouTube" aria-label="YouTube">
+                            <i class="fa-brands fa-youtube"></i>
+                        </a>
+                        <a href="https://github.com/ismoilov-dev" target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="GitHub">
+                            <i class="fa-brands fa-github"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/ismoilov-ismat" target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn">
+                            <i class="fa-brands fa-linkedin"></i>
+                        </a>
+                        <a href="https://t.me/lazy_devv" target="_blank" rel="noopener noreferrer" title="Telegram" aria-label="Telegram">
+                            <i class="fa-brands fa-telegram"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <p class="bio-text">
-            I write about non-technical stuff in the technical world.
-        </p>
+            <p class="bio-text">
+                I write about non-technical stuff in the technical world.
+            </p>
 
-        <div class="cta-buttons">
-            <a href="{% url 'blogs' %}" class="btn btn-primary">Read Blog</a>
-            <a href="{% url 'about' %}" class="btn btn-secondary">About Me</a>
+            <div class="cta-buttons">
+                <a href="{% url 'blogs' %}" class="btn btn-primary">Read Blog</a>
+                <a href="{% url 'about' %}" class="btn btn-secondary">About Me</a>
+            </div>
         </div>
     </main>
 
