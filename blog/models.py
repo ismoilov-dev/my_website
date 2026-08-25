@@ -107,3 +107,38 @@ class Certificate(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class FeedPost(models.Model):
+    title = models.CharField(max_length=250, blank=True, null=True, help_text="Optional post title")
+    content = models.TextField(help_text="Share a story, thought or life update")
+    image = models.FileField(upload_to='feed/', blank=True, null=True, help_text="Optional photo/image for the post")
+    location = models.CharField(max_length=150, blank=True, null=True, help_text="e.g. Tashkent, Uzbekistan")
+    mood_emoji = models.CharField(max_length=20, blank=True, null=True, help_text="e.g. ☕, 💻, 🚀, 🏔️")
+    likes_count = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Feed Post"
+        verbose_name_plural = "Feed Posts"
+
+    def __str__(self):
+        return self.title or f"Feed Post #{self.id} - {self.created_at.strftime('%Y-%m-%d')}"
+
+
+class FeedComment(models.Model):
+    post = models.ForeignKey(FeedPost, on_delete=models.CASCADE, related_name='comments')
+    author_name = models.CharField(max_length=100, default="Anonymous Reader")
+    content = models.TextField()
+    created_at = models.DateTimeField(default=timezone.now)
+    is_approved = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['created_at']
+        verbose_name = "Feed Comment"
+        verbose_name_plural = "Feed Comments"
+
+    def __str__(self):
+        return f"Comment by {self.author_name} on Post #{self.post.id}"

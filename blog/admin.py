@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Blog, WorkExperience, Project, Education, VoluntaryActivity, Certificate
+from .models import Blog, WorkExperience, Project, Education, VoluntaryActivity, Certificate, FeedPost, FeedComment
 
 @admin.register(Blog)
 class BlogAdmin(admin.ModelAdmin):
@@ -30,11 +30,33 @@ class EducationAdmin(admin.ModelAdmin):
     search_fields = ('degree', 'institution')
 
 
-
 @admin.register(Certificate)
 class CertificateAdmin(admin.ModelAdmin):
     list_display = ('title', 'issuer', 'date', 'file', 'link', 'order')
     list_editable = ('order',)
     search_fields = ('title', 'issuer', 'description')
+
+
+class FeedCommentInline(admin.TabularInline):
+    model = FeedComment
+    extra = 0
+    fields = ('author_name', 'content', 'created_at', 'is_approved')
+    readonly_fields = ('created_at',)
+
+
+@admin.register(FeedPost)
+class FeedPostAdmin(admin.ModelAdmin):
+    list_display = ('title', 'mood_emoji', 'location', 'likes_count', 'created_at')
+    list_filter = ('created_at', 'location')
+    search_fields = ('title', 'content', 'location')
+    inlines = [FeedCommentInline]
+
+
+@admin.register(FeedComment)
+class FeedCommentAdmin(admin.ModelAdmin):
+    list_display = ('post', 'author_name', 'content', 'created_at', 'is_approved')
+    list_filter = ('is_approved', 'created_at')
+    search_fields = ('author_name', 'content')
+
 
 
