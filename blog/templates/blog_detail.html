@@ -86,25 +86,19 @@
 
         .nav-links a {
             text-decoration: none;
-            color: rgba(0, 0, 0, 0.55);
+            color: rgba(0, 0, 0, 0.6);
             font-family: var(--font-nav);
             font-size: 1.05rem;
-            font-weight: 400;
-            transition: color 0.15s ease;
+            font-weight: 500;
+            padding: 4px 10px;
+            border-radius: 6px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .nav-links a:hover,
         .nav-links a.active {
-            color: var(--text-heading);
-        }
-
-        .nav-links a.acadium-link {
-            font-style: italic;
-            font-weight: 400;
-        }
-
-        .nav-links a.acadium-link:hover {
-            color: var(--text-heading);
+            color: var(--accent-blue);
+            background-color: rgba(0, 132, 255, 0.06);
         }
 
         /* Article Detail Wrapper */

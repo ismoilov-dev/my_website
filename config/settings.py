@@ -10,6 +10,13 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load environment variables from .env file if available
+try:
+    from dotenv import load_dotenv
+    load_dotenv(BASE_DIR / '.env')
+except ImportError:
+    pass
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get(
     'SECRET_KEY',
@@ -19,27 +26,41 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False').lower() in ['true', '1', 'yes']
 
-ALLOWED_HOSTS = [
-    'portfolia1-1.onrender.com',
-    '.onrender.com',
-    'ismatismoilov.uz',
-    'www.ismatismoilov.uz',
-    '.ismatismoilov.uz',
-    'localhost',
-    '127.0.0.1',
-]
+env_allowed_hosts = os.environ.get('ALLOWED_HOSTS')
+if env_allowed_hosts:
+    ALLOWED_HOSTS = [h.strip() for h in env_allowed_hosts.split(',') if h.strip()]
+else:
+    ALLOWED_HOSTS = [
+        '*',
+        'portfolia1-1.onrender.com',
+        '.onrender.com',
+        'ismatismoilov.uz',
+        'www.ismatismoilov.uz',
+        '.ismatismoilov.uz',
+        'localhost',
+        '127.0.0.1',
+    ]
 
 # Render automatically exposes host domain in RENDER_EXTERNAL_HOSTNAME
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
+if RENDER_EXTERNAL_HOSTNAME and RENDER_EXTERNAL_HOSTNAME not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://portfolia1-1.onrender.com',
-    'https://*.onrender.com',
-    'https://ismatismoilov.uz',
-    'https://www.ismatismoilov.uz',
-]
+env_csrf_origins = os.environ.get('CSRF_TRUSTED_ORIGINS')
+if env_csrf_origins:
+    CSRF_TRUSTED_ORIGINS = [o.strip() for o in env_csrf_origins.split(',') if o.strip()]
+else:
+    CSRF_TRUSTED_ORIGINS = [
+        'https://portfolia1-1.onrender.com',
+        'https://*.onrender.com',
+        'https://ismatismoilov.uz',
+        'https://www.ismatismoilov.uz',
+        'http://ismatismoilov.uz',
+        'http://www.ismatismoilov.uz',
+        'http://localhost',
+        'http://127.0.0.1',
+    ]
+
 
 
 # Application definition
