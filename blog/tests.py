@@ -1,3 +1,12 @@
-from django.test import TestCase
+from django.test import TestCase, Client
+from django.urls import reverse
 
-# Create your tests here.
+
+class HealthzTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_healthz_endpoint(self):
+        response = self.client.get(reverse('healthz'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"status": "ok", "database": "ok"})
