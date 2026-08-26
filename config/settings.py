@@ -10,7 +10,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Load environment variables from .env file if available
+# Load environment variables from .env file
 try:
     from dotenv import load_dotenv
     load_dotenv(BASE_DIR / '.env')
@@ -18,48 +18,26 @@ except ImportError:
     pass
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get(
-    'SECRET_KEY',
-    'django-insecure-r8iy%2h0-5d_!$&nn4_^2mjjxcbhegae3lx+u8voq*lk+jn62q',
-)
+SECRET_KEY = os.environ.get('SECRET_KEY')
+if not SECRET_KEY:
+    raise ValueError("SECRET_KEY environment variable is missing. Please set it in .env file.")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False').lower() in ['true', '1', 'yes']
+DEBUG = os.environ.get('DEBUG', 'True').lower() in ['true', '1', 'yes', 'on']
 
-env_allowed_hosts = os.environ.get('ALLOWED_HOSTS')
-if env_allowed_hosts:
-    ALLOWED_HOSTS = [h.strip() for h in env_allowed_hosts.split(',') if h.strip()]
-else:
-    ALLOWED_HOSTS = [
-        '*',
-        'portfolia1-1.onrender.com',
-        '.onrender.com',
-        'ismatismoilov.uz',
-        'www.ismatismoilov.uz',
-        '.ismatismoilov.uz',
-        'localhost',
-        '127.0.0.1',
-    ]
+# ALLOWED_HOSTS configuration
+env_allowed_hosts = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1')
+ALLOWED_HOSTS = [h.strip() for h in env_allowed_hosts.split(',') if h.strip()]
 
 # Render automatically exposes host domain in RENDER_EXTERNAL_HOSTNAME
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME and RENDER_EXTERNAL_HOSTNAME not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
-env_csrf_origins = os.environ.get('CSRF_TRUSTED_ORIGINS')
-if env_csrf_origins:
-    CSRF_TRUSTED_ORIGINS = [o.strip() for o in env_csrf_origins.split(',') if o.strip()]
-else:
-    CSRF_TRUSTED_ORIGINS = [
-        'https://portfolia1-1.onrender.com',
-        'https://*.onrender.com',
-        'https://ismatismoilov.uz',
-        'https://www.ismatismoilov.uz',
-        'http://ismatismoilov.uz',
-        'http://www.ismatismoilov.uz',
-        'http://localhost',
-        'http://127.0.0.1',
-    ]
+# CSRF_TRUSTED_ORIGINS configuration
+env_csrf_origins = os.environ.get('CSRF_TRUSTED_ORIGINS', 'http://localhost,http://127.0.0.1')
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in env_csrf_origins.split(',') if o.strip()]
+
 
 
 
@@ -139,9 +117,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = os.environ.get('LANGUAGE_CODE', 'en-us')
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = os.environ.get('TIME_ZONE', 'Asia/Tashkent')
 
 USE_I18N = True
 
