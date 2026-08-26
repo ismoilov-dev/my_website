@@ -1,7 +1,18 @@
-from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
-from .models import Blog, WorkExperience, Project, Education, VoluntaryActivity, Certificate, FeedPost, FeedComment
+
+from .models import (
+    Blog,
+    Certificate,
+    Education,
+    FeedComment,
+    FeedPost,
+    Project,
+    VoluntaryActivity,
+    WorkExperience,
+)
+
 
 def index(request):
     return render(request, 'blog.html')

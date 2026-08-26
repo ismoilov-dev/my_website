@@ -9,13 +9,13 @@ bind = os.environ.get("GUNICORN_BIND", "0.0.0.0:8000")
 workers = int(os.environ.get("GUNICORN_WORKERS", multiprocessing.cpu_count() * 2 + 1 if hasattr(multiprocessing, 'cpu_count') else 3))
 
 # Number of threads per worker process
-threads = int(os.environ.get("GUNICORN_THREADS", 2))
+threads = int(os.environ.get("GUNICORN_THREADS", "2"))
 
 # Worker timeout in seconds
-timeout = int(os.environ.get("GUNICORN_TIMEOUT", 60))
+timeout = int(os.environ.get("GUNICORN_TIMEOUT", "60"))
 
 # Keep-alive connection timeout
-keepalive = int(os.environ.get("GUNICORN_KEEPALIVE", 5))
+keepalive = int(os.environ.get("GUNICORN_KEEPALIVE", "5"))
 
 # Logging settings
 accesslog = "-"

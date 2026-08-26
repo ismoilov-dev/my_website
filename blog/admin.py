@@ -1,5 +1,15 @@
 from django.contrib import admin
-from .models import Blog, WorkExperience, Project, Education, VoluntaryActivity, Certificate, FeedPost, FeedComment
+
+from .models import (
+    Blog,
+    Certificate,
+    Education,
+    FeedComment,
+    FeedPost,
+    Project,
+    WorkExperience,
+)
+
 
 @admin.register(Blog)
 class BlogAdmin(admin.ModelAdmin):

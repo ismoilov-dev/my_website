@@ -1,0 +1,47 @@
+name: Continuous Integration (CI)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Lint Code with Ruff
+        run: |
+          ruff check .
+
+      - name: Check Migration Conflicts
+        run: |
+          python manage.py makemigrations --check --dry-run
+
+      - name: Check Production Deployment Readiness
+        run: |
+          ENVIRONMENT=production \
+          SECURE_SSL_REDIRECT=True \
+          SESSION_COOKIE_SECURE=True \
+          CSRF_COOKIE_SECURE=True \
+          SECRET_KEY="ci-test-secret-key-that-is-very-long-and-secure-enough-for-django-check-deploy" \
+          python manage.py check --deploy
+
+      - name: Run Unit Tests
+        run: |
+          python manage.py test

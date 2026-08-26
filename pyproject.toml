@@ -1,0 +1,7 @@
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+# Ignore Django-specific patterns (RUF012 for model Meta ordering, BLE001 for broad exception fallback in startup/health)
+ignore = ["RUF012", "BLE001"]
