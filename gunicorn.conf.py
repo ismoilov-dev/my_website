@@ -1,9 +1,11 @@
 import multiprocessing
 import os
 
-# Gunicorn configuration file for Production / Docker
+# Gunicorn configuration for the systemd service behind nginx.
 
-bind = os.environ.get("GUNICORN_BIND", "0.0.0.0:8000")
+# Loopback only: nginx is the sole entry point, so gunicorn must not be
+# reachable from the internet on port 8000.
+bind = os.environ.get("GUNICORN_BIND", "127.0.0.1:8000")
 
 # Number of worker processes
 workers = int(os.environ.get("GUNICORN_WORKERS", multiprocessing.cpu_count() * 2 + 1 if hasattr(multiprocessing, 'cpu_count') else 3))

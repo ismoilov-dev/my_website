@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.html import strip_tags
+from django.utils.text import Truncator
 
 
 class Blog(models.Model):
@@ -8,7 +10,22 @@ class Blog(models.Model):
     time = models.CharField(max_length=50, blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
+    class Meta:
+        ordering = ['-created_at']
+
+    @property
+    def excerpt(self):
+        """Short plain-text preview used in listings and meta descriptions."""
+        return Truncator(strip_tags(self.content)).chars(160)
+
+    @property
+    def reading_time(self):
+        """Estimated reading time in whole minutes (200 words per minute)."""
+        words = len(strip_tags(self.content).split())
+        return max(1, round(words / 200))
+
+
     def save(self, *args, **kwargs):
         if not self.time:
             now = timezone.now()

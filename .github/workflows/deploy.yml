@@ -1,13 +1,25 @@
 name: Continuous Deployment (CD)
 
 on:
-  push:
-    branches: [ main ]
+  # Only deploy once CI has actually passed on main.
+  workflow_run:
+    workflows: ["Continuous Integration (CI)"]
+    branches: [main]
+    types: [completed]
+  # ...and allow a manual redeploy from the Actions tab.
+  workflow_dispatch:
+
+# Never let two deploys touch the server at the same time.
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
 
 jobs:
   deploy:
     name: Deploy to Production Server
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+
     steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
@@ -16,11 +28,11 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           passphrase: ${{ secrets.SERVER_SSH_PASSPHRASE }}
+          script_stops: true
           script: |
-            cd ${{ secrets.SERVER_PROJECT_PATH || '/home/ismat-dev/Desktop/Python/blog' }}
-            git pull origin main
-            source venv/bin/activate
-            pip install -r requirements.txt
-            python manage.py migrate --noinput
-            python manage.py collectstatic --noinput
-            sudo systemctl restart blog
+            set -euo pipefail
+            cd "${{ secrets.SERVER_PROJECT_PATH || '/srv/blog' }}"
+            git fetch --prune origin main
+            git reset --hard origin/main
+            chmod +x build.sh
+            ./build.sh

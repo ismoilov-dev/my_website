@@ -1,4 +1,4 @@
- __pycache__/
+__pycache__/
 *.py[cod]
 *$py.class
 
@@ -50,8 +50,8 @@ db.sqlite3
 db.sqlite3-journal
 backups/
 
-**/migrations/*
-!**/migrations/__init__.py
+# NOTE: migrations are deliberately NOT ignored. Django migrations are source
+# code — the server needs them to build the database schema, and CI checks them.
 
 .env
 .env.local

@@ -6,7 +6,7 @@
 #              with timestamp, compresses it, and cleans backups older than 30 days.
 #
 # Cron Installation Example (Run every night at 02:00 AM):
-# 0 2 * * * /home/ismat-dev/Desktop/Python/blog/scripts/backup_db.sh >> /home/ismat-dev/Desktop/Python/blog/backups/backup.log 2>&1
+# 0 2 * * * /srv/blog/scripts/backup_db.sh >> /srv/blog/backups/backup.log 2>&1
 # ==============================================================================
 
 set -euo pipefail
@@ -47,7 +47,30 @@ else
 
     if [ -f "${SQLITE_DB}" ]; then
         echo "Backing up SQLite database from ${SQLITE_DB}..."
-        gzip -c "${SQLITE_DB}" > "${BACKUP_FILE}"
+
+        # Copying the file directly can capture a half-written transaction if
+        # the site is serving traffic. SQLite's online backup API takes a
+        # consistent snapshot instead.
+        TMP_SNAPSHOT="$(mktemp "${BACKUP_DIR}/.snapshot.XXXXXX")"
+        trap 'rm -f "${TMP_SNAPSHOT}"' EXIT
+
+        if [ -x "${PROJECT_ROOT}/venv/bin/python" ]; then
+            PYTHON="${PROJECT_ROOT}/venv/bin/python"
+        else
+            PYTHON="python3"
+        fi
+
+        "${PYTHON}" - "${SQLITE_DB}" "${TMP_SNAPSHOT}" <<'PY'
+import sqlite3
+import sys
+
+source, target = sys.argv[1], sys.argv[2]
+with sqlite3.connect(f'file:{source}?mode=ro', uri=True) as src, \
+        sqlite3.connect(target) as dst:
+    src.backup(dst)
+PY
+
+        gzip -c "${TMP_SNAPSHOT}" > "${BACKUP_FILE}"
         echo "SQLite backup created successfully at ${BACKUP_FILE}"
     else
         echo "Warning: SQLite database file not found at ${SQLITE_DB}"

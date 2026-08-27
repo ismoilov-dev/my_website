@@ -1,252 +1,29 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Talks - Ismat Ismoilov</title>
-    <meta name="description" content="Talks, presentations, and lectures by Ismat Ismoilov.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- AOS CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
-    <noscript>
-        <style>
-            [data-aos] { opacity: 1 !important; transform: none !important; }
-        </style>
-    </noscript>
-    
-    <style>
-        :root {
-            --bg-color: #ffffff;
-            --banner-bg: #fafafc;
-            --text-heading: #111827;
-            --text-primary: rgba(0, 0, 0, 0.78);
-            --text-secondary: #71717a;
-            --text-muted: #9ca3af;
-            --accent-blue: #0084ff;
-            --accent-hover: #0073e6;
-            --border-color: rgba(0, 0, 0, 0.06);
-            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            --font-nav: 'Source Sans 3', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
+{% extends "base.html" %}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+{% block title %}Talks — Ismat Ismoilov{% endblock %}
+{% block og_title %}Talks — Ismat Ismoilov{% endblock %}
+{% block description %}Talks, presentations and lectures by Ismat Ismoilov.{% endblock %}
+{% block og_description %}Talks, presentations and lectures.{% endblock %}
 
-        body {
-            font-family: var(--font-main);
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-        }
+{% block content %}
+<section class="section-banner" data-reveal>
+    <h1 class="section-title">Talks</h1>
+    <p class="section-subtitle">Konferensiya, meetup va taqdimotlardagi ma'ruzalarim.</p>
+</section>
 
-        /* Container Max Width */
-        .container {
-            width: 100%;
-            max-width: 1040px;
-            margin: 0 auto;
-            padding: 0 40px;
-        }
+<div class="container container--narrow">
+    <div class="empty" data-reveal>
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"/></svg>
+        <h3>Nasib bo'lsa Talk bersam chiqadi! 🚀</h3>
+        <p>Kelgusida konferensiyalar, meetup va taqdimotlardagi ma'ruzalarim hamda videoyozuvlarim shu sahifada e'lon qilib boriladi.</p>
+    </div>
 
-        /* Header Navigation */
-        header {
-            padding: 1.75rem 0 1.25rem 0;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .brand-logo {
-            font-size: 1.35rem;
-            font-weight: 700;
-            color: var(--text-heading);
-            text-decoration: none;
-            letter-spacing: -0.02em;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 1.75rem;
-            list-style: none;
-            align-items: center;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: rgba(0, 0, 0, 0.6);
-            font-family: var(--font-nav);
-            font-size: 1.05rem;
-            font-weight: 500;
-            padding: 4px 10px;
-            border-radius: 6px;
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: var(--accent-blue);
-            background-color: rgba(0, 132, 255, 0.06);
-        }
-
-        /* Section Title Banner */
-        .section-banner {
-            width: 100%;
-            background-color: var(--banner-bg);
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-            padding: 35px 0;
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .section-title {
-            font-size: 2.2rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            color: var(--text-heading);
-            text-transform: uppercase;
-        }
-
-        /* Talks Main Container */
-        .talks-wrapper {
-            max-width: 680px;
-            margin: 40px auto 60px auto;
-            padding: 0 20px;
-            flex: 1;
-            width: 100%;
-            text-align: center;
-        }
-
-        .talks-card {
-            background-color: #fafafc;
-            border: 1px dashed #d1d5db;
-            border-radius: 16px;
-            padding: 50px 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-        }
-
-        .talks-icon {
-            font-size: 3rem;
-            color: var(--accent-blue);
-            background-color: rgba(0, 132, 255, 0.1);
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 8px;
-        }
-
-        .talks-headline {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-heading);
-        }
-
-        .talks-subtext {
-            font-size: 1.05rem;
-            color: var(--text-secondary);
-            max-width: 480px;
-            line-height: 1.6;
-        }
-
-        /* Footer */
-        footer {
-            width: 100%;
-            text-align: center;
-            padding: 40px 0;
-            color: var(--text-muted);
-            font-size: 0.875rem;
-            border-top: 1px solid var(--border-color);
-        }
-
-        footer a {
-            color: var(--text-muted);
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 640px) {
-            .section-title {
-                font-size: 1.75rem;
-            }
-            .talks-headline {
-                font-size: 1.25rem;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Header Navigation -->
-    <header data-aos="fade-down">
-        <div class="container header-content">
-            <a href="{% url 'index' %}" class="brand-logo">Ismat's blog</a>
-            <ul class="nav-links">
-                <li><a href="https://acadium.uz" target="_blank" rel="noopener noreferrer" class="acadium-link">Acadium</a></li>
-                <li><a href="{% url 'blogs' %}">Blog</a></li>
-                <li><a href="{% url 'feed' %}">Feed</a></li>
-                <li><a href="{% url 'talks' %}" class="active">Talks</a></li>
-                <li><a href="{% url 'cv' %}">CV</a></li>
-                <li><a href="https://t.me/lazy_devv" target="_blank" rel="noopener noreferrer">Channel</a></li>
-            </ul>
+    <aside class="card subscribe-card" data-reveal>
+        <div>
+            <h2 class="card-title">Yangiliklardan xabardor bo'ling</h2>
+            <p class="card-text">Ma'ruzalar va videolar birinchi bo'lib Telegram kanalimda e'lon qilinadi.</p>
         </div>
-    </header>
-
-    <!-- Banner Title Section -->
-    <section class="section-banner" data-aos="fade-up">
-        <h1 class="section-title">TALKS</h1>
-    </section>
-
-    <!-- Main Content Body -->
-    <main class="talks-wrapper" data-aos="fade-up">
-        <div class="talks-card">
-            <div class="talks-icon">
-                <i class="fa-solid fa-microphone-lines"></i>
-            </div>
-            <h2 class="talks-headline">Nasib bo'lsa Talk bersam chiqadi! 🚀</h2>
-            <p class="talks-subtext">
-                Kelgusida konferensiyalar, meetup va taqdimotlardagi ma'ruzalarim hamda videoyozuvlarim shu sahifada e'lon qilib boriladi.
-            </p>
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer data-aos="fade-up">
-        &copy; 2026 <a href="{% url 'index' %}">ismat.dev</a>
-    </footer>
-
-    <!-- AOS JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script>
-        AOS.init({
-            duration: 900,
-            once: true,
-            easing: 'ease-out',
-            offset: 80
-        });
-    </script>
-</body>
-</html>
+        <a href="https://t.me/lazy_devv" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Kanalga o'tish</a>
+    </aside>
+</div>
+{% endblock %}
