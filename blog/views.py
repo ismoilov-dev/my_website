@@ -23,8 +23,7 @@ def about(request):
 
 
 def blogs(request):
-    blogs_list = Blog.objects.all().order_by('-created_at')
-    return render(request, 'blogs.html', {'blogs': blogs_list})
+    return render(request, 'blogs.html', {'blogs': Blog.objects.all()})
 
 
 def talks(request):
@@ -33,7 +32,16 @@ def talks(request):
 
 def blog_detail(request, pk):
     blog = get_object_or_404(Blog, pk=pk)
-    return render(request, 'blog_detail.html', {'blog': blog})
+
+    # Neighbours in publication order, so a reader can move through the archive.
+    previous_post = Blog.objects.filter(created_at__lt=blog.created_at).first()
+    next_post = Blog.objects.filter(created_at__gt=blog.created_at).last()
+
+    return render(request, 'blog_detail.html', {
+        'blog': blog,
+        'previous_post': previous_post,
+        'next_post': next_post,
+    })
 
 
 def cv(request):

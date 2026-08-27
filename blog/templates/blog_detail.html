@@ -1,257 +1,42 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ blog.title }} - Ismat Ismoilov</title>
-    <meta name="description" content="{{ blog.title }} - Article by Ismat Ismoilov">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- AOS CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
-    <noscript>
-        <style>
-            [data-aos] { opacity: 1 !important; transform: none !important; }
-        </style>
-    </noscript>
-    
-    <style>
-        :root {
-            --bg-color: #ffffff;
-            --text-heading: #111827;
-            --text-primary: rgba(0, 0, 0, 0.78);
-            --text-secondary: #71717a;
-            --text-muted: #9ca3af;
-            --accent-blue: #0084ff;
-            --accent-hover: #0073e6;
-            --border-color: rgba(0, 0, 0, 0.06);
-            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            --font-nav: 'Source Sans 3', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
+{% extends "base.html" %}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+{% block title %}{{ blog.title }} — Ismat Ismoilov{% endblock %}
+{% block og_title %}{{ blog.title }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block description %}{{ blog.excerpt }}{% endblock %}
+{% block og_description %}{{ blog.excerpt }}{% endblock %}
 
-        body {
-            font-family: var(--font-main);
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-        }
+{% block content %}
+<article class="container container--narrow article" data-reveal>
+    <a href="{% url 'blogs' %}" class="back-link">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+        Barcha maqolalar
+    </a>
 
-        /* Container Max Width */
-        .container {
-            width: 100%;
-            max-width: 1040px;
-            margin: 0 auto;
-            padding: 0 40px;
-        }
+    <div class="article-meta">
+        <span>{{ blog.created_at|date:"j F, Y" }}</span>
+        <span class="dot">{{ blog.reading_time }} min read</span>
+    </div>
 
-        /* Header Navigation */
-        header {
-            padding: 1.75rem 0 1.25rem 0;
-        }
+    <h1 class="article-title">{{ blog.title }}</h1>
 
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    <div class="prose">
+        {{ blog.content|linebreaks }}
+    </div>
 
-        .brand-logo {
-            font-size: 1.35rem;
-            font-weight: 700;
-            color: var(--text-heading);
-            text-decoration: none;
-            letter-spacing: -0.02em;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 1.75rem;
-            list-style: none;
-            align-items: center;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: rgba(0, 0, 0, 0.6);
-            font-family: var(--font-nav);
-            font-size: 1.05rem;
-            font-weight: 500;
-            padding: 4px 10px;
-            border-radius: 6px;
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: var(--accent-blue);
-            background-color: rgba(0, 132, 255, 0.06);
-        }
-
-        /* Article Detail Wrapper */
-        .article-container {
-            max-width: 680px;
-            margin: 40px auto 60px auto;
-            padding: 0 20px;
-            flex: 1;
-            width: 100%;
-        }
-
-        .article-meta {
-            font-size: 0.925rem;
-            color: var(--text-secondary);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .article-title {
-            font-size: 2.25rem;
-            font-weight: 800;
-            color: var(--text-heading);
-            line-height: 1.25;
-            letter-spacing: -0.02em;
-            margin-bottom: 32px;
-        }
-
-        .article-content {
-            font-size: 1.125rem;
-            line-height: 1.75;
-            color: var(--text-primary);
-            margin-bottom: 48px;
-        }
-
-        .article-content p {
-            margin-bottom: 24px;
-        }
-
-        .article-content a {
-            color: var(--accent-blue);
-            text-decoration: none;
-        }
-
-        .article-content a:hover {
-            text-decoration: underline;
-        }
-
-        .back-nav {
-            margin-top: 40px;
-            padding-top: 24px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--accent-blue);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.975rem;
-            transition: color 0.15s ease;
-        }
-
-        .back-link:hover {
-            color: var(--accent-hover);
-            text-decoration: underline;
-        }
-
-        /* Footer */
-        footer {
-            width: 100%;
-            text-align: center;
-            padding: 40px 0;
-            color: var(--text-muted);
-            font-size: 0.875rem;
-            border-top: 1px solid var(--border-color);
-        }
-
-        footer a {
-            color: var(--text-muted);
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 640px) {
-            .article-title {
-                font-size: 1.75rem;
-            }
-            .article-content {
-                font-size: 1rem;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Header Navigation -->
-    <header data-aos="fade-down">
-        <div class="container header-content">
-            <a href="{% url 'index' %}" class="brand-logo">Ismat's blog</a>
-            <ul class="nav-links">
-                <li><a href="https://acadium.uz" target="_blank" rel="noopener noreferrer" class="acadium-link">Acadium</a></li>
-                <li><a href="{% url 'blogs' %}" class="active">Blog</a></li>
-                <li><a href="{% url 'feed' %}">Feed</a></li>
-                <li><a href="{% url 'talks' %}">Talks</a></li>
-                <li><a href="{% url 'cv' %}">CV</a></li>
-                <li><a href="https://t.me/lazy_devv" target="_blank" rel="noopener noreferrer">Channel</a></li>
-            </ul>
-        </div>
-    </header>
-
-    <!-- Main Article Detail Content -->
-    <main class="article-container" data-aos="fade-up">
-        <div class="article-meta">
-            {{ blog.created_at|date:"d F, Y" }}
-            {% if blog.time %}
-                <span>• {{ blog.time }}</span>
-            {% endif %}
-        </div>
-
-        <h1 class="article-title">{{ blog.title }}</h1>
-
-        <div class="article-content">
-            {{ blog.content|linebreaks }}
-        </div>
-
-        <div class="back-nav">
-            <a href="{% url 'blogs' %}" class="back-link">
-                <i class="fa-solid fa-arrow-left"></i> Barcha maqolalarga qaytish
-            </a>
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer data-aos="fade-up">
-        &copy; 2026 <a href="{% url 'index' %}">ismat.dev</a>
-    </footer>
-
-    <!-- AOS JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script>
-        AOS.init({
-            duration: 900,
-            once: true,
-            easing: 'ease-out',
-            offset: 80
-        });
-    </script>
-</body>
-</html>
+    <nav class="article-nav">
+        {% if previous_post %}
+        <a href="{% url 'blog_detail' previous_post.pk %}" class="article-nav-link">
+            <span class="article-nav-label">&larr; Oldingi</span>
+            <span class="article-nav-title">{{ previous_post.title }}</span>
+        </a>
+        {% endif %}
+        {% if next_post %}
+        <a href="{% url 'blog_detail' next_post.pk %}" class="article-nav-link is-next">
+            <span class="article-nav-label">Keyingi &rarr;</span>
+            <span class="article-nav-title">{{ next_post.title }}</span>
+        </a>
+        {% endif %}
+    </nav>
+</article>
+{% endblock %}

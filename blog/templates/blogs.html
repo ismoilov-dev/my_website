@@ -1,382 +1,58 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - Ismat Ismoilov</title>
-    <meta name="description" content="Read articles, lectures, and insights on backend development and tech by Ismat Ismoilov.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- AOS CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
-    <noscript>
-        <style>
-            [data-aos] { opacity: 1 !important; transform: none !important; }
-        </style>
-    </noscript>
-    
-    <style>
-        :root {
-            --bg-color: #ffffff;
-            --banner-bg: #fafafc;
-            --text-heading: #111827;
-            --text-primary: rgba(0, 0, 0, 0.78);
-            --text-secondary: #71717a;
-            --text-muted: #9ca3af;
-            --accent-blue: #0084ff;
-            --accent-hover: #0073e6;
-            --border-color: rgba(0, 0, 0, 0.06);
-            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            --font-nav: 'Source Sans 3', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
+{% extends "base.html" %}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+{% block title %}Blog — Ismat Ismoilov{% endblock %}
+{% block og_title %}Blog — Ismat Ismoilov{% endblock %}
+{% block description %}Articles, lectures and insights on backend development and tech by Ismat Ismoilov.{% endblock %}
+{% block og_description %}Articles, lectures and insights on backend development and tech.{% endblock %}
 
-        body {
-            font-family: var(--font-main);
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-        }
+{% block content %}
+<section class="section-banner" data-reveal>
+    <h1 class="section-title">Blog</h1>
+</section>
 
-        /* Container Max Width */
-        .container {
-            width: 100%;
-            max-width: 1040px;
-            margin: 0 auto;
-            padding: 0 40px;
-        }
-
-        /* Header Navigation */
-        header {
-            padding: 1.75rem 0 1.25rem 0;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .brand-logo {
-            font-size: 1.35rem;
-            font-weight: 700;
-            color: var(--text-heading);
-            text-decoration: none;
-            letter-spacing: -0.02em;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 1.75rem;
-            list-style: none;
-            align-items: center;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: rgba(0, 0, 0, 0.6);
-            font-family: var(--font-nav);
-            font-size: 1.05rem;
-            font-weight: 500;
-            padding: 4px 10px;
-            border-radius: 6px;
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: var(--accent-blue);
-            background-color: rgba(0, 132, 255, 0.06);
-        }
-
-        /* Section Title Banner */
-        .section-banner {
-            width: 100%;
-            background-color: var(--banner-bg);
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-            padding: 35px 0;
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .section-title {
-            font-size: 2.2rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            color: var(--text-heading);
-            text-transform: uppercase;
-        }
-
-        /* Main Content Layout (2-Column Grid) */
-        .main-layout {
-            display: flex;
-            gap: 60px;
-            flex: 1;
-            align-items: flex-start;
-            padding-bottom: 60px;
-        }
-
-        .posts-column {
-            flex: 1;
-            max-width: 680px;
-        }
-
-        .sidebar-column {
-            width: 280px;
-            flex-shrink: 0;
-        }
-
-        /* Year Group & Badge */
-        .year-group {
-            margin-bottom: 40px;
-        }
-
-        .year-badge {
-            display: inline-block;
-            background-color: #f3f4f6;
-            color: var(--text-heading);
-            font-size: 0.85rem;
-            font-weight: 700;
-            padding: 4px 14px;
-            border-radius: 20px;
-            margin-bottom: 24px;
-        }
-
-        /* Month Group */
-        .month-group {
-            margin-bottom: 32px;
-        }
-
-        .month-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--text-heading);
-            margin-bottom: 16px;
-        }
-
-        /* Post Items List */
-        .post-list {
-            list-style: none;
-        }
-
-        .post-item {
-            padding: 16px 16px;
-            margin: 0 -16px;
-            border-radius: 10px;
-            border-bottom: 1px solid var(--border-color);
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .post-item:hover {
-            background-color: #fafafc;
-            transform: translateX(4px);
-        }
-
-        .post-item:last-child {
-            border-bottom: none;
-        }
-
-        .post-date {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .read-time {
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .post-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-heading);
-            text-decoration: none;
-            line-height: 1.4;
-            transition: color 0.15s ease;
-            display: inline-block;
-        }
-
-        .post-title:hover {
-            color: var(--accent-blue);
-        }
-
-        /* Sidebar Styling */
-        .sidebar {
-            background-color: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
-            position: sticky;
-            top: 20px;
-        }
-
-        .sidebar-title {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--text-heading);
-            margin-bottom: 12px;
-        }
-
-        .sidebar-desc {
-            font-size: 0.925rem;
-            color: var(--text-secondary);
-            line-height: 1.55;
-        }
-
-        .sidebar-desc a {
-            color: var(--accent-blue);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .sidebar-desc a:hover {
-            text-decoration: underline;
-        }
-
-        /* Empty State */
-        .empty-state {
-            padding: 40px 0;
-            color: var(--text-secondary);
-            font-size: 1.05rem;
-        }
-
-        /* Footer */
-        footer {
-            width: 100%;
-            text-align: center;
-            padding: 40px 0;
-            color: var(--text-muted);
-            font-size: 0.875rem;
-            border-top: 1px solid var(--border-color);
-        }
-
-        footer a {
-            color: var(--text-muted);
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 820px) {
-            .main-layout {
-                flex-direction: column;
-                gap: 40px;
-            }
-            .sidebar-column {
-                width: 100%;
-                order: -1;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Header Navigation -->
-    <header data-aos="fade-down">
-        <div class="container header-content">
-            <a href="{% url 'index' %}" class="brand-logo">Ismat's blog</a>
-            <ul class="nav-links">
-                <li><a href="https://acadium.uz" target="_blank" rel="noopener noreferrer" class="acadium-link">Acadium</a></li>
-                <li><a href="{% url 'blogs' %}" class="active">Blog</a></li>
-                <li><a href="{% url 'feed' %}">Feed</a></li>
-                <li><a href="{% url 'talks' %}">Talks</a></li>
-                <li><a href="{% url 'cv' %}">CV</a></li>
-                <li><a href="https://t.me/lazy_devv" target="_blank" rel="noopener noreferrer">Channel</a></li>
-            </ul>
-        </div>
-    </header>
-
-    <!-- Banner Title Section -->
-    <section class="section-banner" data-aos="fade-up">
-        <h1 class="section-title">BLOG</h1>
-    </section>
-
-    <!-- Main Content Layout -->
-    <main class="container main-layout" data-aos="fade-up">
-        
-        <!-- Left: Blog Posts List -->
-        <div class="posts-column">
-            {% if blogs %}
-                {% regroup blogs by created_at|date:"Y" as year_list %}
-                {% for year in year_list %}
-                    <div class="year-group">
-                        <span class="year-badge">{{ year.grouper }}</span>
-                        {% regroup year.list by created_at|date:"F" as month_list %}
-                        {% for month in month_list %}
-                            <div class="month-group">
-                                <h3 class="month-title">{{ month.grouper }}</h3>
-                                <ul class="post-list">
-                                    {% for post in month.list %}
-                                        <li class="post-item">
-                                            <div class="post-date">
-                                                {{ post.created_at|date:"d F, Y" }}
-                                                {% if post.time %}
-                                                    <span class="read-time">• {{ post.time }}</span>
-                                                {% endif %}
-                                            </div>
-                                            <a href="{% url 'blog_detail' post.pk %}" class="post-title">{{ post.title }}</a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
+<div class="container blog-layout">
+    <div class="posts-column" data-reveal>
+        {% if blogs %}
+            {% regroup blogs by created_at|date:"Y" as year_list %}
+            {% for year in year_list %}
+            <section class="year-group">
+                <span class="year-badge">{{ year.grouper }}</span>
+                {% regroup year.list by created_at|date:"F" as month_list %}
+                {% for month in month_list %}
+                <div class="month-group">
+                    <h2 class="month-title">{{ month.grouper }}</h2>
+                    <ul class="post-list">
+                        {% for post in month.list %}
+                        <li>
+                            <a href="{% url 'blog_detail' post.pk %}" class="post-row">
+                                <div class="post-row-date">{{ post.created_at|date:"j F, Y" }}</div>
+                                <div class="post-row-title">{{ post.title }}</div>
+                            </a>
+                        </li>
                         {% endfor %}
-                    </div>
-                {% endfor %}
-            {% else %}
-                <div class="empty-state">
-                    <p>Hozircha maqolalar mavjud emas. Tezgoraq yangi postlar joylanadi!</p>
+                    </ul>
                 </div>
-            {% endif %}
-        </div>
+                {% endfor %}
+            </section>
+            {% endfor %}
+        {% else %}
+            <div class="empty">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h11l5 5v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M14 4v5h5M8 13h8M8 17h5"/></svg>
+                <h3>Hozircha maqolalar yo'q</h3>
+                <p>Tez orada yangi postlar joylanadi. Yangiliklardan xabardor bo'lish uchun Telegram kanalimga obuna bo'ling.</p>
+            </div>
+        {% endif %}
+    </div>
 
-        <!-- Right: Sidebar -->
-        <div class="sidebar-column">
-            <aside class="sidebar">
-                <h2 class="sidebar-title">Obuna Bo'ling</h2>
-                <p class="sidebar-desc">
-                    Yangi maqola, ma'ruza va darslarimni <a href="https://t.me/lazy_devv" target="_blank" rel="noopener noreferrer">@lazy_devv</a> telegram kanalimda topishingiz mumkin.
-                </p>
-            </aside>
-        </div>
-
-    </main>
-
-    <!-- Footer -->
-    <footer data-aos="fade-up">
-        &copy; 2026 <a href="{% url 'index' %}">ismat.dev</a>
-    </footer>
-
-    <!-- AOS JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script>
-        AOS.init({
-            duration: 900,
-            once: true,
-            easing: 'ease-out',
-            offset: 80
-        });
-    </script>
-</body>
-</html>
+    <div class="sidebar-column" data-reveal>
+        <aside class="sidebar">
+            <h2 class="sidebar-title">Obuna Bo'ling</h2>
+            <p class="sidebar-text">
+                Yangi maqola, ma'ruza va darslarimni
+                <a href="https://t.me/lazy_devv" target="_blank" rel="noopener noreferrer">@lazy_devv</a>
+                telegram kanalimda topishingiz mumkin.
+            </p>
+        </aside>
+    </div>
+</div>
+{% endblock %}
