@@ -6,6 +6,10 @@
 /* --- Design tokens ------------------------------------------------------ */
 
 :root {
+    /* Light only. This also stops browsers on a dark OS from auto-darkening
+       form fields and scrollbars on the feed's comment box. */
+    color-scheme: light;
+
     --bg: #ffffff;
     --surface: #fafafa;
     --surface-2: #f4f4f5;
@@ -33,27 +37,6 @@
     --radius: 10px;
     --radius-lg: 16px;
     --ease: cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* No theme switcher: the site follows the reader's system preference, the way
-   azimjon.com renders a single light design with no control in the header. */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg: #0d0e11;
-        --surface: #141519;
-        --surface-2: #1b1d22;
-        --text: #f4f4f5;
-        --text-body: #c9cbd1;
-        --muted: #8f939c;
-        --faint: #6b6f78;
-        --border: rgba(255, 255, 255, 0.10);
-        --border-strong: rgba(255, 255, 255, 0.18);
-        --accent: #4da3ff;
-        --accent-hover: #7cbcff;
-        --accent-soft: rgba(77, 163, 255, 0.12);
-        --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
-    }
 }
 
 /* --- Reset -------------------------------------------------------------- */
