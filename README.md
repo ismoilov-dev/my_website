@@ -65,55 +65,94 @@ Loyiha barcha maxfiy va muhitga bog'liq sozlamalarni `.env` faylidan o'qiydi. Na
 
 ---
 
-## 🛡️ Production Deploy (Gunicorn + Systemd + Nginx)
+## 🛡️ Production Deploy (VPS: Gunicorn + systemd + Nginx)
 
-1. **Systemd unit yaratish (`/etc/systemd/system/blog.service`):**
-   ```ini
-   [Unit]
-   Description=Gunicorn daemon for Django Blog Application
-   After=network.target
+Tayyor konfiguratsiya fayllari `deploy/` papkasida:
 
-   [Service]
-   User=ismat-dev
-   Group=www-data
-   WorkingDirectory=/home/ismat-dev/Desktop/Python/blog
-   ExecStart=/home/ismat-dev/Desktop/Python/blog/venv/bin/gunicorn --config gunicorn.conf.py config.wsgi:application
-   Restart=always
+| Fayl | Vazifasi |
+| :--- | :--- |
+| `deploy/blog.service` | Gunicorn uchun systemd unit |
+| `deploy/nginx.conf` | Nginx reverse proxy + static/media |
+| `build.sh` | Serverdagi release skripti (migrate, collectstatic, restart, healthcheck) |
 
-   [Install]
-   WantedBy=multi-user.target
-   ```
+Quyidagi qadamlar `/srv/blog` yo'li va `ismat` foydalanuvchisi uchun yozilgan.
+Boshqa yo'l ishlatsangiz, `deploy/` ichidagi fayllardagi yo'llarni ham
+almashtiring.
 
-2. **Xizmatni yoqish va ishga tushirish:**
-   ```bash
-   sudo systemctl daemon-reload
-   sudo systemctl enable blog
-   sudo systemctl start blog
-   ```
+### 1. Server tayyorlash
+```bash
+sudo apt update && sudo apt install -y python3-venv nginx git curl
+sudo mkdir -p /srv/blog && sudo chown ismat:www-data /srv/blog
 
-3. **Nginx Reverse Proxy sozlamasi (`/etc/nginx/sites-available/blog`):**
-   ```nginx
-   server {
-       listen 80;
-       server_name ismatismoilov.uz www.ismatismoilov.uz;
+git clone https://github.com/ismoilov-dev/my_website.git /srv/blog
+cd /srv/blog
+python3 -m venv venv
+./venv/bin/pip install -r requirements.txt
+```
 
-       location /static/ {
-           alias /home/ismat-dev/Desktop/Python/blog/staticfiles/;
-       }
+### 2. `.env` faylini yaratish
+```bash
+cp .env.example .env
+python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+```
+`.env` da albatta quyidagilarni to'ldiring:
+```env
+ENVIRONMENT=production
+DEBUG=False
+SECRET_KEY=<yuqoridagi buyruq bergan kalit>
+ALLOWED_HOSTS=ismatismoilov.uz,www.ismatismoilov.uz
+CSRF_TRUSTED_ORIGINS=https://ismatismoilov.uz,https://www.ismatismoilov.uz
 
-       location /media/ {
-           alias /home/ismat-dev/Desktop/Python/blog/media/;
-       }
+# HTTPS hali sozlanmagani uchun DASTLAB False bo'lsin (pastga qarang)
+SECURE_SSL_REDIRECT=False
+SESSION_COOKIE_SECURE=False
+CSRF_COOKIE_SECURE=False
+```
+> `SECRET_KEY` qo'yilmasa yoki `django-insecure-` bilan boshlansa, production
+> rejimida ilova ataylab ishga tushmaydi.
 
-       location / {
-           proxy_pass http://127.0.0.1:8000;
-           proxy_set_header Host $host;
-           proxy_set_header X-Real-IP $remote_addr;
-           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-           proxy_set_header X-Forwarded-Proto $scheme;
-       }
-   }
-   ```
+### 3. systemd xizmati
+```bash
+sudo cp deploy/blog.service /etc/systemd/system/blog.service
+sudo systemctl daemon-reload
+sudo systemctl enable --now blog
+sudo systemctl status blog
+```
+
+CD workflow servisni parolsiz qayta ishga tushira olishi uchun:
+```bash
+echo "ismat ALL=(ALL) NOPASSWD: /bin/systemctl restart blog, /bin/journalctl -u blog *" \
+  | sudo tee /etc/sudoers.d/blog
+sudo chmod 440 /etc/sudoers.d/blog
+```
+
+### 4. Nginx
+```bash
+sudo cp deploy/nginx.conf /etc/nginx/sites-available/blog
+sudo ln -s /etc/nginx/sites-available/blog /etc/nginx/sites-enabled/blog
+sudo rm -f /etc/nginx/sites-enabled/default
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+### 5. Birinchi release
+```bash
+cd /srv/blog && ./build.sh
+```
+
+### 6. HTTPS (Let's Encrypt)
+```bash
+sudo apt install -y certbot python3-certbot-nginx
+sudo certbot --nginx -d ismatismoilov.uz -d www.ismatismoilov.uz
+```
+Sertifikat o'rnatilgandan **keyin** `.env` da HTTPS bayroqlarini yoqing va
+xizmatni qayta ishga tushiring:
+```bash
+sed -i 's/^SECURE_SSL_REDIRECT=False/SECURE_SSL_REDIRECT=True/;
+        s/^SESSION_COOKIE_SECURE=False/SESSION_COOKIE_SECURE=True/;
+        s/^CSRF_COOKIE_SECURE=False/CSRF_COOKIE_SECURE=True/' .env
+sudo systemctl restart blog
+```
+> Bu bayroqlarni HTTPS'dan oldin yoqsangiz, brauzer cheksiz redirect'ga tushadi.
 
 ---
 
@@ -122,19 +161,27 @@ Loyiha barcha maxfiy va muhitga bog'liq sozlamalarni `.env` faylidan o'qiydi. Na
 Loyiha `.github/workflows/` ichida 2 ta avtomatlashtirilgan ish jarayoniga ega:
 
 1. **CI (`ci.yml`):** Har bir `push` va `PR` da linting (`ruff`), migratsiya konfliktlari tekshiruvi (`makemigrations --check`), production xavfsizlik tekshiruvi (`check --deploy`) hamda testlarni ishga tushiradi.
-2. **CD (`deploy.yml`):** Testlar muvaffaqiyatli o'tgach va `main` branchiga push bo'lganda serverga SSH orqali ulanib, quyidagilarni avtomatik bajaradi:
-   - `git pull`
-   - `pip install -r requirements.txt`
-   - `python manage.py migrate`
-   - `python manage.py collectstatic --noinput`
-   - `sudo systemctl restart blog`
+2. **CD (`deploy.yml`):** **Faqat CI muvaffaqiyatli tugagandan keyin** ishga
+   tushadi (`workflow_run`), ya'ni testdan o'tmagan kod serverga chiqmaydi.
+   Serverga SSH orqali ulanib quyidagini bajaradi:
+   - `git fetch` + `git reset --hard origin/main` (server nusxasi git bilan
+     aynan bir xil bo'lishi uchun; `.env`, `db.sqlite3` va `media/` git'da
+     kuzatilmagani uchun ularga tegmaydi)
+   - `./build.sh` — dependency, `migrate`, `collectstatic`, `check --deploy`,
+     `systemctl restart blog` va oxirida `/healthz/` orqali tekshiruv.
+     Healthcheck o'tmasa, workflow xato beradi va `journalctl` loglarini
+     ko'rsatadi.
+
+`concurrency` sozlamasi tufayli bir vaqtda ikkita deploy ishlamaydi.
+Actions bo'limidan qo'lda ham qayta deploy qilish mumkin (`workflow_dispatch`).
 
 ### GitHub Secrets sozlamalari:
 GitHub Repozitoriyangizning **Settings -> Secrets and variables -> Actions** bo'limida quyidagilarni kiriting:
 - `SERVER_HOST`: Server IP yoki domeningiz
-- `SERVER_USER`: Serverdagi SSH foydalanuvchi nomi
+- `SERVER_USER`: Serverdagi SSH foydalanuvchi nomi (masalan `ismat`)
 - `SERVER_SSH_KEY`: Serverga ulanish uchun SSH private key
-- `SERVER_PROJECT_PATH`: Serverdagi loyiha papkasining yo'li (masalan: `/home/ismat-dev/Desktop/Python/blog`)
+- `SERVER_SSH_PASSPHRASE`: (ixtiyoriy) kalit paroli
+- `SERVER_PROJECT_PATH`: Serverdagi loyiha papkasi (masalan: `/srv/blog`)
 
 ---
 
@@ -150,7 +197,7 @@ Bazani avtomatik zaxiralash uchun `scripts/backup_db.sh` skripti tayyorlangan. S
 ### Avtomatik `cron` sozlasi:
 Serverda har kuni tunda 02:00 da ishga tushirish uchun `crontab -e` buyrug'ini bering va quyidagi qatorni qo'shing:
 ```cron
-0 2 * * * /home/ismat-dev/Desktop/Python/blog/scripts/backup_db.sh >> /home/ismat-dev/Desktop/Python/blog/backups/backup.log 2>&1
+0 2 * * * /srv/blog/scripts/backup_db.sh >> /srv/blog/backups/backup.log 2>&1
 ```
 
 ---

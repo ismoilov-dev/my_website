@@ -1,0 +1,40 @@
+# systemd unit for the Gunicorn application server.
+#
+# Install on the VPS with:
+#   sudo cp deploy/blog.service /etc/systemd/system/blog.service
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now blog
+#
+# CHECK THESE TWO VALUES match your server before installing: User and the
+# three paths below (WorkingDirectory, ExecStart, ReadWritePaths).
+
+[Unit]
+Description=Gunicorn daemon for ismat.dev (Django blog & portfolio)
+After=network.target
+
+[Service]
+Type=notify
+User=ismat
+Group=www-data
+WorkingDirectory=/srv/blog
+
+# Settings come from /srv/blog/.env, which python-dotenv loads at startup.
+ExecStart=/srv/blog/venv/bin/gunicorn --config gunicorn.conf.py config.wsgi:application
+ExecReload=/bin/kill -s HUP $MAINPID
+
+Restart=always
+RestartSec=3
+KillMode=mixed
+TimeoutStopSec=5
+
+# Hardening: the service only ever needs to write to its own directory
+# (db.sqlite3, media uploads, staticfiles).
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectKernelTunables=true
+ProtectControlGroups=true
+ReadWritePaths=/srv/blog
+
+[Install]
+WantedBy=multi-user.target
