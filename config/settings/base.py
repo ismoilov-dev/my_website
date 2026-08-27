@@ -211,3 +211,10 @@ SOCIAL_PROFILES = [
 # Filled in from the environment with the token Google Search Console hands out
 # when verifying ownership by meta tag. Empty means no tag is rendered.
 GOOGLE_SITE_VERIFICATION = os.environ.get('GOOGLE_SITE_VERIFICATION', '')
+
+# The other Search Console method: Google fetches a file whose name it chose,
+# and the body simply names the file back. Set this to that exact filename,
+# e.g. googleabc123.html. Leaving it empty removes the route entirely, which
+# matters -- answering any google*.html request would let a stranger verify
+# ownership of this site in their own Search Console account.
+GOOGLE_SITE_VERIFICATION_FILE = os.environ.get('GOOGLE_SITE_VERIFICATION_FILE', '')

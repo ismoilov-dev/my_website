@@ -1,5 +1,6 @@
 import logging
 
+from django.conf import settings
 from django.db import connection
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
@@ -41,3 +42,15 @@ def robots_txt(request):
         '',
     ]
     return HttpResponse('\n'.join(lines), content_type='text/plain')
+
+
+def google_verification_file(request):
+    """Serve the ownership token file Google Search Console fetches.
+
+    The body is the single line Google expects: the literal filename it asked
+    for, prefixed with google-site-verification.
+    """
+    return HttpResponse(
+        f'google-site-verification: {settings.GOOGLE_SITE_VERIFICATION_FILE}\n',
+        content_type='text/html',
+    )

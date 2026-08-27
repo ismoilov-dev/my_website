@@ -5,7 +5,7 @@ from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path
 
 from blog.sitemaps import sitemaps
-from config.views import healthz, robots_txt
+from config.views import google_verification_file, healthz, robots_txt
 
 urlpatterns = [
     path('healthz/', healthz, name='healthz'),
@@ -23,6 +23,16 @@ urlpatterns = [
     path('ismatismoilov709/', admin.site.urls),
     path('', include('blog.urls')),
 ]
+
+# Google Search Console ownership check. The route exists only when the exact
+# filename is configured; the '/' guard keeps a stray value from mounting
+# something other than a single root-level file.
+_verification_file = settings.GOOGLE_SITE_VERIFICATION_FILE
+if _verification_file and '/' not in _verification_file:
+    urlpatterns.insert(
+        0,
+        path(_verification_file, google_verification_file, name='google_verification'),
+    )
 
 # In production nginx serves /media/ directly and WhiteNoise serves /static/,
 # so Django only needs to hand out uploads while running the dev server.
