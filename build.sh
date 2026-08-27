@@ -32,7 +32,11 @@ sudo systemctl restart blog
 
 echo "==> Waiting for the service to answer"
 for i in $(seq 1 10); do
-    if curl --fail --silent --max-time 3 http://127.0.0.1:8000/healthz/ > /dev/null; then
+    # Check the status code rather than using --fail, which treats a 3xx as
+    # success and would hide a redirect loop on /healthz/.
+    code="$(curl --silent --output /dev/null --max-time 3 \
+        --write-out '%{http_code}' http://127.0.0.1:8000/healthz/ || true)"
+    if [ "$code" = "200" ]; then
         echo "==> Deploy OK: health check passed"
         exit 0
     fi
