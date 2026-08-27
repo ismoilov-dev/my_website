@@ -35,21 +35,25 @@
     --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-:root[data-theme='dark'] {
-    --bg: #0d0e11;
-    --surface: #141519;
-    --surface-2: #1b1d22;
-    --text: #f4f4f5;
-    --text-body: #c9cbd1;
-    --muted: #8f939c;
-    --faint: #6b6f78;
-    --border: rgba(255, 255, 255, 0.10);
-    --border-strong: rgba(255, 255, 255, 0.18);
-    --accent: #4da3ff;
-    --accent-hover: #7cbcff;
-    --accent-soft: rgba(77, 163, 255, 0.12);
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+/* No theme switcher: the site follows the reader's system preference, the way
+   azimjon.com renders a single light design with no control in the header. */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #0d0e11;
+        --surface: #141519;
+        --surface-2: #1b1d22;
+        --text: #f4f4f5;
+        --text-body: #c9cbd1;
+        --muted: #8f939c;
+        --faint: #6b6f78;
+        --border: rgba(255, 255, 255, 0.10);
+        --border-strong: rgba(255, 255, 255, 0.18);
+        --accent: #4da3ff;
+        --accent-hover: #7cbcff;
+        --accent-soft: rgba(77, 163, 255, 0.12);
+        --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+    }
 }
 
 /* --- Reset -------------------------------------------------------------- */
@@ -167,31 +171,16 @@ main {
 
 /* --- Header / navigation ------------------------------------------------ */
 
-.site-header {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background-color: color-mix(in srgb, var(--bg) 85%, transparent);
-    backdrop-filter: saturate(180%) blur(12px);
-    -webkit-backdrop-filter: saturate(180%) blur(12px);
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.2s ease;
-}
-
-.site-header.is-scrolled {
-    border-bottom-color: var(--border);
-}
-
 .nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
-    height: 64px;
+    gap: 24px;
+    padding: 28px 0 22px;
 }
 
 .brand {
-    font-size: 1.0625rem;
+    font-size: 1.375rem;
     font-weight: 700;
     letter-spacing: -0.02em;
     color: var(--text);
@@ -199,40 +188,27 @@ main {
 }
 
 .brand:hover {
-    color: var(--accent);
+    color: var(--text);
 }
 
+/* Plain text links, flush right — no pills, no boxes. */
 .nav-menu {
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: 1.75rem;
     list-style: none;
 }
 
 .nav-menu a {
-    display: block;
-    padding: 6px 10px;
-    border-radius: 8px;
-    font-size: 0.9375rem;
-    font-weight: 500;
+    font-size: 1.0625rem;
+    font-weight: 400;
     color: var(--muted);
-    transition: color 0.15s ease, background-color 0.15s ease;
+    transition: color 0.15s ease;
 }
 
-.nav-menu a:hover {
-    color: var(--text);
-    background-color: var(--surface-2);
-}
-
+.nav-menu a:hover,
 .nav-menu a.is-active {
-    color: var(--accent);
-    background-color: var(--accent-soft);
-}
-
-.nav-tools {
-    display: flex;
-    align-items: center;
-    gap: 4px;
+    color: var(--text);
 }
 
 .icon-btn {
@@ -241,26 +217,7 @@ main {
     justify-content: center;
     width: 36px;
     height: 36px;
-    border-radius: 8px;
-    color: var(--muted);
-    transition: color 0.15s ease, background-color 0.15s ease;
-}
-
-.icon-btn:hover {
     color: var(--text);
-    background-color: var(--surface-2);
-}
-
-.theme-toggle .icon-moon {
-    display: none;
-}
-
-:root[data-theme='dark'] .theme-toggle .icon-moon {
-    display: block;
-}
-
-:root[data-theme='dark'] .theme-toggle .icon-sun {
-    display: none;
 }
 
 .nav-burger {
@@ -1184,15 +1141,20 @@ textarea.field {
         display: inline-flex;
     }
 
+    .site-header {
+        position: relative;
+    }
+
     .nav-menu {
         position: absolute;
         top: 100%;
         left: 0;
         right: 0;
+        z-index: 40;
         flex-direction: column;
         align-items: stretch;
-        gap: 2px;
-        padding: 8px var(--gutter) 16px;
+        gap: 0;
+        padding: 4px var(--gutter) 14px;
         background-color: var(--bg);
         border-bottom: 1px solid var(--border);
         box-shadow: var(--shadow-md);
@@ -1204,8 +1166,9 @@ textarea.field {
     }
 
     .nav-menu a {
-        padding: 11px 12px;
-        font-size: 1rem;
+        display: block;
+        padding: 12px 0;
+        font-size: 1.0625rem;
     }
 
     .section-banner {
@@ -1213,7 +1176,10 @@ textarea.field {
         margin-bottom: 32px;
     }
 
+    /* azimjon.com stacks the avatar above the name on narrow screens. */
     .hero-top {
+        flex-direction: column;
+        align-items: flex-start;
         gap: 18px;
     }
 
