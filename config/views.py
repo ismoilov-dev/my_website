@@ -1,7 +1,8 @@
 import logging
 
 from django.db import connection
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
+from django.urls import reverse
 
 logger = logging.getLogger(__name__)
 
@@ -20,3 +21,23 @@ def healthz(request):
         return JsonResponse({"status": "error", "database": "unavailable", "detail": str(e)}, status=500)
 
     return JsonResponse({"status": "ok", "database": "ok"})
+
+
+def robots_txt(request):
+    """Crawler instructions, served from the site root.
+
+    Everything public is open to indexing. The admin and the health check are
+    excluded: neither belongs in search results, and the admin path is not
+    something to advertise. The sitemap line is how a crawler that arrives
+    without a link discovers every page in one request.
+    """
+    lines = [
+        'User-agent: *',
+        'Allow: /',
+        f'Disallow: {reverse("admin:index")}',
+        f'Disallow: {reverse("healthz")}',
+        '',
+        f'Sitemap: {request.build_absolute_uri(reverse("django.contrib.sitemaps.views.sitemap"))}',
+        '',
+    ]
+    return HttpResponse('\n'.join(lines), content_type='text/plain')

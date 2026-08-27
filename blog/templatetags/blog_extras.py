@@ -1,6 +1,9 @@
+import json
 import re
 
 from django import template
+from django.conf import settings
+from django.templatetags.static import static
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 
@@ -58,3 +61,74 @@ def bulletize(value, autoescape=True):
         html.append('</ul>')
 
     return mark_safe(''.join(html))
+
+
+def _json_ld(data):
+    """Serialise a schema.org object for a <script type="application/ld+json">.
+
+    The angle brackets and ampersand are escaped so no value can break out of
+    the surrounding script element, the same precaution Django's json_script
+    filter takes.
+    """
+    payload = json.dumps(data, ensure_ascii=False, indent=2)
+    for raw, escaped in (('<', '\\u003C'), ('>', '\\u003E'), ('&', '\\u0026')):
+        payload = payload.replace(raw, escaped)
+    return mark_safe(payload)
+
+
+def _person_id(base_url):
+    return f'{base_url}/#person'
+
+
+@register.simple_tag(takes_context=True)
+def site_schema(context):
+    """Describe the site and its author to search engines.
+
+    Structured data is what lets Google treat "Ismat Ismoilov" as a person
+    rather than as two words on a page: sameAs links the site to the same
+    identity as the GitHub, LinkedIn, Telegram and YouTube accounts, and
+    alternateName covers the family-name-first spelling people also search for.
+    """
+    request = context['request']
+    base = f'{request.scheme}://{request.get_host()}'
+
+    person = {
+        '@type': 'Person',
+        '@id': _person_id(base),
+        'name': settings.SITE_AUTHOR,
+        'alternateName': settings.SITE_AUTHOR_ALTERNATES,
+        'url': f'{base}/',
+        'image': base + static('ismat.jpg'),
+        'jobTitle': settings.SITE_JOB_TITLE,
+        'address': {'@type': 'PostalAddress', 'addressCountry': 'UZ'},
+        'sameAs': [url for _, url in settings.SOCIAL_PROFILES],
+    }
+    website = {
+        '@type': 'WebSite',
+        '@id': f'{base}/#website',
+        'url': f'{base}/',
+        'name': settings.SITE_AUTHOR,
+        'alternateName': settings.SITE_AUTHOR_ALTERNATES,
+        'inLanguage': 'en',
+        'publisher': {'@id': _person_id(base)},
+    }
+    return _json_ld({'@context': 'https://schema.org', '@graph': [person, website]})
+
+
+@register.simple_tag(takes_context=True)
+def article_schema(context, blog):
+    """Mark a post up as a BlogPosting written by the site's author."""
+    request = context['request']
+    base = f'{request.scheme}://{request.get_host()}'
+
+    return _json_ld({
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        'headline': blog.title,
+        'description': blog.excerpt,
+        'datePublished': blog.created_at.isoformat(),
+        'dateModified': blog.updated_at.isoformat(),
+        'mainEntityOfPage': base + blog.get_absolute_url(),
+        'author': {'@id': _person_id(base)},
+        'publisher': {'@id': _person_id(base)},
+    })

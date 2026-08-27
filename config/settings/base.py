@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     'blog',
 ]
 
@@ -62,6 +63,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'blog.context_processors.site_identity',
             ],
         },
     },
@@ -184,3 +186,28 @@ LOGGING = {
         },
     },
 }
+
+
+# Public identity
+# ---------------
+# The footer links and the schema.org "sameAs" block must list exactly the same
+# profiles: search engines use sameAs to tie this site to the same person as
+# those accounts, and a mismatch weakens that signal. Defining them once here
+# means the two can never drift apart.
+SITE_AUTHOR = 'Ismat Ismoilov'
+
+# Uzbek usage puts the family name first, so people search both orders.
+SITE_AUTHOR_ALTERNATES = ['Ismoilov Ismat', 'Ismat Ismoilov']
+
+SITE_JOB_TITLE = 'Python Backend Developer'
+
+SOCIAL_PROFILES = [
+    ('GitHub', 'https://github.com/ismoilov-dev'),
+    ('LinkedIn', 'https://linkedin.com/in/ismoilov-ismat'),
+    ('Telegram', 'https://t.me/lazy_devv'),
+    ('YouTube', 'https://youtube.com/@ismoilov-dev'),
+]
+
+# Filled in from the environment with the token Google Search Console hands out
+# when verifying ownership by meta tag. Empty means no tag is rendered.
+GOOGLE_SITE_VERIFICATION = os.environ.get('GOOGLE_SITE_VERIFICATION', '')

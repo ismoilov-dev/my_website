@@ -1,4 +1,4 @@
-{% load static %}<!DOCTYPE html>
+{% load static blog_extras %}<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,7 +11,7 @@
 
     <!-- Open Graph / social preview -->
     <meta property="og:type" content="{% block og_type %}website{% endblock %}">
-    <meta property="og:site_name" content="ismat.dev">
+    <meta property="og:site_name" content="{{ site_author }}">
     <meta property="og:title" content="{% block og_title %}Ismat Ismoilov{% endblock %}">
     <meta property="og:description" content="{% block og_description %}Python Backend Developer from Uzbekistan.{% endblock %}">
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
@@ -20,6 +20,10 @@
 
     <link rel="canonical" href="{{ request.build_absolute_uri }}">
     <link rel="icon" href="{% static 'ismat.jpg' %}" type="image/jpeg">
+
+    {% if google_site_verification %}<meta name="google-site-verification" content="{{ google_site_verification }}">{% endif %}
+
+    {% block structured_data %}<script type="application/ld+json">{% site_schema %}</script>{% endblock %}
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -61,10 +65,9 @@
     <div class="container footer-inner">
         <span>&copy; {% now "Y" %} <a href="{% url 'index' %}">ismat.dev</a></span>
         <div class="footer-socials">
-            <a href="https://github.com/ismoilov-dev" target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a href="https://linkedin.com/in/ismoilov-ismat" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a href="https://t.me/lazy_devv" target="_blank" rel="noopener noreferrer">Telegram</a>
-            <a href="https://youtube.com/@ismoilov-dev" target="_blank" rel="noopener noreferrer">YouTube</a>
+            {% for name, url in social_profiles %}
+            <a href="{{ url }}" target="_blank" rel="noopener noreferrer me">{{ name }}</a>
+            {% endfor %}
         </div>
     </div>
 </footer>

@@ -1,12 +1,25 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path
 
-from config.views import healthz
+from blog.sitemaps import sitemaps
+from config.views import healthz, robots_txt
 
 urlpatterns = [
     path('healthz/', healthz, name='healthz'),
+
+    # Search engine entry points, both served from the root where crawlers
+    # look for them.
+    path('robots.txt', robots_txt, name='robots_txt'),
+    path(
+        'sitemap.xml',
+        sitemap,
+        {'sitemaps': sitemaps},
+        name='django.contrib.sitemaps.views.sitemap',
+    ),
+
     path('ismatismoilov709/', admin.site.urls),
     path('', include('blog.urls')),
 ]
