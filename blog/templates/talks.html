@@ -12,11 +12,38 @@
 </section>
 
 <div class="container container--narrow">
-    <div class="empty" data-reveal>
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"/></svg>
-        <h3>Nasib bo'lsa Talk bersam chiqadi! 🚀</h3>
-        <p>Kelgusida konferensiyalar, meetup va taqdimotlardagi ma'ruzalarim hamda videoyozuvlarim shu sahifada e'lon qilib boriladi.</p>
-    </div>
+    {% if talks %}
+        <div class="talks-grid" style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 2.5rem;">
+            {% for talk in talks %}
+                <article class="card talk-card" data-reveal style="overflow: hidden; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+                    {% if talk.video %}
+                        <div class="talk-video-wrapper" style="width: 100%; border-radius: 12px; overflow: hidden; background: #000;">
+                            <video controls preload="metadata" style="width: 100%; height: auto; max-height: 480px; display: block; border-radius: 12px;">
+                                <source src="{{ talk.video.url }}">
+                                Brauzeringiz video tegini qo'llab-quvvatlamaydi.
+                            </video>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="talk-content">
+                        <h2 class="card-title" style="font-size: 1.4rem; margin-bottom: 0.5rem;">{{ talk.title }}</h2>
+                        {% if talk.description %}
+                            <p class="card-text" style="white-space: pre-line; opacity: 0.9;">{{ talk.description }}</p>
+                        {% endif %}
+                        <span class="talk-date" style="font-size: 0.85rem; opacity: 0.6; display: inline-block; margin-top: 0.5rem;">
+                            📅 {{ talk.created_at|date:"d-F, Y" }}
+                        </span>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty" data-reveal>
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"/></svg>
+            <h3>Nasib bo'lsa Talk bersam chiqadi! 🚀</h3>
+            <p>Kelgusida konferensiyalar, meetup va taqdimotlardagi ma'ruzalarim hamda videoyozuvlarim shu sahifada e'lon qilib boriladi.</p>
+        </div>
+    {% endif %}
 
     <aside class="card subscribe-card" data-reveal>
         <div>

@@ -1,3 +1,4 @@
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
@@ -163,3 +164,24 @@ class FeedComment(models.Model):
 
     def __str__(self):
         return f"Comment by {self.author_name} on Post #{self.post.id}"
+
+
+class Talk(models.Model):
+    title = models.CharField(max_length=200, verbose_name="Sarlavha")
+    description = models.TextField(blank=True, null=True, verbose_name="Tavsif")
+    video = models.FileField(
+        upload_to='talks/videos/',
+        validators=[FileExtensionValidator(allowed_extensions=['mp4', 'mov', 'avi', 'mkv', 'webm'])],
+        verbose_name="Video fayl",
+        help_text="MP4, MOV, AVI, MKV yoki WEBM formatidagi videolarni yuklang"
+    )
+    created_at = models.DateTimeField(default=timezone.now, verbose_name="Yaratilgan vaqti")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Yangilangan vaqti")
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Talk"
+        verbose_name_plural = "Talks"
+
+    def __str__(self):
+        return self.title

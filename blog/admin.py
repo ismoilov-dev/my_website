@@ -7,6 +7,7 @@ from .models import (
     FeedComment,
     FeedPost,
     Project,
+    Talk,
     WorkExperience,
 )
 
@@ -67,6 +68,15 @@ class FeedCommentAdmin(admin.ModelAdmin):
     list_display = ('post', 'author_name', 'content', 'created_at', 'is_approved')
     list_filter = ('is_approved', 'created_at')
     search_fields = ('author_name', 'content')
+
+
+@admin.register(Talk)
+class TalkAdmin(admin.ModelAdmin):
+    list_display = ('title', 'video', 'created_at', 'updated_at')
+    list_filter = ('created_at',)
+    search_fields = ('title', 'description')
+    ordering = ('-created_at',)
+
 
 
 

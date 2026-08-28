@@ -9,6 +9,7 @@ from .models import (
     FeedComment,
     FeedPost,
     Project,
+    Talk,
     VoluntaryActivity,
     WorkExperience,
 )
@@ -27,7 +28,8 @@ def blogs(request):
 
 
 def talks(request):
-    return render(request, 'talks.html')
+    talk_list = Talk.objects.all()
+    return render(request, 'talks.html', {'talks': talk_list})
 
 
 def blog_detail(request, pk):
