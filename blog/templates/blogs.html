@@ -25,8 +25,15 @@
                         {% for post in month.list %}
                         <li>
                             <a href="{% url 'blog_detail' post.pk %}" class="post-row">
-                                <div class="post-row-date">{{ post.created_at|date:"j F, Y" }}</div>
-                                <div class="post-row-title">{{ post.title }}</div>
+                                {% if post.image %}
+                                <div class="post-row-thumbnail">
+                                    <img src="{{ post.image.url }}" alt="{{ post.title }}" loading="lazy">
+                                </div>
+                                {% endif %}
+                                <div class="post-row-content">
+                                    <div class="post-row-date">{{ post.created_at|date:"j F, Y" }}</div>
+                                    <div class="post-row-title">{{ post.title }}</div>
+                                </div>
                             </a>
                         </li>
                         {% endfor %}

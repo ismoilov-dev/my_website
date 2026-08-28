@@ -15,7 +15,7 @@
     <meta property="og:title" content="{% block og_title %}Ismat Ismoilov{% endblock %}">
     <meta property="og:description" content="{% block og_description %}Python Backend Developer from Uzbekistan.{% endblock %}">
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
-    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'ismat.jpg' %}">
+    <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'ismat.jpg' %}{% endblock %}">
     <meta name="twitter:card" content="summary">
 
     <link rel="canonical" href="{{ request.build_absolute_uri }}">

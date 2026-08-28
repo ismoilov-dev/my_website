@@ -6,6 +6,7 @@
 {% block og_type %}article{% endblock %}
 {% block description %}{{ blog.excerpt }}{% endblock %}
 {% block og_description %}{{ blog.excerpt }}{% endblock %}
+{% block og_image %}{% if blog.image %}{{ request.scheme }}://{{ request.get_host }}{{ blog.image.url }}{% else %}{{ block.super }}{% endif %}{% endblock %}
 
 {# Keep the site-wide Person/WebSite graph and add this post on top of it. #}
 {% block structured_data %}{{ block.super }}
@@ -25,6 +26,12 @@
     </div>
 
     <h1 class="article-title">{{ blog.title }}</h1>
+
+    {% if blog.image %}
+    <div class="article-cover">
+        <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="article-cover-image">
+    </div>
+    {% endif %}
 
     <div class="prose">
         {{ blog.content|linebreaks }}

@@ -121,7 +121,7 @@ def article_schema(context, blog):
     request = context['request']
     base = f'{request.scheme}://{request.get_host()}'
 
-    return _json_ld({
+    schema_data = {
         '@context': 'https://schema.org',
         '@type': 'BlogPosting',
         'headline': blog.title,
@@ -131,4 +131,9 @@ def article_schema(context, blog):
         'mainEntityOfPage': base + blog.get_absolute_url(),
         'author': {'@id': _person_id(base)},
         'publisher': {'@id': _person_id(base)},
-    })
+    }
+    if blog.image:
+        schema_data['image'] = base + blog.image.url
+
+    return _json_ld(schema_data)
+

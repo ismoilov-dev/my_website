@@ -9,6 +9,7 @@ from django.utils.text import Truncator
 class Blog(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
+    image = models.ImageField(upload_to='blog/', blank=True, null=True, help_text="Optional blog cover image")
     time = models.CharField(max_length=50, blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
