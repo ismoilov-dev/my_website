@@ -65,10 +65,19 @@ class FeedCommentInline(admin.TabularInline):
 
 @admin.register(FeedPost)
 class FeedPostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'mood_emoji', 'location', 'likes_count', 'created_at')
+    list_display = ('title', 'has_media', 'mood_emoji', 'location', 'likes_count', 'created_at')
     list_filter = ('created_at', 'location')
     search_fields = ('title', 'content', 'location')
     inlines = [FeedCommentInline]
+
+    @admin.display(description='Media')
+    def has_media(self, obj):
+        media = []
+        if obj.image:
+            media.append("Image")
+        if obj.video:
+            media.append("Video")
+        return ", ".join(media) if media else "-"
 
 
 @admin.register(FeedComment)

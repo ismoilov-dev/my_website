@@ -136,6 +136,13 @@ class FeedPost(models.Model):
     title = models.CharField(max_length=250, blank=True, null=True, help_text="Optional post title")
     content = models.TextField(help_text="Share a story, thought or life update")
     image = models.FileField(upload_to='feed/', blank=True, null=True, help_text="Optional photo/image for the post")
+    video = models.FileField(
+        upload_to='feed/videos/',
+        blank=True,
+        null=True,
+        validators=[FileExtensionValidator(allowed_extensions=['mp4', 'mov', 'avi', 'mkv', 'webm'])],
+        help_text="Optional video for the post (MP4, MOV, AVI, MKV, WEBM)"
+    )
     location = models.CharField(max_length=150, blank=True, null=True, help_text="e.g. Tashkent, Uzbekistan")
     mood_emoji = models.CharField(max_length=20, blank=True, null=True, help_text="e.g. ☕, 💻, 🚀, 🏔️")
     likes_count = models.PositiveIntegerField(default=0)

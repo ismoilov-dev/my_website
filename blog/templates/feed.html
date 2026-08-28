@@ -38,6 +38,15 @@
             <img src="{{ post.image.url }}" alt="{{ post.title|default:'Feed post photo' }}" class="feed-image" loading="lazy">
             {% endif %}
 
+            {% if post.video %}
+            <div class="feed-video-wrapper">
+                <video controls preload="metadata" class="feed-video">
+                    <source src="{{ post.video.url }}">
+                    Brauzeringiz video ijrosini qo'llab-quvvatlamaydi.
+                </video>
+            </div>
+            {% endif %}
+
             <div class="feed-actions">
                 <button type="button"
                         class="feed-action like-btn {% if post.id in liked_post_ids %}is-liked{% endif %}"
