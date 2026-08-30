@@ -204,7 +204,7 @@ SITE_JOB_TITLE = 'Python Backend Developer'
 SOCIAL_PROFILES = [
     ('GitHub', 'https://github.com/ismoilov-dev'),
     ('LinkedIn', 'https://linkedin.com/in/ismoilov-ismat'),
-    ('Telegram', 'https://t.me/lazy_devv'),
+    ('Telegram', 'https://t.me/lazy_devvbek'),
     ('YouTube', 'https://youtube.com/@ismoilov-dev'),
 ]
 
