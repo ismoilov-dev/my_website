@@ -20,7 +20,7 @@ urlpatterns = [
         name='django.contrib.sitemaps.views.sitemap',
     ),
 
-    path('ismatismoilov709/', admin.site.urls),
+    path(settings.ADMIN_URL, admin.site.urls),
     path('', include('blog.urls')),
 ]
 

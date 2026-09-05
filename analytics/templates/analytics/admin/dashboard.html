@@ -1,0 +1,35 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block content %}
+<div id="content-main">
+  <h1>Website traffic</h1>
+  <p>Figures exclude admin, static files, failed requests, and common crawlers.</p>
+
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; margin:20px 0;">
+    <div class="module" style="padding:16px;"><strong style="font-size:28px; display:block;">{{ today_unique_visitors }}</strong>Unique visitors today</div>
+    <div class="module" style="padding:16px;"><strong style="font-size:28px; display:block;">{{ today_page_views }}</strong>Page views today</div>
+    <div class="module" style="padding:16px;"><strong style="font-size:28px; display:block;">{{ seven_day_unique_visitors }}</strong>Unique visitors, last 7 days</div>
+  </div>
+
+  <div class="module">
+    <table>
+      <caption>Daily unique visitors</caption>
+      <thead><tr><th>Date</th><th>Visitors</th></tr></thead>
+      <tbody>{% for day in daily_visitors %}<tr><td>{{ day.date|date:"D, M j" }}{% if day.date == today %} (today){% endif %}</td><td>{{ day.visitors }}</td></tr>{% endfor %}</tbody>
+    </table>
+  </div>
+
+  <div class="module">
+    <table>
+      <caption>Most visited pages today</caption>
+      <thead><tr><th>Page</th><th>Views</th></tr></thead>
+      <tbody>{% for page in top_pages %}<tr><td>{{ page.path }}</td><td>{{ page.views }}</td></tr>{% empty %}<tr><td colspan="2">No public page views yet today.</td></tr>{% endfor %}</tbody>
+    </table>
+  </div>
+
+  {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
+</div>
+{% endblock %}

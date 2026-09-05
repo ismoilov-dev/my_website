@@ -221,3 +221,9 @@ GOOGLE_SITE_VERIFICATION = os.environ.get('GOOGLE_SITE_VERIFICATION', '')
 # matters -- answering any google*.html request would let a stranger verify
 # ownership of this site in their own Search Console account.
 GOOGLE_SITE_VERIFICATION_FILE = os.environ.get('GOOGLE_SITE_VERIFICATION_FILE', '')
+
+# Keep the administration URL out of public links and let the analytics
+# middleware reliably exclude it from visitor counts.
+ADMIN_URL = os.environ.get('ADMIN_URL', 'ismatismoilov709/')
+if not ADMIN_URL.endswith('/'):
+    ADMIN_URL += '/'
