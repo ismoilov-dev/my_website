@@ -21,6 +21,8 @@ from .models import (
     FeedComment,
     FeedPost,
     Project,
+    Skill,
+    SkillGroup,
     Talk,
     VoluntaryActivity,
     WorkExperience,
@@ -385,4 +387,68 @@ class VoluntaryActivityAdmin(OrderedContentAdmin):
             'fields': ('title', 'description'),
         }),
         ('Position on the page', {'fields': ('order',)}),
+    )
+
+
+class SkillInline(admin.TabularInline):
+    """Skills are only ever meaningful inside a group, so they are edited there."""
+
+    model = Skill
+    extra = 3
+    fields = ('name', 'level', 'years', 'is_core', 'order')
+    ordering = ('order', 'id')
+
+
+@admin.register(SkillGroup)
+class SkillGroupAdmin(admin.ModelAdmin):
+    list_display = ('name', 'tagline', 'skill_count', 'order')
+    list_display_links = ('name',)
+    list_editable = ('order',)
+    search_fields = ('name', 'tagline', 'skills__name')
+    inlines = (SkillInline,)
+    save_on_top = True
+
+    fieldsets = (
+        ('Group', {
+            'description': 'One ring of the <b>Skills</b> map, which is the '
+                           '<b>/skills/</b> page and the Skills section of '
+                           '<b>/cv/</b>. Add the technologies themselves in '
+                           'the table below.',
+            'fields': ('name', 'tagline'),
+        }),
+        ('Position on the map', {
+            'description': 'Lowest number is drawn as the innermost ring, '
+                           'closest to the centre.',
+            'fields': ('order',),
+        }),
+    )
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).annotate(
+            _skill_count=models.Count('skills')
+        )
+
+    @admin.display(description='Skills', ordering='_skill_count')
+    def skill_count(self, obj):
+        return obj._skill_count
+
+
+@admin.register(Skill)
+class SkillAdmin(admin.ModelAdmin):
+    """A flat view of every skill, for when you want to retune levels at once."""
+
+    list_display = ('name', 'group', 'level', 'years', 'is_core', 'order')
+    list_display_links = ('name',)
+    list_editable = ('level', 'is_core', 'order')
+    list_filter = ('group', 'level', 'is_core')
+    search_fields = ('name',)
+    list_per_page = 100
+
+    fieldsets = (
+        ('Skill', {
+            'description': 'One node on the <b>Skills</b> map, shown on '
+                           '<b>/skills/</b> and on <b>/cv/</b>.',
+            'fields': ('group', 'name', 'level', 'years', 'is_core'),
+        }),
+        ('Position in the group', {'fields': ('order',)}),
     )

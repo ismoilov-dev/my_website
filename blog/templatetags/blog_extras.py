@@ -1,8 +1,11 @@
 import json
+import os
 import re
 
 from django import template
 from django.conf import settings
+from django.contrib.staticfiles import finders
+from django.contrib.staticfiles.storage import ManifestFilesMixin, staticfiles_storage
 from django.templatetags.static import static
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
@@ -79,6 +82,47 @@ def _json_ld(data):
 def _person_id(base_url):
     return f'{base_url}/#person'
 
+
+@register.simple_tag
+def static_v(path):
+    """A static URL that changes whenever the file does.
+
+    Django's dev server sends `Last-Modified` and no `Cache-Control`, which
+    leaves the browser free to guess how long the file stays fresh -- Chrome
+    guesses roughly a tenth of the file's age, so an asset last edited hours
+    ago is reused for a long while without ever asking the server. Editing the
+    stylesheet then changes nothing on screen until a hard refresh, which is a
+    miserable way to develop and an easy way to conclude a feature is broken
+    when it is only cached.
+
+    Appending the file's modification time settles it: the URL is stable while
+    the file is, and different the moment it is not, so the browser fetches
+    exactly when it should.
+
+    Production is left alone, because the manifest storage there already puts a
+    content hash in the file name and does the job properly. Stamping those
+    with an mtime as well would be worse than redundant: a deploy rewrites
+    every file's timestamp, so unchanged assets would get a new URL on every
+    release and lose the year-long caching the hash earns them.
+    """
+    if isinstance(staticfiles_storage, ManifestFilesMixin):
+        return static(path)
+
+    url = static(path)
+
+    if '?' in url:
+        return url
+
+    source = finders.find(path)
+    if not source:
+        return url
+
+    try:
+        stamp = int(os.stat(source).st_mtime)
+    except OSError:
+        return url
+
+    return f'{url}?v={stamp}'
 
 @register.simple_tag(takes_context=True)
 def site_schema(context):

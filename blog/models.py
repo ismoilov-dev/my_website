@@ -209,3 +209,65 @@ class Talk(models.Model):
 
     def __str__(self):
         return self.title
+
+class SkillGroup(models.Model):
+    """One cluster of related skills — a single ring on the /cv/ skill map."""
+
+    name = models.CharField(max_length=80, help_text='e.g. "Backend", "Data", "DevOps".')
+    tagline = models.CharField(
+        max_length=120, blank=True,
+        help_text='Optional one-liner shown next to the group name.',
+    )
+    order = models.IntegerField(
+        default=0,
+        help_text='Lowest number sits closest to the centre of the map.',
+    )
+
+    class Meta:
+        ordering = ['order', 'id']
+        verbose_name = 'Skill group'
+        verbose_name_plural = 'Skill groups'
+
+    def __str__(self):
+        return self.name
+
+
+class Skill(models.Model):
+    """A single technology, drawn as one node on its group's ring."""
+
+    LEVELS = (
+        (1, 'Learning'),
+        (2, 'Working knowledge'),
+        (3, 'Comfortable'),
+        (4, 'Strong'),
+        (5, 'Core strength'),
+    )
+
+    group = models.ForeignKey(SkillGroup, on_delete=models.CASCADE, related_name='skills')
+    name = models.CharField(max_length=80)
+    level = models.PositiveSmallIntegerField(
+        choices=LEVELS, default=3,
+        help_text='Sets how large the node is drawn and how many dots are filled.',
+    )
+    years = models.CharField(
+        max_length=20, blank=True,
+        help_text='Optional, e.g. "4y". Shown next to the skill.',
+    )
+    is_core = models.BooleanField(
+        'Highlight', default=False,
+        help_text='Draws the node filled in, for the few skills you lead with.',
+    )
+    order = models.IntegerField(default=0)
+
+    class Meta:
+        # Insertion order, not the reverse of it: these are typed as inline
+        # rows under their group, so what you see while editing is what ships.
+        ordering = ['order', 'id']
+
+    def __str__(self):
+        return f"{self.name} ({self.get_level_display()})"
+
+    @property
+    def meter(self):
+        """Five on/off dots for the level, so the template stays free of math."""
+        return [step <= self.level for step in range(1, 6)]

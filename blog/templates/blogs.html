@@ -6,8 +6,8 @@
 {% block og_description %}Articles, lectures and insights on backend development and tech.{% endblock %}
 
 {% block content %}
-<section class="section-banner" data-reveal>
-    <h1 class="section-title">Blog</h1>
+<section class="section-banner" data-reveal-group data-reveal-now>
+    <h1 class="section-title" data-reveal-item="fade-down">Blog</h1>
 </section>
 
 <div class="container blog-layout">
@@ -17,7 +17,7 @@
               Filters the list already on the page -- see main.js. Without
               JavaScript the field simply never appears.
             {% endcomment %}
-            <div class="post-search-wrap">
+            <div class="post-search-wrap" data-reveal-item="fade-down">
                 <label class="visually-hidden" for="postSearch">Search posts by title</label>
                 <div class="post-search">
                     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
@@ -29,11 +29,11 @@
             {% regroup blogs by created_at|date:"Y" as year_list %}
             {% for year in year_list %}
             <section class="year-group">
-                <span class="year-badge">{{ year.grouper }}</span>
+                <span class="year-badge" data-reveal-item="fade-right">{{ year.grouper }}</span>
                 {% regroup year.list by created_at|date:"F" as month_list %}
                 {% for month in month_list %}
                 <div class="month-group">
-                    <h2 class="month-title">{{ month.grouper }}</h2>
+                    <h2 class="month-title" data-reveal-item="fade-right">{{ month.grouper }}</h2>
                     <ul class="post-list">
                         {% for post in month.list %}
                         <li data-post-title="{{ post.title|lower }}" data-reveal-item>
@@ -70,7 +70,7 @@
         {% endif %}
     </div>
 
-    <div class="sidebar-column" data-reveal>
+    <div class="sidebar-column" data-reveal="fade-left">
         <aside class="sidebar">
             <h2 class="sidebar-title">Obuna Bo'ling</h2>
             <p class="sidebar-text">

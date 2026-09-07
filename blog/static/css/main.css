@@ -37,6 +37,12 @@
     --radius: 10px;
     --radius-lg: 16px;
     --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+    /* The entrance curve, matched to azimjon.com: that site animates
+       its opening with GSAP's Power4.easeOut, which leaves fast and
+       spends most of the duration settling. Kept apart from --ease so
+       the long entrance curve never ends up on a 0.2s hover. */
+    --ease-reveal: cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 /* --- Reset -------------------------------------------------------------- */
@@ -155,7 +161,8 @@ main {
 }
 
 /* Present for assistive technology, absent on screen. */
-.visually-hidden {
+.visually-hidden,
+.skill-chip-meta {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -873,6 +880,242 @@ main.main-centered {
     text-underline-offset: 3px;
 }
 
+/* --- Skills (CV) --------------------------------------------------------
+   Two renderings of the same data. The chip list is the content: it needs no
+   JavaScript, it is what a screen reader and the printer get. The orbit map
+   above it is drawn from that list by main.js -- rings are groups, node size
+   is level -- and is hidden from both. */
+
+.skillmap-stage {
+    margin-bottom: 40px;
+}
+
+.skillmap-canvas {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.skillmap-canvas svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+/* The rings themselves stay quiet -- they are graph paper, not content. */
+.sm-ring {
+    fill: none;
+    stroke: var(--border);
+    stroke-dasharray: 1 7;
+    stroke-linecap: round;
+}
+
+.sm-ring.is-active {
+    stroke: var(--accent);
+    stroke-dasharray: none;
+    opacity: 0.28;
+}
+
+.sm-spoke {
+    stroke: var(--text);
+    stroke-width: 1;
+    opacity: 0.06;
+}
+
+.sm-spoke.is-active {
+    stroke: var(--accent);
+    opacity: 0.45;
+}
+
+.sm-ring-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    fill: var(--faint);
+    /* Painted over the rings, so the halo keeps the text readable. */
+    paint-order: stroke;
+    stroke: var(--bg);
+    stroke-width: 5px;
+    stroke-linejoin: round;
+}
+
+.sm-core-disc {
+    fill: var(--bg);
+    stroke: var(--border-strong);
+    stroke-width: 1;
+}
+
+.sm-core-name {
+    font-size: 15px;
+    font-weight: 700;
+    fill: var(--text);
+    letter-spacing: -0.01em;
+}
+
+.sm-core-note {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    fill: var(--faint);
+}
+
+.sm-node {
+    cursor: default;
+}
+
+.sm-dot {
+    fill: var(--bg);
+    stroke: var(--accent);
+    stroke-width: 1.5;
+    transition: transform 0.25s var(--ease), fill 0.2s ease;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.sm-node.is-core .sm-dot {
+    fill: var(--accent);
+}
+
+.sm-node:hover .sm-dot,
+.sm-node.is-active .sm-dot {
+    fill: var(--accent);
+    transform: scale(1.25);
+}
+
+/* Only the highlighted skills carry a permanent label; every other name
+   arrives on hover, which is what keeps 20+ nodes from turning into soup. */
+.sm-label {
+    font-size: 11.5px;
+    font-weight: 550;
+    fill: var(--muted);
+    paint-order: stroke;
+    stroke: var(--bg);
+    stroke-width: 4px;
+    stroke-linejoin: round;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+}
+
+.sm-node.is-core .sm-label {
+    opacity: 1;
+    fill: var(--text);
+}
+
+.sm-node:hover .sm-label,
+.sm-node.is-active .sm-label {
+    opacity: 1;
+    fill: var(--text);
+}
+
+/* A slow breath on the core nodes, so the map is never quite still. */
+.sm-halo {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.sm-node.is-core .sm-halo {
+    animation: sm-breathe 4.5s var(--ease) infinite;
+}
+
+@keyframes sm-breathe {
+    0%, 100% { opacity: 0; transform: scale(1); }
+    35% { opacity: 0.35; }
+    70% { opacity: 0; transform: scale(2.1); }
+}
+
+.skillmap-readout {
+    min-height: 24px;
+    margin-top: 8px;
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--muted);
+}
+
+.skillmap-readout strong {
+    color: var(--text);
+    font-weight: 650;
+}
+
+.skillmap-hint {
+    color: var(--faint);
+}
+
+.skill-groups {
+    display: grid;
+    gap: 24px;
+}
+
+.skill-group-name {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 0.9375rem;
+    font-weight: 650;
+    color: var(--text);
+}
+
+.skill-group-tagline {
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: var(--faint);
+}
+
+.skill-chips {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.skill-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 6px 13px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--bg);
+    font-size: 0.875rem;
+    color: var(--text);
+    transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s var(--ease);
+}
+
+.skill-chip.is-core {
+    border-color: rgba(0, 132, 255, 0.3);
+    background: var(--accent-soft);
+    font-weight: 550;
+}
+
+.skill-chip.is-active {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+}
+
+.skill-meter {
+    display: inline-flex;
+    gap: 3px;
+}
+
+.skill-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--border-strong);
+}
+
+.skill-dot.is-on {
+    background: var(--accent);
+}
+
 /* --- Feed --------------------------------------------------------------- */
 
 .feed-list {
@@ -1159,34 +1402,103 @@ textarea.field {
 }
 
 /* --- Scroll reveal ------------------------------------------------------
-   A staggered entrance, in the style of azimjon.com: each element rises 15px
-   and fades in over 0.85s on a quartic ease-out, with siblings following
-   ~110ms apart so a block assembles itself rather than appearing at once.
+   A staggered entrance, in the style of azimjon.com: each element travels a
+   short distance and fades in on a quartic ease-out as it reaches the
+   viewport, with anything arriving alongside it following ~110ms behind, so
+   a block assembles itself rather than appearing at once.
 
-   Two roles:
+   Roles in the markup:
      [data-reveal]        an element that animates on its own
-     [data-reveal-group]  a trigger only -- it stays visible, and its
-                          [data-reveal-item] descendants stagger in together
+     [data-reveal-group]  a trigger only -- it stays visible, and marks its
+                          [data-reveal-item] descendants as one cascade
+     [data-reveal-now]    on a group that loads above the fold: it plays on
+                          load instead of waiting to be scrolled to
+
+   Both take an optional effect name, using the same vocabulary as the AOS
+   library so the markup reads the way people expect:
+
+     data-reveal="fade-up"      the default, also what a bare attribute gets
+     data-reveal="fade-down"    drops in from above
+     data-reveal="fade-left"    arrives from the right, travelling left
+     data-reveal="fade-right"   arrives from the left, travelling right
+     data-reveal="zoom-in"      grows into place
+     data-reveal="zoom-out"     settles down onto the page
+     data-reveal="fade"         opacity only, for anything already in motion
+
+   An effect is only a set of custom properties -- one starting offset and one
+   scale -- so the transition itself is written once, below, and every variant
+   shares its timing, its easing and its cleanup. Duration and delay can be
+   overridden per element from the markup with data-reveal-duration and
+   data-reveal-delay (both in milliseconds); main.js writes those through to
+   --reveal-duration and --reveal-delay, and the stylesheet keeps ownership of
+   everything it is not told about.
 
    The starting (hidden) state is scoped to `.js`, a class an inline script in
    <head> adds before the first paint. That ordering matters twice over: the
    class lands before anything is painted, so nothing flashes visible and then
    hides, and if scripting is unavailable the class never appears and every
    page renders in full. Hiding content in the stylesheet and depending on
-   JavaScript to bring it back is how a blank page happens. */
+   JavaScript to bring it back is how a blank page happens -- which is also
+   why the effects live here rather than coming from a library's own CSS. */
 
 .js [data-reveal],
 .js [data-reveal-item] {
     opacity: 0;
-    transform: translateY(15px);
+    transform: translate3d(var(--reveal-x, 0), var(--reveal-y, 15px), 0)
+               scale(var(--reveal-scale, 1));
     will-change: opacity, transform;
+}
+
+/* The default, written out so that naming it in the markup is not a quiet
+   no-op that happens to look right. */
+.js [data-reveal="fade-up"],
+.js [data-reveal-item="fade-up"] {
+    --reveal-y: 15px;
+}
+
+/* Sideways travel is given more room than vertical: the same 15px reads as
+   a smaller movement across the page than down it. */
+.js [data-reveal="fade-down"],
+.js [data-reveal-item="fade-down"] {
+    --reveal-y: -15px;
+}
+
+.js [data-reveal="fade-right"],
+.js [data-reveal-item="fade-right"] {
+    --reveal-x: -26px;
+    --reveal-y: 0;
+}
+
+.js [data-reveal="fade-left"],
+.js [data-reveal-item="fade-left"] {
+    --reveal-x: 26px;
+    --reveal-y: 0;
+}
+
+/* A little rise under the zooms stops them reading as a bare pop. */
+.js [data-reveal="zoom-in"],
+.js [data-reveal-item="zoom-in"] {
+    --reveal-scale: 0.94;
+    --reveal-y: 8px;
+}
+
+.js [data-reveal="zoom-out"],
+.js [data-reveal-item="zoom-out"] {
+    --reveal-scale: 1.05;
+    --reveal-y: 0;
+}
+
+.js [data-reveal="fade"],
+.js [data-reveal-item="fade"] {
+    --reveal-y: 0;
 }
 
 .js [data-reveal].is-revealed,
 .js [data-reveal-item].is-revealed {
     opacity: 1;
     transform: none;
-    transition: opacity 0.85s var(--ease), transform 0.85s var(--ease);
+    transition: opacity var(--reveal-duration, 0.85s) var(--ease-reveal),
+                transform var(--reveal-duration, 0.85s) var(--ease-reveal);
     transition-delay: var(--reveal-delay, 0ms);
     will-change: auto;
 }
@@ -1225,6 +1537,12 @@ textarea.field {
 
     .sidebar {
         position: static;
+    }
+}
+
+@media (max-width: 700px) {
+    .skillmap-stage {
+        display: none;
     }
 }
 
@@ -1527,6 +1845,16 @@ textarea.field {
         display: none !important;
     }
 
+    /* The CV prints from a button at the top of the page, so most of it has
+       never been scrolled to and is still waiting its turn to animate in.
+       On paper there is no scrolling and nothing to wait for: everything is
+       simply there. */
+    .js [data-reveal],
+    .js [data-reveal-item] {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
     body {
         color: #000;
         background: #fff;
@@ -1539,5 +1867,19 @@ textarea.field {
     a {
         color: #000;
         text-decoration: none;
+    }
+
+    .skill-meter {
+        display: none;
+    }
+
+    .skill-chip-meta {
+        position: static;
+        width: auto;
+        height: auto;
+        margin: 0;
+        clip: auto;
+        clip-path: none;
+        color: #555;
     }
 }

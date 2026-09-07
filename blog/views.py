@@ -9,6 +9,7 @@ from .models import (
     FeedComment,
     FeedPost,
     Project,
+    SkillGroup,
     Talk,
     VoluntaryActivity,
     WorkExperience,
@@ -46,19 +47,36 @@ def blog_detail(request, pk):
     })
 
 
+def _skill_groups():
+    """Groups that have something in them, for the skill map.
+
+    Shared by /skills/ and the CV, which draw the same map from the same
+    partial. A group with nothing in it would render as an empty ring.
+    """
+    return [
+        group for group in SkillGroup.objects.prefetch_related('skills')
+        if group.skills.all()
+    ]
+
+
+def skills(request):
+    return render(request, 'skills.html', {'skill_groups': _skill_groups()})
+
+
 def cv(request):
     experiences = WorkExperience.objects.all().order_by('order', '-id')
     projects = Project.objects.all().order_by('order', '-id')
     educations = Education.objects.all().order_by('order', '-id')
     activities = VoluntaryActivity.objects.all().order_by('order', '-id')
     certificates = Certificate.objects.all().order_by('order', '-id')
-    
+
     return render(request, 'cv.html', {
         'experiences': experiences,
         'projects': projects,
         'educations': educations,
         'activities': activities,
         'certificates': certificates,
+        'skill_groups': _skill_groups(),
     })
 
 

@@ -7,45 +7,45 @@
 {% block og_description %}Python Backend Developer, speaker and mentor from Uzbekistan.{% endblock %}
 
 {% block content %}
-<section class="section-banner" data-reveal>
-    <h1 class="section-title">About me</h1>
+<section class="section-banner" data-reveal-group data-reveal-now>
+    <h1 class="section-title" data-reveal-item="fade-down">About me</h1>
 </section>
 
 <div class="container container--narrow">
-    <div class="prose" data-reveal>
-        <p>
+    <div class="prose" data-reveal-group>
+        <p data-reveal-item>
             I am Ismat Ismoilov, a <strong>Python Backend Developer</strong> from Uzbekistan, passionate about building
             high-performance backend systems, REST APIs, AI integrations and automation tools.
         </p>
 
-        <p>
+        <p data-reveal-item>
             I am always contributing to developer events by giving talks or acting as a mentor, especially helping
             beginners and students start their journey in tech. As a developer, I really want to see more innovation
             and growth in our tech community.
         </p>
 
-        <figure>
+        <figure data-reveal-item="zoom-in">
             <img src="{% static 'ismat_desk.jpg' %}" alt="Ismat Ismoilov working at his desk" loading="lazy">
             <figcaption>Python &amp; Backend Development, Tashkent</figcaption>
         </figure>
 
-        <p>
+        <p data-reveal-item>
             I am actively engaged in tech communities, hackathons and developer events across Uzbekistan, sharing
             knowledge and building innovative solutions with fellow engineers.
         </p>
 
-        <figure>
+        <figure data-reveal-item="zoom-in">
             <img src="{% static 'ismat_hackathon.jpg' %}" alt="National AI Hackathon in Qarshi" loading="lazy">
             <figcaption>National AI Hackathon, Qarshi</figcaption>
         </figure>
 
-        <p>
+        <p data-reveal-item>
             In short, it's me, Ismat, a friendly programmer from Uzbekistan. You can read my story of becoming a
             backend developer <a href="https://github.com/ismoilov-dev" target="_blank" rel="noopener noreferrer">here</a>.
         </p>
     </div>
 
-    <aside class="card subscribe-card" data-reveal>
+    <aside class="card subscribe-card" data-reveal="zoom-in">
         <div>
             <h2 class="card-title">Bog'lanish</h2>
             <p class="card-text">Hamkorlik, ma'ruza yoki savollar uchun Telegram orqali yozing.</p>

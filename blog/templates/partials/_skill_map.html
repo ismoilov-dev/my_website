@@ -1,0 +1,48 @@
+{% comment %}
+  The Skills block, shared by /skills/ and the CV so the two can never drift.
+
+  The map is drawn by main.js from the chip list below it, so the list is the
+  source of truth: it renders on its own without JavaScript, it is what a
+  screen reader and the print stylesheet get, and the map is decorative
+  enhancement layered on top.
+
+  Include it with the `skill_groups` in context; the surrounding <section> and
+  its heading belong to the including page, which knows what it is titled.
+{% endcomment %}
+
+<div class="skillmap-stage no-print" data-reveal-item="zoom-in">
+    <div class="skillmap-canvas" data-skillmap
+         data-core="Python" data-core-note="core stack"
+         aria-hidden="true"></div>
+    <p class="skillmap-readout" data-skillmap-readout>
+        <span class="skillmap-hint">Point at a node — or a skill below — to read it.</span>
+    </p>
+</div>
+
+<div class="skill-groups">
+    {% for group in skill_groups %}
+    <div class="skill-group" data-reveal-item="fade-up"
+         data-skill-group="{{ group.name }}">
+        <h3 class="skill-group-name">
+            {{ group.name }}
+            {% if group.tagline %}<span class="skill-group-tagline">{{ group.tagline }}</span>{% endif %}
+        </h3>
+        <ul class="skill-chips">
+            {% for skill in group.skills.all %}
+            <li class="skill-chip{% if skill.is_core %} is-core{% endif %}"
+                data-skill="{{ skill.name }}"
+                data-level="{{ skill.level }}"
+                data-level-label="{{ skill.get_level_display }}"
+                data-years="{{ skill.years }}"
+                data-core="{{ skill.is_core|yesno:'1,0' }}">
+                <span class="skill-chip-name">{{ skill.name }}</span>
+                <span class="skill-meter" aria-hidden="true">
+                    {% for on in skill.meter %}<span class="skill-dot{% if on %} is-on{% endif %}"></span>{% endfor %}
+                </span>
+                <span class="skill-chip-meta">{{ skill.get_level_display }}{% if skill.years %} · {{ skill.years }}{% endif %}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+</div>

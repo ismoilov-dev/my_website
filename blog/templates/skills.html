@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Skills — Ismat Ismoilov{% endblock %}
+{% block og_title %}Skills — Ismat Ismoilov{% endblock %}
+{% block description %}The tools Ismat Ismoilov works with: Python, Django, Django REST Framework, FastAPI, PostgreSQL, Redis, Celery, Docker and more.{% endblock %}
+{% block og_description %}Python, Django, DRF, FastAPI, PostgreSQL, Redis, Celery, Docker — the stack I build with.{% endblock %}
+
+{% block content %}
+<section class="section-banner" data-reveal-group data-reveal-now>
+    <h1 class="section-title" data-reveal-item="fade-down">Skills</h1>
+    <p class="section-subtitle" data-reveal-item="fade-down">The stack I build with — Python at the centre, everything else around it.</p>
+</section>
+
+<div class="container container--wide">
+    {% if skill_groups %}
+        <section class="cv-section skillmap" id="skills" data-reveal-group>
+            {% include "partials/_skill_map.html" %}
+        </section>
+
+        <aside class="card subscribe-card" data-reveal="zoom-in">
+            <div>
+                <h2 class="card-title">Want the whole picture?</h2>
+                <p class="card-text">These skills in context — where I used them, on what, and for how long.</p>
+            </div>
+            <a href="{% url 'cv' %}" class="btn btn-primary">Read my CV</a>
+        </aside>
+    {% else %}
+        <div class="empty" data-reveal="zoom-in">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg>
+            <h3>Nothing here yet</h3>
+            <p>Skill groups added in the admin show up on this page as an orbit map.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

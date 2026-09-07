@@ -5,12 +5,12 @@ from .models import Blog
 
 
 class StaticViewSitemap(Sitemap):
-    """The hand-written pages: home, about, blog index, talks, CV, feed."""
+    """The hand-written pages: home, about, blog index, talks, skills, CV, feed."""
 
     changefreq = 'weekly'
 
     def items(self):
-        return ['index', 'about', 'blogs', 'talks', 'cv', 'feed']
+        return ['index', 'about', 'blogs', 'talks', 'skills', 'cv', 'feed']
 
     def location(self, item):
         return reverse(item)

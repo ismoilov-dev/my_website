@@ -7,9 +7,9 @@
 {% block og_description %}Work experience, projects, education and certificates.{% endblock %}
 
 {% block content %}
-<section class="section-banner no-print" data-reveal>
-    <h1 class="section-title">CV</h1>
-    <p class="section-subtitle">Python Backend Developer — Tashkent, Uzbekistan.</p>
+<section class="section-banner no-print" data-reveal-group data-reveal-now>
+    <h1 class="section-title" data-reveal-item="fade-down">CV</h1>
+    <p class="section-subtitle" data-reveal-item="fade-down">Python Backend Developer — Tashkent, Uzbekistan.</p>
 </section>
 
 <div class="container container--wide">
@@ -20,9 +20,16 @@
         </button>
     </div>
 
+    {% if skill_groups %}
+    <section class="cv-section skillmap" id="skills" data-reveal-group>
+        <h2 class="cv-section-title" data-reveal-item="fade-right">Skills</h2>
+        {% include "partials/_skill_map.html" %}
+    </section>
+    {% endif %}
+
     {% if experiences %}
     <section class="cv-section" data-reveal-group>
-        <h2 class="cv-section-title" data-reveal-item>Work Experience</h2>
+        <h2 class="cv-section-title" data-reveal-item="fade-right">Work Experience</h2>
         {% for exp in experiences %}
         <div class="cv-item" data-reveal-item>
             <div class="cv-item-head">
@@ -41,7 +48,7 @@
 
     {% if projects %}
     <section class="cv-section" data-reveal-group>
-        <h2 class="cv-section-title" data-reveal-item>Projects</h2>
+        <h2 class="cv-section-title" data-reveal-item="fade-right">Projects</h2>
         {% for proj in projects %}
         <div class="cv-item" data-reveal-item>
             <div class="cv-item-head">
@@ -62,7 +69,7 @@
 
     {% if educations %}
     <section class="cv-section" data-reveal-group>
-        <h2 class="cv-section-title" data-reveal-item>Education</h2>
+        <h2 class="cv-section-title" data-reveal-item="fade-right">Education</h2>
         {% for edu in educations %}
         <div class="cv-item" data-reveal-item>
             <div class="cv-item-head">
@@ -81,7 +88,7 @@
 
     {% if activities %}
     <section class="cv-section" data-reveal-group>
-        <h2 class="cv-section-title" data-reveal-item>Voluntary Activities</h2>
+        <h2 class="cv-section-title" data-reveal-item="fade-right">Voluntary Activities</h2>
         {% for activity in activities %}
         <div class="cv-item" data-reveal-item>
             {% if activity.title %}
@@ -97,7 +104,7 @@
 
     {% if certificates %}
     <section class="cv-section" data-reveal-group>
-        <h2 class="cv-section-title" data-reveal-item>Certificates</h2>
+        <h2 class="cv-section-title" data-reveal-item="fade-right">Certificates</h2>
         {% for cert in certificates %}
         <div class="cv-item" data-reveal-item>
             <div class="cv-item-head">

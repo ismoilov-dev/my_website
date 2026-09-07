@@ -11,21 +11,21 @@
 {% block content %}
 <section class="container hero" data-reveal-group data-reveal-now>
     <div class="hero-top">
-        <img src="{% static 'ismat.jpg' %}" alt="Ismat Ismoilov" class="avatar" width="140" height="140" data-reveal-item>
-        <div data-reveal-item>
-            <h1 class="hero-name">Ismoilov Ismat</h1>
-            <p class="hero-role">Backend developer</p>
+        <img src="{% static 'ismat.jpg' %}" alt="Ismat Ismoilov" class="avatar" width="140" height="140" data-reveal-item="zoom-in">
+        <div>
+            <h1 class="hero-name" data-reveal-item="fade-right">Ismoilov Ismat</h1>
+            <p class="hero-role" data-reveal-item="fade-right">Backend developer</p>
             <div class="socials">
-                <a href="https://youtube.com/@ismoilov-dev" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube">
+                <a href="https://youtube.com/@ismoilov-dev" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube" data-reveal-item="zoom-in">
                     <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2C23 15.8 23 12 23 12zM9.8 15.4V8.6l5.8 3.4-5.8 3.4z"/></svg>
                 </a>
-                <a href="https://github.com/ismoilov-dev" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub">
+                <a href="https://github.com/ismoilov-dev" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub" data-reveal-item="zoom-in">
                     <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2A10 10 0 0 0 8.8 21.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.4-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.7-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.4 9.4 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7 1 .7 2v2.9c0 .3.2.6.7.5A10 10 0 0 0 12 2z"/></svg>
                 </a>
-                <a href="https://linkedin.com/in/ismoilov-ismat" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn">
+                <a href="https://linkedin.com/in/ismoilov-ismat" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn" data-reveal-item="zoom-in">
                     <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M6.9 21H3.4V9h3.5v12zM5.1 7.4a2 2 0 1 1 0-4.1 2 2 0 0 1 0 4zM21 21h-3.5v-5.8c0-1.4 0-3.2-2-3.2s-2.2 1.5-2.2 3.1V21H9.8V9h3.3v1.6h.1a3.7 3.7 0 0 1 3.3-1.8c3.5 0 4.2 2.3 4.2 5.3V21z"/></svg>
                 </a>
-                <a href="https://t.me/lazy_devvbek" target="_blank" rel="noopener noreferrer" aria-label="Telegram" title="Telegram">
+                <a href="https://t.me/lazy_devvbek" target="_blank" rel="noopener noreferrer" aria-label="Telegram" title="Telegram" data-reveal-item="zoom-in">
                     <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 18.8 19c-.2 1-.9 1.3-1.7.8l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.4-4.9L18.4 6c.4-.3-.1-.5-.6-.2L7 12.4l-4.7-1.5c-1-.3-1-1 .2-1.5l18.3-7c.9-.3 1.6.2 1.3 1.9z"/></svg>
                 </a>
             </div>
@@ -34,9 +34,9 @@
 
     <p class="hero-bio" data-reveal-item>Decoding the human side of code.</p>
 
-    <div class="hero-actions" data-reveal-item>
-        <a href="{% url 'blogs' %}" class="btn btn-primary">Read Blog</a>
-        <a href="{% url 'about' %}" class="btn btn-secondary">About Me</a>
+    <div class="hero-actions">
+        <a href="{% url 'blogs' %}" class="btn btn-primary" data-reveal-item="fade-up">Read Blog</a>
+        <a href="{% url 'about' %}" class="btn btn-secondary" data-reveal-item="fade-up">About Me</a>
     </div>
 </section>
 {% endblock %}

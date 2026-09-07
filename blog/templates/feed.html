@@ -7,9 +7,9 @@
 {% block og_description %}Personal updates, thoughts and daily moments.{% endblock %}
 
 {% block content %}
-<section class="section-banner" data-reveal>
-    <h1 class="section-title">Feed</h1>
-    <p class="section-subtitle">Journey from my life — personal updates, thoughts &amp; daily moments.</p>
+<section class="section-banner" data-reveal-group data-reveal-now>
+    <h1 class="section-title" data-reveal-item="fade-down">Feed</h1>
+    <p class="section-subtitle" data-reveal-item="fade-down">Journey from my life — personal updates, thoughts &amp; daily moments.</p>
 </section>
 
 <div class="container container--narrow">
@@ -90,7 +90,7 @@
         {% endfor %}
     </div>
     {% else %}
-    <div class="empty" data-reveal>
+    <div class="empty" data-reveal="zoom-in">
         <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
         <h3>No feed updates yet</h3>
         <p>Check back soon for stories and daily updates from my life!</p>
