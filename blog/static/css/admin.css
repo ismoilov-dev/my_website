@@ -1,0 +1,1147 @@
+/* ==========================================================================
+   Ismat admin — green + white theme
+   --------------------------------------------------------------------------
+   Layered on top of Django's own admin/css/base.css rather than replacing it,
+   so every stock screen (changelists, filters, inlines, history, login, the
+   delete-confirmation pages) keeps working. The first block re-points Django's
+   CSS custom properties at the palette below; everything after it is spacing,
+   radius and typography polish for the same components.
+
+   Two ramps, one job each. The greens carry identity and every interactive
+   accent -- buttons, links, the active nav item, today's bar on the chart.
+   The neutrals carry body text, borders and page furniture, because green
+   text on a green tint is what makes an admin panel tiring to read.
+   ========================================================================== */
+
+/* --- Palette ------------------------------------------------------------ */
+
+html[data-theme="light"],
+html[data-theme="dark"],
+:root {
+    /* Green ramp, built around the site's existing brand green (#167c4a). */
+    --green-25: #f6fbf8;
+    --green-50: #eef7f2;
+    --green-100: #dcefe4;
+    --green-200: #bfe1cd;
+    --green-300: #8fcaa9;
+    --green-400: #52ab7f;
+    --green-500: #24905d;
+    --green-600: #167c4a;
+    --green-700: #11633b;
+    --green-800: #0d4d2f;
+    --green-900: #0a3a24;
+
+    /* Neutral ramp for text, borders and surfaces. */
+    --grey-0: #ffffff;
+    --grey-25: #fbfdfc;
+    --grey-50: #f5f8f6;
+    --grey-100: #eef2f0;
+    --grey-150: #e5ebe7;
+    --grey-200: #dde4e0;
+    --grey-300: #c9d3cd;
+    --grey-400: #9aa8a1;
+    --grey-500: #6b7a73;
+    --grey-600: #4d5a54;
+    --grey-700: #3a453f;
+    --grey-800: #26302b;
+    --grey-900: #18211d;
+    --grey-950: #0b1210;
+
+    --primary: var(--green-600);
+    --secondary: var(--green-700);
+    --accent: var(--green-300);
+    --primary-fg: #fff;
+
+    --body-fg: var(--grey-800);
+    --body-bg: var(--grey-100);
+    --body-quiet-color: var(--grey-500);
+    --body-medium-color: var(--grey-600);
+    --body-loud-color: var(--grey-950);
+
+    /* White header with a green wordmark: the "white" half of the brief. */
+    --header-color: var(--grey-500);
+    --header-branding-color: var(--green-700);
+    --header-bg: var(--grey-0);
+    --header-link-color: var(--grey-800);
+
+    --breadcrumbs-fg: var(--grey-500);
+    --breadcrumbs-link-fg: var(--green-700);
+    --breadcrumbs-bg: var(--green-25);
+
+    --link-fg: var(--green-600);
+    --link-hover-color: var(--green-800);
+    --link-selected-fg: var(--green-700);
+
+    --hairline-color: var(--grey-150);
+    --border-color: var(--grey-200);
+
+    --error-fg: #b42318;
+
+    --message-debug-bg: var(--grey-100);
+    --message-info-bg: #eef4fb;
+    --message-success-bg: var(--green-50);
+    --message-warning-bg: #fdf6e7;
+    --message-error-bg: #fdefee;
+
+    --darkened-bg: var(--grey-50);
+    --selected-bg: var(--green-100);
+    --selected-row: var(--green-50);
+
+    --button-fg: #ffffff;
+    --button-bg: var(--green-600);
+    --button-hover-bg: var(--green-800);
+    --default-button-bg: var(--green-700);
+    --default-button-hover-bg: var(--green-900);
+    --close-button-bg: var(--grey-400);
+    --close-button-hover-bg: var(--grey-600);
+    --delete-button-bg: #b42318;
+    --delete-button-hover-bg: #912018;
+
+    --object-tools-fg: #ffffff;
+    --object-tools-bg: var(--green-600);
+    --object-tools-hover-bg: var(--green-800);
+
+    --font-family-primary: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
+        "Segoe UI Emoji";
+
+    --radius: 10px;
+    --radius-sm: 7px;
+    --shadow-sm: 0 1px 2px rgba(11, 18, 16, 0.05);
+    --shadow-md: 0 2px 8px rgba(11, 18, 16, 0.07);
+
+    color-scheme: light;
+}
+
+/* base_site.html drops theme.js, so the toggle would do nothing. */
+.theme-toggle { display: none !important; }
+
+/* --- Base --------------------------------------------------------------- */
+
+body {
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    background: var(--body-bg);
+    -webkit-font-smoothing: antialiased;
+}
+
+#container { background: var(--body-bg); }
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+    outline: 2px solid var(--green-600);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* --- Header ------------------------------------------------------------- */
+
+#header {
+    align-items: center;
+    padding: 14px 32px;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: none;
+    color: var(--header-color);
+}
+
+#site-name a {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    color: var(--header-branding-color);
+    text-decoration: none;
+}
+
+#branding h1,
+#site-name {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.brand-mark {
+    display: inline-grid;
+    width: 30px;
+    height: 30px;
+    place-items: center;
+    border-radius: 9px;
+    background: var(--green-600);
+    color: #fff;
+    font-size: 0.9375rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    color: var(--green-700);
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+}
+
+.brand-sub {
+    color: var(--grey-500);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+#user-tools {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+    color: var(--grey-500);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+#user-tools strong { color: var(--grey-800); }
+
+#user-tools a,
+#logout-form button {
+    padding: 6px 11px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--grey-0);
+    color: var(--grey-700);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+#user-tools a:hover,
+#logout-form button:hover {
+    background: var(--green-50);
+    border-color: var(--green-300);
+    color: var(--green-800);
+}
+
+/* The stock template separates the links with bare " / " text nodes. */
+#user-tools { font-size: 0; }
+#user-tools > * { font-size: 0.8125rem; }
+
+/* --- Breadcrumbs -------------------------------------------------------- */
+
+.breadcrumbs,
+div.breadcrumbs {
+    padding: 11px 32px;
+    background: var(--breadcrumbs-bg);
+    border-bottom: 1px solid var(--border-color);
+    color: var(--breadcrumbs-fg);
+    font-size: 0.8125rem;
+    font-weight: 500;
+}
+
+.breadcrumbs a { color: var(--breadcrumbs-link-fg); font-weight: 600; }
+.breadcrumbs a:hover { color: var(--green-800); }
+
+/* --- Navigation sidebar ------------------------------------------------- */
+
+#nav-sidebar {
+    padding: 14px 12px;
+    background: var(--grey-0);
+    border-right: 1px solid var(--border-color);
+}
+
+#nav-sidebar .module th,
+#nav-sidebar .module caption {
+    padding: 18px 10px 7px;
+    background: transparent;
+    color: var(--green-700);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+#nav-sidebar .module caption a,
+#nav-sidebar .module th a { color: inherit; }
+
+#nav-sidebar table { border: 0; }
+#nav-sidebar td { padding: 0; border: 0; }
+
+#nav-sidebar a {
+    display: block;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    color: var(--grey-600);
+    font-weight: 550;
+    text-decoration: none;
+    transition: background 0.12s, color 0.12s;
+}
+
+#nav-sidebar a:hover,
+#nav-sidebar tr:hover a {
+    background: var(--green-50);
+    color: var(--green-800);
+}
+
+/* Django ships these with a green plus icon; the panel is greyscale. */
+#nav-sidebar .addlink {
+    padding: 6px 8px;
+    background-image: none;
+    color: var(--grey-400);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+#nav-sidebar .addlink:hover { background: var(--green-50); color: var(--green-700); }
+
+/* One flat list, not a stack of bordered boxes. */
+#nav-sidebar .module,
+#nav-sidebar table,
+#nav-sidebar tr,
+#nav-sidebar th,
+#nav-sidebar td {
+    border: 0 !important;
+    background: transparent;
+    box-shadow: none;
+}
+
+#nav-sidebar .module { margin-bottom: 4px; border-radius: 0; }
+
+#nav-sidebar .current-model a,
+#nav-sidebar tr.current-model a {
+    background: var(--green-100);
+    color: var(--green-800);
+    font-weight: 700;
+}
+
+#nav-filter {
+    width: 100%;
+    padding: 9px 11px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--grey-50);
+    font-size: 0.8125rem;
+}
+
+.toggle-nav-sidebar {
+    border-right: 1px solid var(--border-color);
+    background: var(--grey-0);
+    color: var(--grey-400);
+}
+
+.toggle-nav-sidebar:hover { background: var(--grey-100); color: var(--grey-700); }
+
+/* --- Content shell ------------------------------------------------------ */
+
+.main > .content { padding: 0; }
+
+#content {
+    padding: 28px 32px 48px;
+    max-width: 1320px;
+}
+
+/* Django pins the admin home to a fixed 600px column, which was sized for the
+   stock two-column app list. This dashboard is a full-width grid. */
+.dashboard #content {
+    width: auto;
+}
+
+#content > h1,
+.titles h1 {
+    margin: 0 0 4px;
+    color: var(--body-loud-color);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+.titles h2 {
+    margin: 0;
+    color: var(--body-quiet-color);
+    font-size: 0.9375rem;
+    font-weight: 500;
+}
+
+.titles-and-tools {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+/* --- Modules (the white cards everything sits in) ----------------------- */
+
+.module,
+.inline-group,
+#changelist-filter,
+.dashboard-card {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    background: var(--grey-0);
+    box-shadow: var(--shadow-sm);
+}
+
+.module { padding: 0; overflow: hidden; margin-bottom: 18px; }
+
+/* The changelist wrapper is itself a .module. Letting it draw a card would
+   double-frame the toolbar, table and paginator that already carry one. */
+#changelist.module {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+}
+
+.module h2,
+.module caption,
+.inline-group h2 {
+    padding: 12px 18px;
+    background: var(--green-25);
+    border-bottom: 1px solid var(--border-color);
+    color: var(--green-700);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+.module h2 a,
+.module caption a { color: inherit; }
+
+/* --- Tables ------------------------------------------------------------- */
+
+table { border-collapse: collapse; }
+
+thead th,
+#changelist table thead th {
+    padding: 10px 14px;
+    background: var(--green-25);
+    border-bottom: 1px solid var(--border-color);
+    color: var(--green-700);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+thead th a:link,
+thead th a:visited { color: var(--green-700); }
+
+td, th {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--hairline-color);
+    vertical-align: middle;
+}
+
+tbody tr:last-child td,
+tbody tr:last-child th { border-bottom: 0; }
+
+#changelist tbody tr:hover > * { background: var(--green-25); }
+tr.selected > * { background: var(--selected-row) !important; }
+
+/* The results table is the middle slice of the toolbar/table/paginator stack,
+   so it carries side borders but no rounded corners of its own. */
+#changelist-form .results {
+    overflow-x: auto;
+    background: var(--grey-0);
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+}
+
+#changelist-form .results table { width: 100%; }
+
+/* When there are no actions the table is the top slice instead. */
+#changelist-form > .results:first-child {
+    border-top: 1px solid var(--border-color);
+    border-radius: var(--radius) var(--radius) 0 0;
+}
+
+/* Date hierarchy: the drill-down strip above the results. */
+.xfull,
+#changelist .xfull {
+    margin: 0;
+    padding: 0;
+}
+
+#toolbar + .xfull .toplinks,
+.toplinks {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 14px;
+    padding: 10px 18px;
+    background: var(--grey-0);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    color: var(--grey-500);
+    font-size: 0.8125rem;
+    list-style: none;
+}
+
+.toplinks a { color: var(--grey-700); font-weight: 600; }
+.toplinks .date-back a { color: var(--grey-500); }
+
+/* --- Changelist toolbar (search + filters + actions) -------------------- */
+
+#toolbar {
+    padding: 12px 18px;
+    background: var(--grey-0);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 14px;
+}
+
+#toolbar form#changelist-search { display: flex; align-items: center; gap: 8px; }
+
+#toolbar form input[type="submit"],
+#changelist-search input[type="submit"] {
+    padding: 9px 16px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    background: var(--button-bg);
+    color: var(--button-fg);
+    font-size: 0.875rem;
+    font-weight: 650;
+}
+
+#toolbar form input[type="submit"]:hover { background: var(--button-hover-bg); }
+
+#searchbar {
+    flex: 1;
+    min-width: 0;
+    max-width: 420px;
+    padding: 9px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--grey-50);
+}
+
+#changelist .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 18px;
+    background: var(--green-25);
+    border: 1px solid var(--border-color);
+    border-bottom: 0;
+    border-radius: var(--radius) var(--radius) 0 0;
+    color: var(--grey-600);
+}
+
+#changelist .actions label { display: flex; align-items: center; gap: 8px; margin: 0; }
+
+/* Django pins this to height: 1.5rem, which clips the option text once the
+   font is larger than its own. */
+#changelist .actions select {
+    height: auto;
+    min-width: 210px;
+    margin: 0;
+    padding: 7px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+}
+
+#changelist .actions .action-counter,
+#changelist .actions span.all,
+#changelist .actions span.clear,
+#changelist .actions span.question { margin: 0; }
+
+#changelist-filter {
+    padding-bottom: 10px;
+    background: var(--grey-0);
+}
+
+#changelist-filter h2 {
+    margin: 0;
+    padding: 12px 16px;
+    background: var(--green-25);
+    border-bottom: 1px solid var(--border-color);
+    border-radius: var(--radius) var(--radius) 0 0;
+    color: var(--green-700);
+    font-size: 0.75rem;
+    letter-spacing: 0.07em;
+}
+
+#changelist-filter h3 {
+    padding: 12px 16px 4px;
+    color: var(--grey-900);
+    font-size: 0.8125rem;
+    font-weight: 700;
+}
+
+#changelist-filter li { padding: 0 8px; }
+
+#changelist-filter li a {
+    display: block;
+    padding: 6px 8px;
+    border-radius: var(--radius-sm);
+    color: var(--grey-600);
+    text-decoration: none;
+}
+
+#changelist-filter li a:hover { background: var(--green-50); color: var(--green-800); }
+#changelist-filter li.selected { border-left: 0; }
+#changelist-filter li.selected a { background: var(--green-100); color: var(--green-800); font-weight: 650; }
+
+.paginator {
+    padding: 12px 18px;
+    background: var(--grey-0);
+    border: 1px solid var(--border-color);
+    border-top: 0;
+    border-radius: 0 0 var(--radius) var(--radius);
+    color: var(--grey-500);
+    font-size: 0.8125rem;
+}
+
+.paginator a:link,
+.paginator a:visited {
+    padding: 4px 9px;
+    border-radius: 6px;
+    background: var(--grey-100);
+    color: var(--grey-700);
+}
+
+.paginator a:hover { background: var(--green-100); color: var(--green-800); }
+.paginator .this-page { padding: 4px 9px; border-radius: 6px; background: var(--green-600); color: #fff; }
+
+/* --- Forms -------------------------------------------------------------- */
+
+.form-row { padding: 14px 18px; border-bottom: 1px solid var(--hairline-color); }
+.form-row:last-child { border-bottom: 0; }
+
+.aligned label,
+.form-row legend,
+fieldset.module .form-row legend {
+    color: var(--grey-700);
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+/* The per-field wrapper is a layout device, not a visual group. */
+.form-row fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.module .form-row > fieldset > legend { padding: 0; }
+
+.help,
+.helptext,
+div.help {
+    color: var(--grey-500);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+}
+
+.help code,
+.helptext code,
+.module .description code {
+    padding: 1px 5px;
+    border-radius: 4px;
+    background: var(--grey-100);
+    font-size: 0.9em;
+}
+
+/* The one-line explainer under each fieldset heading: this is what makes the
+   panel self-documenting, so give it real presence instead of small grey text. */
+.module .description,
+fieldset .description {
+    margin: 0;
+    padding: 12px 18px;
+    background: var(--grey-25);
+    border-bottom: 1px solid var(--hairline-color);
+    color: var(--grey-600);
+    font-size: 0.8125rem;
+    line-height: 1.6;
+}
+
+fieldset .description b { color: var(--green-700); }
+
+input[type=text],
+input[type=password],
+input[type=email],
+input[type=url],
+input[type=number],
+input[type=tel],
+input[type=date],
+input[type=datetime-local],
+input[type=time],
+textarea,
+select,
+.vTextField {
+    padding: 9px 11px;
+    border: 1px solid var(--grey-300);
+    border-radius: var(--radius-sm);
+    background: var(--grey-0);
+    color: var(--body-fg);
+    font-size: 0.9375rem;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--green-500);
+    box-shadow: 0 0 0 3px rgba(36, 144, 93, 0.15);
+    outline: none;
+}
+
+textarea { line-height: 1.6; }
+
+/* Django sizes fields in ems tuned for its own font. Let them use the column
+   they are in instead, capped so long lines stay readable. */
+.form-row input[type=text],
+.form-row input[type=email],
+.form-row input[type=url],
+.form-row input[type=password],
+.form-row .vTextField,
+.form-row .vURLField {
+    width: 100%;
+    max-width: 640px;
+}
+
+.form-row textarea,
+.form-row .vLargeTextField {
+    width: 100%;
+    max-width: 900px;
+}
+
+.form-row input[type=number],
+.form-row .vIntegerField {
+    width: 110px;
+}
+
+/* The native file button is the one control that still looks like 1998. */
+input[type=file]::file-selector-button {
+    margin-right: 10px;
+    padding: 7px 13px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--grey-50);
+    color: var(--grey-700);
+    font-family: inherit;
+    font-size: 0.8125rem;
+    font-weight: 650;
+    cursor: pointer;
+}
+
+input[type=file]::file-selector-button:hover { background: var(--grey-100); }
+
+/* Action bar controls on the changelist. */
+#changelist .actions select {
+    padding: 7px 10px;
+    border-radius: var(--radius-sm);
+}
+
+#changelist .actions button,
+#changelist .actions .button {
+    padding: 7px 14px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    background: var(--button-bg);
+    color: var(--button-fg);
+    font-size: 0.8125rem;
+    font-weight: 650;
+}
+
+#changelist .actions button:hover { background: var(--button-hover-bg); }
+
+.errornote,
+.errorlist li {
+    border-radius: var(--radius-sm);
+    background: var(--message-error-bg);
+    border: 1px solid #f4c9c5;
+    color: var(--error-fg);
+}
+
+/* --- Buttons ------------------------------------------------------------ */
+
+.button,
+input[type=submit],
+input[type=button],
+.submit-row input,
+.submit-row a,
+a.button {
+    padding: 9px 16px;
+    border-radius: var(--radius-sm);
+    font-weight: 650;
+    font-size: 0.875rem;
+    letter-spacing: 0;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.button, input[type=submit], input[type=button], .submit-row input {
+    background: var(--button-bg);
+    color: var(--button-fg);
+    border: 1px solid transparent;
+}
+
+.button:hover, input[type=submit]:hover, input[type=button]:hover { background: var(--button-hover-bg); }
+
+/* A green outline on a green button is invisible. Filled buttons get a light
+   halo plus a dark ring so keyboard focus reads on any background. */
+.button:focus-visible,
+input[type=submit]:focus-visible,
+input[type=button]:focus-visible,
+.submit-row input:focus-visible,
+.object-tools a:focus-visible {
+    outline: 2px solid var(--grey-0);
+    outline-offset: -4px;
+    box-shadow: 0 0 0 2px var(--green-800);
+}
+
+.submit-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin: 18px 0;
+    padding: 14px 18px;
+    background: var(--grey-0);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Django uppercases only the primary Save, which made it the odd one out.
+   forms.css targets `.submit-row input.default`, so matching that specificity
+   is what it takes to win. */
+.submit-row input,
+.submit-row a,
+.submit-row button,
+.submit-row input.default {
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.submit-row input.default {
+    background: var(--default-button-bg);
+}
+
+.submit-row input.default:hover { background: var(--default-button-hover-bg); }
+.submit-row .deletelink { background: transparent; border: 1px solid #f0c4c0; color: var(--delete-button-bg); }
+.submit-row .deletelink:hover { background: var(--message-error-bg); color: var(--delete-button-hover-bg); }
+.submit-row a.closelink { background: transparent; border: 1px solid var(--border-color); color: var(--grey-600); }
+
+.object-tools { margin-top: 0; }
+
+.object-tools a {
+    padding: 9px 15px;
+    border-radius: var(--radius-sm);
+    background: var(--object-tools-bg);
+    color: var(--object-tools-fg);
+    font-size: 0.8125rem;
+    font-weight: 650;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.object-tools a:hover { background: var(--object-tools-hover-bg); }
+
+/* --- Inlines ------------------------------------------------------------ */
+
+.inline-group { margin-bottom: 18px; overflow: hidden; }
+.inline-related h3 {
+    padding: 10px 18px;
+    background: var(--grey-50);
+    border-bottom: 1px solid var(--hairline-color);
+    color: var(--grey-600);
+    font-size: 0.8125rem;
+    font-weight: 650;
+}
+.inline-group .add-row a { font-weight: 650; }
+
+/* --- Messages ----------------------------------------------------------- */
+
+ul.messagelist { padding: 0 32px; margin-top: 14px; }
+
+ul.messagelist li {
+    margin-bottom: 8px;
+    padding: 12px 16px 12px 42px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    background-position: 14px center;
+    color: var(--grey-800);
+    font-size: 0.875rem;
+    box-shadow: var(--shadow-sm);
+}
+
+ul.messagelist li.success { background-color: var(--message-success-bg); border-color: var(--green-200); }
+ul.messagelist li.warning { background-color: var(--message-warning-bg); border-color: #f0e0b4; }
+ul.messagelist li.error { background-color: var(--message-error-bg); border-color: #f4c9c5; color: var(--error-fg); }
+
+/* --- Login -------------------------------------------------------------- */
+
+body.login { background: var(--grey-100); }
+
+body.login #container {
+    max-width: 400px;
+    margin-top: 8vh;
+    padding: 0;
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    background: var(--grey-0);
+    box-shadow: 0 10px 30px rgba(24, 24, 27, 0.07);
+    overflow: hidden;
+}
+
+body.login #header { padding: 22px 26px; border-bottom: 1px solid var(--border-color); }
+body.login .content { padding: 24px 26px 28px; }
+body.login .submit-row { border: 0; box-shadow: none; padding: 0; margin-top: 18px; }
+body.login .submit-row input { width: 100%; padding: 11px 16px; }
+body.login #content { padding: 0; }
+
+/* ==========================================================================
+   Dashboard (the admin home page)
+   ========================================================================== */
+
+.dash { display: flex; flex-direction: column; gap: 22px; }
+
+.dash-section-title {
+    margin: 0 0 12px;
+    color: var(--green-700);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.dash-welcome {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 22px 24px;
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    background: linear-gradient(180deg, var(--grey-0), var(--green-25));
+    box-shadow: var(--shadow-sm);
+}
+
+.dash-welcome h1 {
+    margin: 0 0 4px;
+    color: var(--green-800);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+}
+
+.dash-welcome p { margin: 0; color: var(--grey-500); font-size: 0.875rem; max-width: 60ch; }
+.dash-today { color: var(--green-700); font-size: 0.8125rem; font-weight: 600; white-space: nowrap; }
+
+/* Quick actions — the four things added most often. */
+.dash-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 12px;
+}
+
+.dash-action {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    background: var(--grey-0);
+    box-shadow: var(--shadow-sm);
+    text-decoration: none !important;
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+
+.dash-action:hover {
+    border-color: var(--green-300);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+.dash-action .plus {
+    display: grid;
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    place-items: center;
+    border-radius: 9px;
+    background: var(--green-600);
+    color: #fff;
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1;
+}
+
+.dash-action strong { display: block; color: var(--grey-900); font-size: 0.875rem; font-weight: 650; }
+.dash-action:hover strong { color: var(--green-800); }
+.dash-action span.hint { display: block; color: var(--grey-500); font-size: 0.75rem; }
+
+/* Metric tiles. */
+.dash-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+}
+
+.dash-metric {
+    padding: 16px 18px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    background: var(--grey-0);
+    box-shadow: var(--shadow-sm);
+}
+
+.dash-metric .label {
+    display: block;
+    color: var(--grey-500);
+    font-size: 0.75rem;
+    font-weight: 650;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.dash-metric .value {
+    display: block;
+    margin-top: 6px;
+    color: var(--green-700);
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+}
+
+.dash-metric .sub { color: var(--grey-400); font-size: 0.75rem; }
+
+.dash-columns {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 18px;
+    align-items: start;
+}
+
+.dash-card {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    background: var(--grey-0);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.dash-card > h2 {
+    margin: 0;
+    padding: 12px 18px;
+    background: var(--green-25);
+    border-bottom: 1px solid var(--border-color);
+    color: var(--green-700);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+.dash-card-body { padding: 18px; }
+.dash-card table { width: 100%; }
+.dash-card table td, .dash-card table th { padding: 9px 18px; }
+.dash-card table td.num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 650; color: var(--green-700); }
+.dash-card .path { font-family: var(--font-family-monospace); font-size: 0.8125rem; color: var(--grey-700); }
+
+/* Seven-day bar chart, drawn with plain divs so there is no chart library. */
+.dash-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 128px;
+    padding: 18px 18px 0;
+}
+
+.dash-bar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+    gap: 6px;
+    /* A faint track so a zero-visitor day still shows a column. */
+    background: linear-gradient(var(--green-25), var(--green-25)) bottom / 100% 100% no-repeat;
+    border-radius: 5px;
+}
+
+.dash-bar .fill {
+    border-radius: 5px 5px 2px 2px;
+    background: var(--green-200);
+    min-height: 3px;
+    transition: background 0.15s;
+}
+
+.dash-bar.is-today .fill { background: var(--green-600); }
+.dash-bar:hover .fill { background: var(--green-400); }
+.dash-bar .count { text-align: center; color: var(--green-800); font-size: 0.75rem; font-weight: 700; }
+
+.dash-chart-labels { display: flex; gap: 8px; padding: 6px 18px 16px; }
+.dash-chart-labels span {
+    flex: 1;
+    text-align: center;
+    color: var(--grey-400);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.dash-chart-labels span.is-today { color: var(--green-700); }
+
+/* "Your content" list: what exists, and one click to add or manage it. */
+.dash-content-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--hairline-color);
+}
+
+.dash-content-row:last-child { border-bottom: 0; }
+.dash-content-row .count {
+    min-width: 42px;
+    color: var(--green-700);
+    font-size: 1.25rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.03em;
+}
+.dash-content-row .meta { flex: 1; min-width: 0; }
+.dash-content-row .meta strong { display: block; color: var(--grey-900); font-size: 0.875rem; font-weight: 650; }
+.dash-content-row .meta span { color: var(--grey-500); font-size: 0.75rem; }
+.dash-content-row .links { display: flex; flex: 0 0 auto; gap: 6px; }
+.dash-content-row .links a {
+    padding: 5px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--grey-700);
+    font-size: 0.75rem;
+    font-weight: 650;
+    text-decoration: none !important;
+}
+.dash-content-row .links a:hover { background: var(--green-50); border-color: var(--green-300); color: var(--green-800); }
+
+.dash-empty { padding: 20px 18px; color: var(--grey-400); font-size: 0.875rem; text-align: center; }
+
+/* --- Responsive --------------------------------------------------------- */
+
+@media (max-width: 1024px) {
+    .dash-columns { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 767px) {
+    #header { padding: 12px 16px; }
+    .breadcrumbs, div.breadcrumbs { padding: 10px 16px; }
+    #content { padding: 18px 16px 40px; }
+    ul.messagelist { padding: 0 16px; }
+    .titles-and-tools { flex-direction: column; }
+    .dash-welcome { flex-direction: column; align-items: flex-start; }
+    .dash-content-row { flex-wrap: wrap; }
+}

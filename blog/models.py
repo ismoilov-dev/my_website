@@ -9,13 +9,21 @@ from django.utils.text import Truncator
 class Blog(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
-    image = models.ImageField(upload_to='blog/', blank=True, null=True, help_text="Optional blog cover image")
-    time = models.CharField(max_length=50, blank=True, null=True)
+    image = models.ImageField(
+        upload_to='blog/', blank=True, null=True,
+        help_text='Landscape images work best. Around 1200x630 pixels is ideal.',
+    )
+    time = models.CharField(
+        max_length=50, blank=True, null=True,
+        help_text='Set automatically on first save, e.g. "3 days ago".',
+    )
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['-created_at']
+        verbose_name = 'Blog post'
+        verbose_name_plural = 'Blog posts'
 
     def get_absolute_url(self):
         return reverse('blog_detail', args=[self.pk])
@@ -61,14 +69,17 @@ class Blog(models.Model):
 class WorkExperience(models.Model):
     title = models.CharField(max_length=200)
     company = models.CharField(max_length=200)
-    period = models.CharField(max_length=100)
-    description = models.TextField(help_text="Enter bullet points or description of duties/achievements", blank=True)
+    period = models.CharField(max_length=100, help_text='e.g. "Jan 2024 — Present"')
+    description = models.TextField(
+        blank=True,
+        help_text='One duty or achievement per line. Start a line with "-" for a bullet.',
+    )
     order = models.IntegerField(default=0)
 
     class Meta:
         ordering = ['order', '-id']
-        verbose_name = "Work Experience"
-        verbose_name_plural = "Work Experiences"
+        verbose_name = 'Work experience'
+        verbose_name_plural = 'Work experience'
 
     def __str__(self):
         return f"{self.title} at {self.company}"
@@ -76,9 +87,11 @@ class WorkExperience(models.Model):
 
 class Project(models.Model):
     title = models.CharField(max_length=200)
-    period = models.CharField(max_length=100, blank=True, null=True)
-    description = models.TextField()
-    link = models.URLField(blank=True, null=True)
+    period = models.CharField(max_length=100, blank=True, null=True, help_text='e.g. "2024"')
+    description = models.TextField(
+        help_text='One point per line. Start a line with "-" for a bullet.',
+    )
+    link = models.URLField(blank=True, null=True, help_text='GitHub, demo or live URL.')
     order = models.IntegerField(default=0)
 
     class Meta:
@@ -89,14 +102,16 @@ class Project(models.Model):
 
 
 class Education(models.Model):
-    institution = models.CharField(max_length=200)
-    degree = models.CharField(max_length=200)
-    period = models.CharField(max_length=100)
+    institution = models.CharField(max_length=200, help_text='School or university name.')
+    degree = models.CharField(max_length=200, help_text='e.g. "BSc Computer Science"')
+    period = models.CharField(max_length=100, help_text='e.g. "2020 — 2024"')
     description = models.TextField(blank=True, null=True)
     order = models.IntegerField(default=0)
 
     class Meta:
         ordering = ['order', '-id']
+        verbose_name = 'Education entry'
+        verbose_name_plural = 'Education'
 
     def __str__(self):
         return f"{self.degree} - {self.institution}"
@@ -110,7 +125,8 @@ class VoluntaryActivity(models.Model):
 
     class Meta:
         ordering = ['order', '-id']
-        verbose_name_plural = 'Voluntary Activities'
+        verbose_name = 'Voluntary activity'
+        verbose_name_plural = 'Voluntary activities'
 
     def __str__(self):
         return self.title or f"Activity {self.id}"
@@ -151,8 +167,8 @@ class FeedPost(models.Model):
 
     class Meta:
         ordering = ['-created_at']
-        verbose_name = "Feed Post"
-        verbose_name_plural = "Feed Posts"
+        verbose_name = 'Feed post'
+        verbose_name_plural = 'Feed posts'
 
     def __str__(self):
         return self.title or f"Feed Post #{self.id} - {self.created_at.strftime('%Y-%m-%d')}"
@@ -167,29 +183,29 @@ class FeedComment(models.Model):
 
     class Meta:
         ordering = ['created_at']
-        verbose_name = "Feed Comment"
-        verbose_name_plural = "Feed Comments"
+        verbose_name = 'Feed comment'
+        verbose_name_plural = 'Feed comments'
 
     def __str__(self):
         return f"Comment by {self.author_name} on Post #{self.post.id}"
 
 
 class Talk(models.Model):
-    title = models.CharField(max_length=200, verbose_name="Sarlavha")
-    description = models.TextField(blank=True, null=True, verbose_name="Tavsif")
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True, null=True)
     video = models.FileField(
         upload_to='talks/videos/',
         validators=[FileExtensionValidator(allowed_extensions=['mp4', 'mov', 'avi', 'mkv', 'webm'])],
-        verbose_name="Video fayl",
-        help_text="MP4, MOV, AVI, MKV yoki WEBM formatidagi videolarni yuklang"
+        help_text='MP4 plays everywhere. MOV, AVI, MKV and WEBM are accepted '
+                  'but may not play in every browser.'
     )
-    created_at = models.DateTimeField(default=timezone.now, verbose_name="Yaratilgan vaqti")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Yangilangan vaqti")
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['-created_at']
-        verbose_name = "Talk"
-        verbose_name_plural = "Talks"
+        verbose_name = 'Talk'
+        verbose_name_plural = 'Talks'
 
     def __str__(self):
         return self.title

@@ -14,9 +14,9 @@
 
 <div class="container container--narrow">
     {% if posts %}
-    <div class="feed-list">
+    <div class="feed-list" data-reveal-group>
         {% for post in posts %}
-        <article class="feed-card" id="post-{{ post.id }}" data-reveal>
+        <article class="feed-card" id="post-{{ post.id }}" data-reveal-item>
             <div class="feed-head">
                 <img src="{% static 'ismat.jpg' %}" alt="Ismat Ismoilov" class="feed-avatar" width="42" height="42">
                 <div>

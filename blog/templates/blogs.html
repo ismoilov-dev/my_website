@@ -11,8 +11,21 @@
 </section>
 
 <div class="container blog-layout">
-    <div class="posts-column" data-reveal>
+    <div class="posts-column" data-reveal-group>
         {% if blogs %}
+            {% comment %}
+              Filters the list already on the page -- see main.js. Without
+              JavaScript the field simply never appears.
+            {% endcomment %}
+            <div class="post-search-wrap">
+                <label class="visually-hidden" for="postSearch">Search posts by title</label>
+                <div class="post-search">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                    <input type="search" id="postSearch" placeholder="Search posts by title…" autocomplete="off">
+                </div>
+                <p class="search-summary" id="searchSummary" role="status" aria-live="polite"></p>
+            </div>
+
             {% regroup blogs by created_at|date:"Y" as year_list %}
             {% for year in year_list %}
             <section class="year-group">
@@ -23,7 +36,7 @@
                     <h2 class="month-title">{{ month.grouper }}</h2>
                     <ul class="post-list">
                         {% for post in month.list %}
-                        <li>
+                        <li data-post-title="{{ post.title|lower }}" data-reveal-item>
                             <a href="{% url 'blog_detail' post.pk %}" class="post-row">
                                 {% if post.image %}
                                 <div class="post-row-thumbnail">
@@ -42,6 +55,12 @@
                 {% endfor %}
             </section>
             {% endfor %}
+
+            <div class="empty" id="searchEmpty" hidden>
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                <h3>Hech narsa topilmadi</h3>
+                <p>Bu so'rov bo'yicha maqola yo'q. Boshqa kalit so'z bilan urinib ko'ring.</p>
+            </div>
         {% else %}
             <div class="empty">
                 <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h11l5 5v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M14 4v5h5M8 13h8M8 17h5"/></svg>

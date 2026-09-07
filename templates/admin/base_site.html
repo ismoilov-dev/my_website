@@ -1,0 +1,41 @@
+{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} · {% endif %}{{ title }} · Ismat admin{% endblock %}
+
+{% comment %}
+  Grey and white, always. Django ships a dark palette that follows the
+  operating system; dropping dark_mode.css and theme.js here is what keeps the
+  panel from flipping colour scheme behind the user's back. The matching
+  toggle button is hidden in admin.css.
+{% endcomment %}
+{% block dark-mode-vars %}{% endblock %}
+
+{% block extrastyle %}{{ block.super }}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% comment %}
+  The theme goes in extrahead, not extrastyle, and the reason matters: each
+  admin page adds its own sheet (changelists.css, forms.css, widgets.css)
+  inside extrastyle, which Django renders BEFORE extrahead. Loading the theme
+  here means it is the last sheet in, so it wins on equal specificity instead
+  of losing to Django's per-page rules. responsive.css still comes after, which
+  is what we want -- its mobile rules should keep the last word.
+{% endcomment %}
+{% block extrahead %}{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+{% endblock %}
+
+{% block branding %}
+<div id="site-name">
+  <a href="{% url 'admin:index' %}">
+    <span class="brand-mark" aria-hidden="true">I</span>
+    <span class="brand-text">Ismat <span class="brand-sub">site control panel</span></span>
+  </a>
+</div>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

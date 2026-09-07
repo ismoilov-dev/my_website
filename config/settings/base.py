@@ -30,7 +30,8 @@ CSRF_TRUSTED_ORIGINS = [o.strip() for o in env_csrf_origins.split(',') if o.stri
 
 # Application definition
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    # Swaps in PortfolioAdminSite (ordered sidebar + dashboard landing page).
+    'config.apps.PortfolioAdminConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -59,7 +60,8 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # Project-level templates override Django's built-in admin templates.
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -2,34 +2,130 @@
 {% load i18n %}
 
 {% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+{% block coltype %}colM{% endblock %}
+
+{# The page has its own greeting card, so suppress the stock <h1>. #}
+{% block content_title %}{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
 
 {% block content %}
-<div id="content-main">
-  <h1>Website traffic</h1>
-  <p>Figures exclude admin, static files, failed requests, and common crawlers.</p>
+<div id="content-main" class="dash">
 
-  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; margin:20px 0;">
-    <div class="module" style="padding:16px;"><strong style="font-size:28px; display:block;">{{ today_unique_visitors }}</strong>Unique visitors today</div>
-    <div class="module" style="padding:16px;"><strong style="font-size:28px; display:block;">{{ today_page_views }}</strong>Page views today</div>
-    <div class="module" style="padding:16px;"><strong style="font-size:28px; display:block;">{{ seven_day_unique_visitors }}</strong>Unique visitors, last 7 days</div>
+  <section class="dash-welcome">
+    <div>
+      <h1>{% blocktranslate with name=user.get_short_name|default:user.get_username %}Hi {{ name }} — here is your site{% endblocktranslate %}</h1>
+      <p>Everything on ismat.dev is edited from this panel. Start with a shortcut below, or use the
+        sidebar on the left to open any section directly.</p>
+    </div>
+    <div class="dash-today">{{ today|date:"l, j F Y" }}</div>
+  </section>
+
+  {% if quick_actions %}
+  <section>
+    <h2 class="dash-section-title">Add something new</h2>
+    <div class="dash-actions">
+      {% for action in quick_actions %}
+      <a class="dash-action" href="{{ action.url }}">
+        <span class="plus" aria-hidden="true">+</span>
+        <span>
+          <strong>{{ action.label }}</strong>
+          <span class="hint">{{ action.hint }}</span>
+        </span>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  <section>
+    <h2 class="dash-section-title">Visitors</h2>
+    <div class="dash-metrics">
+      <div class="dash-metric">
+        <span class="label">Visitors today</span>
+        <strong class="value">{{ today_unique_visitors }}</strong>
+        <span class="sub">Distinct people</span>
+      </div>
+      <div class="dash-metric">
+        <span class="label">Page views today</span>
+        <strong class="value">{{ today_page_views }}</strong>
+        <span class="sub">Pages opened</span>
+      </div>
+      <div class="dash-metric">
+        <span class="label">Visitors this week</span>
+        <strong class="value">{{ seven_day_unique_visitors }}</strong>
+        <span class="sub">Last 7 days</span>
+      </div>
+      <div class="dash-metric">
+        <span class="label">Page views this week</span>
+        <strong class="value">{{ seven_day_page_views }}</strong>
+        <span class="sub">Last 7 days</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="dash-columns">
+    <div class="dash-card">
+      <h2>Visitors, last 7 days</h2>
+      <div class="dash-chart">
+        {% for day in daily_visitors %}
+        <div class="dash-bar{% if day.is_today %} is-today{% endif %}"
+             title="{{ day.date|date:'j F Y' }}: {{ day.visitors }} visitor{{ day.visitors|pluralize }}">
+          <span class="count">{{ day.visitors }}</span>
+          <span class="fill" style="height: {{ day.height }}%"></span>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="dash-chart-labels">
+        {% for day in daily_visitors %}
+        <span class="{% if day.is_today %}is-today{% endif %}">{{ day.date|date:"D" }}</span>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="dash-card">
+      <h2>Most visited pages this week</h2>
+      <table>
+        <tbody>
+          {% for page in top_pages %}
+          <tr>
+            <td><span class="path">{{ page.path }}</span></td>
+            <td class="num">{{ page.views }}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="2" class="dash-empty">No page views recorded yet this week.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 
-  <div class="module">
-    <table>
-      <caption>Daily unique visitors</caption>
-      <thead><tr><th>Date</th><th>Visitors</th></tr></thead>
-      <tbody>{% for day in daily_visitors %}<tr><td>{{ day.date|date:"D, M j" }}{% if day.date == today %} (today){% endif %}</td><td>{{ day.visitors }}</td></tr>{% endfor %}</tbody>
-    </table>
-  </div>
+  {% if content_cards %}
+  <section>
+    <h2 class="dash-section-title">Your content</h2>
+    <div class="dash-card">
+      {% for card in content_cards %}
+      <div class="dash-content-row">
+        <span class="count">{{ card.count }}</span>
+        <span class="meta">
+          <strong>{{ card.label }}</strong>
+          <span>{{ card.hint }}</span>
+        </span>
+        <span class="links">
+          {% if card.list_url %}<a href="{{ card.list_url }}">Manage</a>{% endif %}
+          {% if card.add_url %}<a href="{{ card.add_url }}">Add new</a>{% endif %}
+        </span>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
 
-  <div class="module">
-    <table>
-      <caption>Most visited pages today</caption>
-      <thead><tr><th>Page</th><th>Views</th></tr></thead>
-      <tbody>{% for page in top_pages %}<tr><td>{{ page.path }}</td><td>{{ page.views }}</td></tr>{% empty %}<tr><td colspan="2">No public page views yet today.</td></tr>{% endfor %}</tbody>
-    </table>
-  </div>
-
-  {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
 </div>
 {% endblock %}
+
+{% comment %}
+  The left sidebar already lists every model, so the stock app grid would
+  only repeat it.
+{% endcomment %}
+{% block sidebar %}{% endblock %}

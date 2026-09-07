@@ -21,10 +21,10 @@
     </div>
 
     {% if experiences %}
-    <section class="cv-section" data-reveal>
-        <h2 class="cv-section-title">Work Experience</h2>
+    <section class="cv-section" data-reveal-group>
+        <h2 class="cv-section-title" data-reveal-item>Work Experience</h2>
         {% for exp in experiences %}
-        <div class="cv-item">
+        <div class="cv-item" data-reveal-item>
             <div class="cv-item-head">
                 <div class="cv-item-title">
                     {{ exp.title }}{% if exp.company %}<span class="cv-item-org"> · {{ exp.company }}</span>{% endif %}
@@ -40,10 +40,10 @@
     {% endif %}
 
     {% if projects %}
-    <section class="cv-section" data-reveal>
-        <h2 class="cv-section-title">Projects</h2>
+    <section class="cv-section" data-reveal-group>
+        <h2 class="cv-section-title" data-reveal-item>Projects</h2>
         {% for proj in projects %}
-        <div class="cv-item">
+        <div class="cv-item" data-reveal-item>
             <div class="cv-item-head">
                 <div class="cv-item-title">{{ proj.title }}</div>
                 {% if proj.period %}<div class="cv-item-period">{{ proj.period }}</div>{% endif %}
@@ -61,10 +61,10 @@
     {% endif %}
 
     {% if educations %}
-    <section class="cv-section" data-reveal>
-        <h2 class="cv-section-title">Education</h2>
+    <section class="cv-section" data-reveal-group>
+        <h2 class="cv-section-title" data-reveal-item>Education</h2>
         {% for edu in educations %}
-        <div class="cv-item">
+        <div class="cv-item" data-reveal-item>
             <div class="cv-item-head">
                 <div class="cv-item-title">
                     {{ edu.institution }}<span class="cv-item-org"> · {{ edu.degree }}</span>
@@ -80,10 +80,10 @@
     {% endif %}
 
     {% if activities %}
-    <section class="cv-section" data-reveal>
-        <h2 class="cv-section-title">Voluntary Activities</h2>
+    <section class="cv-section" data-reveal-group>
+        <h2 class="cv-section-title" data-reveal-item>Voluntary Activities</h2>
         {% for activity in activities %}
-        <div class="cv-item">
+        <div class="cv-item" data-reveal-item>
             {% if activity.title %}
             <div class="cv-item-head">
                 <div class="cv-item-title">{{ activity.title }}</div>
@@ -96,10 +96,10 @@
     {% endif %}
 
     {% if certificates %}
-    <section class="cv-section" data-reveal>
-        <h2 class="cv-section-title">Certificates</h2>
+    <section class="cv-section" data-reveal-group>
+        <h2 class="cv-section-title" data-reveal-item>Certificates</h2>
         {% for cert in certificates %}
-        <div class="cv-item">
+        <div class="cv-item" data-reveal-item>
             <div class="cv-item-head">
                 <div class="cv-item-title">
                     {{ cert.title }}{% if cert.issuer %}<span class="cv-item-org"> · {{ cert.issuer }}</span>{% endif %}

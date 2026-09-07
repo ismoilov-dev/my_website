@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    {% comment %}
+      Marks the document as scripted before anything paints, which is what
+      lets the reveal animations start hidden without ever flashing, and what
+      keeps every page fully visible when scripting is unavailable.
+    {% endcomment %}
+    <script>document.documentElement.className += ' js';</script>
+
     <title>{% block title %}Ismat Ismoilov{% endblock %}</title>
     <meta name="description" content="{% block description %}Ismat Ismoilov — Python Backend Developer from Uzbekistan. Writing about code, community and the human side of engineering.{% endblock %}">
     <meta name="author" content="Ismat Ismoilov">
@@ -70,6 +77,10 @@
         </div>
     </div>
 </footer>
+
+<button type="button" class="to-top" id="toTop" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
 
 <script src="{% static 'js/main.js' %}" defer></script>
 {% block extra_js %}{% endblock %}

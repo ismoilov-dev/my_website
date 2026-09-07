@@ -9,10 +9,10 @@
 {% block main_class %}main-centered{% endblock %}
 
 {% block content %}
-<section class="container hero" data-reveal>
+<section class="container hero" data-reveal-group data-reveal-now>
     <div class="hero-top">
-        <img src="{% static 'ismat.jpg' %}" alt="Ismat Ismoilov" class="avatar" width="108" height="108">
-        <div>
+        <img src="{% static 'ismat.jpg' %}" alt="Ismat Ismoilov" class="avatar" width="140" height="140" data-reveal-item>
+        <div data-reveal-item>
             <h1 class="hero-name">Ismoilov Ismat</h1>
             <p class="hero-role">Backend developer</p>
             <div class="socials">
@@ -32,9 +32,9 @@
         </div>
     </div>
 
-    <p class="hero-bio">Decoding the human side of code.</p>
+    <p class="hero-bio" data-reveal-item>Decoding the human side of code.</p>
 
-    <div class="hero-actions">
+    <div class="hero-actions" data-reveal-item>
         <a href="{% url 'blogs' %}" class="btn btn-primary">Read Blog</a>
         <a href="{% url 'about' %}" class="btn btn-secondary">About Me</a>
     </div>
