@@ -144,6 +144,7 @@ def site_schema(context):
         'url': f'{base}/',
         'image': base + static('ismat.jpg'),
         'jobTitle': settings.SITE_JOB_TITLE,
+        'knowsAbout': settings.SITE_EXPERTISE,
         'address': {'@type': 'PostalAddress', 'addressCountry': 'UZ'},
         'sameAs': [url for _, url in settings.SOCIAL_PROFILES],
     }

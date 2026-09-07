@@ -206,6 +206,22 @@ SITE_AUTHOR_ALTERNATES = ['Ismoilov Ismat', 'Ismat Ismoilov']
 
 SITE_JOB_TITLE = 'Python Backend Developer'
 
+# What the job title does not say. Google reads knowsAbout as the subject
+# matter a person is an authority on, so this is the machine-readable half of
+# the headline the home page states in words.
+SITE_EXPERTISE = [
+    'Python',
+    'Django',
+    'Django REST Framework',
+    'FastAPI',
+    'AI agents',
+    'Voice AI',
+    'Large language models',
+    'Retrieval-augmented generation',
+    'Speech to text',
+    'Text to speech',
+]
+
 SOCIAL_PROFILES = [
     ('GitHub', 'https://github.com/ismoilov-dev'),
     ('LinkedIn', 'https://linkedin.com/in/ismoilov-ismat'),
