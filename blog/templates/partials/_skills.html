@@ -1,0 +1,45 @@
+{% comment %}
+  The Skills block, shared by /skills/ and the CV so the two can never drift.
+
+  Two columns of plain rows: name, how far along it is, how long it has been
+  in hand. A CV is scanned rather than read, and it gets printed, so the
+  layout is ordinary text and CSS -- there is nothing here for JavaScript to
+  draw and nothing that disappears on paper.
+
+  Include it with the `skill_groups` in context; the surrounding <section> and
+  its heading belong to the including page, which knows what it is titled.
+{% endcomment %}
+
+<div class="skill-columns">
+    {% for group in skill_groups %}
+    <div class="skill-group" data-reveal-item="fade-up">
+        <h3 class="skill-group-name">
+            {{ group.name }}
+            {% if group.tagline %}<span class="skill-group-tagline">{{ group.tagline }}</span>{% endif %}
+        </h3>
+
+        <ul class="skill-rows">
+            {% for skill in group.skills.all %}
+            <li class="skill-row{% if skill.is_core %} is-core{% endif %}">
+                <span class="skill-name">
+                    {{ skill.name }}
+                    {% if skill.is_core %}<span class="skill-tag">core</span>{% endif %}
+                </span>
+
+                {% comment %}
+                  The bar is decoration over a fact the row already states, so
+                  it is hidden from assistive technology and the level is given
+                  as words instead.
+                {% endcomment %}
+                <span class="skill-bar" aria-hidden="true">
+                    <span style="width: {{ skill.percent }}%"></span>
+                </span>
+                <span class="visually-hidden">{{ skill.get_level_display }}</span>
+
+                <span class="skill-years">{{ skill.years|default:"—" }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+</div>

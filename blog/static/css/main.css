@@ -161,8 +161,7 @@ main {
 }
 
 /* Present for assistive technology, absent on screen. */
-.visually-hidden,
-.skill-chip-meta {
+.visually-hidden {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -881,239 +880,106 @@ main.main-centered {
 }
 
 /* --- Skills (CV) --------------------------------------------------------
-   Two renderings of the same data. The chip list is the content: it needs no
-   JavaScript, it is what a screen reader and the printer get. The orbit map
-   above it is drawn from that list by main.js -- rings are groups, node size
-   is level -- and is hidden from both. */
+   Two columns of plain rows. A CV is scanned rather than read and it gets
+   printed, so this is text in a grid: the name carries the meaning, the bar
+   is a glance at the level, and the years sit where the eye leaves the row.
+   Nothing here is drawn by script, so it survives print and no-JS intact. */
 
-.skillmap-stage {
-    margin-bottom: 40px;
+.skill-columns {
+    /* Columns rather than a grid: the groups are different lengths, and
+       columns fill the second one only once the first is full, which keeps
+       the block short instead of leaving a ragged row of gaps. */
+    column-count: 2;
+    column-gap: 48px;
 }
 
-.skillmap-canvas {
-    max-width: 760px;
-    margin: 0 auto;
-}
-
-.skillmap-canvas svg {
-    display: block;
-    width: 100%;
-    height: auto;
-    overflow: visible;
-}
-
-/* The rings themselves stay quiet -- they are graph paper, not content. */
-.sm-ring {
-    fill: none;
-    stroke: var(--border);
-    stroke-dasharray: 1 7;
-    stroke-linecap: round;
-}
-
-.sm-ring.is-active {
-    stroke: var(--accent);
-    stroke-dasharray: none;
-    opacity: 0.28;
-}
-
-.sm-spoke {
-    stroke: var(--text);
-    stroke-width: 1;
-    opacity: 0.06;
-}
-
-.sm-spoke.is-active {
-    stroke: var(--accent);
-    opacity: 0.45;
-}
-
-.sm-ring-label {
-    font-size: 10.5px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    fill: var(--faint);
-    /* Painted over the rings, so the halo keeps the text readable. */
-    paint-order: stroke;
-    stroke: var(--bg);
-    stroke-width: 5px;
-    stroke-linejoin: round;
-}
-
-.sm-core-disc {
-    fill: var(--bg);
-    stroke: var(--border-strong);
-    stroke-width: 1;
-}
-
-.sm-core-name {
-    font-size: 15px;
-    font-weight: 700;
-    fill: var(--text);
-    letter-spacing: -0.01em;
-}
-
-.sm-core-note {
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    fill: var(--faint);
-}
-
-.sm-node {
-    cursor: default;
-}
-
-.sm-dot {
-    fill: var(--bg);
-    stroke: var(--accent);
-    stroke-width: 1.5;
-    transition: transform 0.25s var(--ease), fill 0.2s ease;
-    transform-box: fill-box;
-    transform-origin: center;
-}
-
-.sm-node.is-core .sm-dot {
-    fill: var(--accent);
-}
-
-.sm-node:hover .sm-dot,
-.sm-node.is-active .sm-dot {
-    fill: var(--accent);
-    transform: scale(1.25);
-}
-
-/* Only the highlighted skills carry a permanent label; every other name
-   arrives on hover, which is what keeps 20+ nodes from turning into soup. */
-.sm-label {
-    font-size: 11.5px;
-    font-weight: 550;
-    fill: var(--muted);
-    paint-order: stroke;
-    stroke: var(--bg);
-    stroke-width: 4px;
-    stroke-linejoin: round;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-    pointer-events: none;
-}
-
-.sm-node.is-core .sm-label {
-    opacity: 1;
-    fill: var(--text);
-}
-
-.sm-node:hover .sm-label,
-.sm-node.is-active .sm-label {
-    opacity: 1;
-    fill: var(--text);
-}
-
-/* A slow breath on the core nodes, so the map is never quite still. */
-.sm-halo {
-    fill: none;
-    stroke: var(--accent);
-    stroke-width: 1;
-    opacity: 0;
-    transform-box: fill-box;
-    transform-origin: center;
-}
-
-.sm-node.is-core .sm-halo {
-    animation: sm-breathe 4.5s var(--ease) infinite;
-}
-
-@keyframes sm-breathe {
-    0%, 100% { opacity: 0; transform: scale(1); }
-    35% { opacity: 0.35; }
-    70% { opacity: 0; transform: scale(2.1); }
-}
-
-.skillmap-readout {
-    min-height: 24px;
-    margin-top: 8px;
-    text-align: center;
-    font-size: 0.875rem;
-    color: var(--muted);
-}
-
-.skillmap-readout strong {
-    color: var(--text);
-    font-weight: 650;
-}
-
-.skillmap-hint {
-    color: var(--faint);
-}
-
-.skill-groups {
-    display: grid;
-    gap: 24px;
+.skill-group {
+    /* A group split across the column break would read as two groups. */
+    break-inside: avoid;
+    margin-bottom: 26px;
 }
 
 .skill-group-name {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 10px;
-    margin-bottom: 10px;
-    font-size: 0.9375rem;
-    font-weight: 650;
-    color: var(--text);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 8px;
 }
 
+/* The tagline is the group's voice, not part of its label, so it drops to its
+   own line in sentence case rather than shouting alongside the name. */
 .skill-group-tagline {
-    font-size: 0.8125rem;
+    display: block;
+    margin-top: 2px;
+    font-size: 0.75rem;
     font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
     color: var(--faint);
 }
 
-.skill-chips {
+.skill-rows {
     list-style: none;
+}
+
+.skill-row {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.skill-chip {
-    display: inline-flex;
     align-items: center;
-    gap: 9px;
-    padding: 6px 13px;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    background: var(--bg);
-    font-size: 0.875rem;
+    gap: 12px;
+    padding: 5px 0;
+}
+
+.skill-name {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.9375rem;
     color: var(--text);
-    transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s var(--ease);
 }
 
-.skill-chip.is-core {
-    border-color: rgba(0, 132, 255, 0.3);
-    background: var(--accent-soft);
-    font-weight: 550;
+.skill-row.is-core .skill-name {
+    font-weight: 600;
 }
 
-.skill-chip.is-active {
-    border-color: var(--accent);
-    transform: translateY(-1px);
+.skill-tag {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 5px;
+    border-radius: 4px;
+    background-color: var(--accent-soft);
+    color: var(--accent);
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    vertical-align: 1px;
 }
 
-.skill-meter {
-    display: inline-flex;
-    gap: 3px;
-}
-
-.skill-dot {
-    width: 4px;
+.skill-bar {
+    flex: none;
+    width: 78px;
     height: 4px;
-    border-radius: 50%;
-    background: var(--border-strong);
+    border-radius: 999px;
+    background-color: rgba(0, 0, 0, 0.07);
+    overflow: hidden;
 }
 
-.skill-dot.is-on {
-    background: var(--accent);
+.skill-bar span {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background-color: var(--accent);
+}
+
+/* Fixed width, right aligned: the years form their own column down the page
+   even though every row is an independent flex line. */
+.skill-years {
+    flex: none;
+    width: 26px;
+    text-align: right;
+    font-size: 0.75rem;
+    color: var(--faint);
 }
 
 /* --- Feed --------------------------------------------------------------- */
@@ -1541,8 +1407,9 @@ textarea.field {
 }
 
 @media (max-width: 700px) {
-    .skillmap-stage {
-        display: none;
+    /* Two columns of short rows is one column's worth of content on a phone. */
+    .skill-columns {
+        column-count: 1;
     }
 }
 
@@ -1869,17 +1736,19 @@ textarea.field {
         text-decoration: none;
     }
 
-    .skill-meter {
+    /* A 4px tint bar prints as a grey smudge; the words behind it do not. */
+    .skill-bar {
         display: none;
     }
 
-    .skill-chip-meta {
+    .skill-row .visually-hidden {
         position: static;
         width: auto;
         height: auto;
         margin: 0;
         clip: auto;
         clip-path: none;
+        font-size: 0.75rem;
         color: #555;
     }
 }

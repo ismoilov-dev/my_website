@@ -92,28 +92,30 @@ class SkillTests(TestCase):
         cls.empty = SkillGroup.objects.create(name='Nothing here', order=9)
 
     def test_the_nav_does_not_offer_the_skills_page(self):
-        """It was dropped from the header on purpose -- the CV carries the map."""
+        """It was dropped from the header on purpose -- the CV carries the list."""
         for name in ('index', 'skills', 'cv'):
             with self.subTest(page=name):
                 self.assertNotContains(self.client.get(reverse(name)), 'href="/skills/"')
 
-    def test_skills_page_lists_the_skill_with_what_main_js_needs(self):
-        """The map is drawn from these attributes, so they have to be there."""
+    def test_a_skill_row_states_everything_it_knows(self):
+        """Name, group, how far along, how long -- all of it as readable text."""
         response = self.client.get(reverse('skills'))
 
-        self.assertContains(response, 'data-skillmap')
-        self.assertContains(response, 'data-skill-group="Backend"')
-        self.assertContains(response, 'data-skill="Django"')
-        self.assertContains(response, 'data-level="5"')
-        self.assertContains(response, 'data-core="1"')
+        self.assertContains(response, 'Backend')
+        self.assertContains(response, 'Django')
+        self.assertContains(response, '4y')
+        # The bar is decoration; the level itself is spelled out for screen
+        # readers and for the printed page.
+        self.assertContains(response, 'Core strength')
+        self.assertContains(response, 'width: 100%')
 
     def test_the_cv_shows_the_same_skills_as_the_skills_page(self):
         """Both render one partial; this fails the moment they drift apart."""
         for page in ('skills', 'cv'):
             with self.subTest(page=page):
-                self.assertContains(self.client.get(reverse(page)), 'data-skill="Django"')
+                self.assertContains(self.client.get(reverse(page)), 'Django')
 
-    def test_an_empty_group_is_never_drawn_as_a_ring(self):
+    def test_an_empty_group_is_never_given_a_heading(self):
         self.assertNotContains(self.client.get(reverse('skills')), 'Nothing here')
 
     def test_the_page_holds_up_with_no_skills_at_all(self):
@@ -123,17 +125,16 @@ class SkillTests(TestCase):
         response = self.client.get(reverse('skills'))
 
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, 'data-skillmap')
+        self.assertNotContains(response, 'skill-columns')
 
-    def test_the_level_meter_fills_one_dot_per_level(self):
-        self.assertEqual(self.skill.meter, [True] * 5)
+    def test_the_level_bar_is_filled_in_proportion(self):
+        self.assertEqual(self.skill.percent, 100)
         self.assertEqual(
-            Skill.objects.create(group=self.group, name='Redis', level=2).meter,
-            [True, True, False, False, False],
+            Skill.objects.create(group=self.group, name='Redis', level=2).percent, 40
         )
 
-    def test_admin_text_cannot_inject_markup_into_the_map(self):
-        """main.js reads these attributes and the readout writes text, not HTML."""
+    def test_admin_text_cannot_inject_markup_into_the_page(self):
+        """Skill names come from the admin and are printed, not interpreted."""
         Skill.objects.create(group=self.group, name='<script>alert(1)</script>')
 
         body = self.client.get(reverse('skills')).content.decode()
@@ -145,7 +146,7 @@ class SkillTests(TestCase):
         self.assertContains(self.client.get('/sitemap.xml'), '/skills/')
 
     def test_each_group_animates_in_on_its_own(self):
-        """One mark per group, so the rings cascade instead of arriving at once.
+        """One mark per group, so they cascade instead of arriving at once.
 
         Counted against the database rather than a literal: the seed migration
         runs here too, so this class is never the only thing on the page.
@@ -156,7 +157,6 @@ class SkillTests(TestCase):
         body = self.client.get(reverse('skills')).content.decode()
 
         self.assertEqual(body.count('data-reveal-item="fade-up"'), drawn)
-        self.assertIn('data-reveal-item="zoom-in"', body)
 
 
 class RevealAnimationTests(TestCase):

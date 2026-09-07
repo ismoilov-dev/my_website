@@ -48,10 +48,10 @@ def blog_detail(request, pk):
 
 
 def _skill_groups():
-    """Groups that have something in them, for the skill map.
+    """Groups that have something in them, for the skills list.
 
-    Shared by /skills/ and the CV, which draw the same map from the same
-    partial. A group with nothing in it would render as an empty ring.
+    Shared by /skills/ and the CV, which render the same partial. A group with
+    nothing in it would print as a heading over empty space.
     """
     return [
         group for group in SkillGroup.objects.prefetch_related('skills')

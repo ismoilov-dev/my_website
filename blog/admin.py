@@ -410,15 +410,15 @@ class SkillGroupAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Group', {
-            'description': 'One ring of the <b>Skills</b> map, which is the '
+            'description': 'One heading in the <b>Skills</b> list, which is the '
                            '<b>/skills/</b> page and the Skills section of '
                            '<b>/cv/</b>. Add the technologies themselves in '
                            'the table below.',
             'fields': ('name', 'tagline'),
         }),
-        ('Position on the map', {
-            'description': 'Lowest number is drawn as the innermost ring, '
-                           'closest to the centre.',
+        ('Position in the list', {
+            'description': 'Lowest number comes first. The groups flow down '
+                           'the left column and continue in the right one.',
             'fields': ('order',),
         }),
     )
@@ -446,7 +446,7 @@ class SkillAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Skill', {
-            'description': 'One node on the <b>Skills</b> map, shown on '
+            'description': 'One row in the <b>Skills</b> list, shown on '
                            '<b>/skills/</b> and on <b>/cv/</b>.',
             'fields': ('group', 'name', 'level', 'years', 'is_core'),
         }),

@@ -211,7 +211,7 @@ class Talk(models.Model):
         return self.title
 
 class SkillGroup(models.Model):
-    """One cluster of related skills — a single ring on the /cv/ skill map."""
+    """One cluster of related skills — a single heading in the /cv/ list."""
 
     name = models.CharField(max_length=80, help_text='e.g. "Backend", "Data", "DevOps".')
     tagline = models.CharField(
@@ -220,7 +220,7 @@ class SkillGroup(models.Model):
     )
     order = models.IntegerField(
         default=0,
-        help_text='Lowest number sits closest to the centre of the map.',
+        help_text='Lowest number comes first in the list.',
     )
 
     class Meta:
@@ -233,7 +233,7 @@ class SkillGroup(models.Model):
 
 
 class Skill(models.Model):
-    """A single technology, drawn as one node on its group's ring."""
+    """A single technology, listed under its group on the CV."""
 
     LEVELS = (
         (1, 'Learning'),
@@ -247,7 +247,7 @@ class Skill(models.Model):
     name = models.CharField(max_length=80)
     level = models.PositiveSmallIntegerField(
         choices=LEVELS, default=3,
-        help_text='Sets how large the node is drawn and how many dots are filled.',
+        help_text='Sets how far the level bar is filled on the CV.',
     )
     years = models.CharField(
         max_length=20, blank=True,
@@ -255,7 +255,7 @@ class Skill(models.Model):
     )
     is_core = models.BooleanField(
         'Highlight', default=False,
-        help_text='Draws the node filled in, for the few skills you lead with.',
+        help_text='Marks the skill CORE on the CV, for the few you lead with.',
     )
     order = models.IntegerField(default=0)
 
@@ -268,6 +268,6 @@ class Skill(models.Model):
         return f"{self.name} ({self.get_level_display()})"
 
     @property
-    def meter(self):
-        """Five on/off dots for the level, so the template stays free of math."""
-        return [step <= self.level for step in range(1, 6)]
+    def percent(self):
+        """The level as a share of the scale, for the width of its bar."""
+        return round(self.level / len(self.LEVELS) * 100)
