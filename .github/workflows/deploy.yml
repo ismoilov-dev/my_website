@@ -1,7 +1,7 @@
 name: Continuous Deployment (CD)
 
 on:
-  # Only deploy once CI has actually passed on main.
+  # Only deploy once CI has actually passed on a push to main.
   workflow_run:
     workflows: ["Continuous Integration (CI)"]
     branches: [main]
@@ -18,21 +18,36 @@ jobs:
   deploy:
     name: Deploy to Production Server
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    # A manual run always deploys. An automatic one only deploys when CI
+    # succeeded for a push (not for a pull_request run of the same workflow).
+    if: >-
+      ${{ github.event_name == 'workflow_dispatch' ||
+          (github.event.workflow_run.conclusion == 'success' &&
+           github.event.workflow_run.event == 'push') }}
 
     steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          PROJECT_PATH: ${{ secrets.SERVER_PROJECT_PATH || '/srv/blog' }}
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          passphrase: ${{ secrets.SERVER_SSH_PASSPHRASE }}
+          port: 22
+          # build.sh installs dependencies, so give it more than the 10m default.
+          command_timeout: 20m
           script_stop: true
+          envs: PROJECT_PATH
           script: |
             set -euo pipefail
-            cd "${{ secrets.SERVER_PROJECT_PATH || '/srv/blog' }}"
-            git fetch --prune origin main
+            cd "$PROJECT_PATH"
+            # No refspec here: with one, --prune is scoped to it and the
+            # origin/main tracking ref may not move, which would reset the
+            # working tree back onto a stale commit.
+            git fetch --prune origin
+            git checkout main
             git reset --hard origin/main
+            echo "==> Deploying $(git rev-parse --short HEAD)"
             chmod +x build.sh
             ./build.sh
