@@ -395,7 +395,7 @@ class SkillInline(admin.TabularInline):
 
     model = Skill
     extra = 3
-    fields = ('name', 'level', 'years', 'is_core', 'order')
+    fields = ('name', 'level', 'is_core', 'order')
     ordering = ('order', 'id')
 
 
@@ -437,7 +437,7 @@ class SkillGroupAdmin(admin.ModelAdmin):
 class SkillAdmin(admin.ModelAdmin):
     """A flat view of every skill, for when you want to retune levels at once."""
 
-    list_display = ('name', 'group', 'level', 'years', 'is_core', 'order')
+    list_display = ('name', 'group', 'level', 'is_core', 'order')
     list_display_links = ('name',)
     list_editable = ('level', 'is_core', 'order')
     list_filter = ('group', 'level', 'is_core')
@@ -448,7 +448,7 @@ class SkillAdmin(admin.ModelAdmin):
         ('Skill', {
             'description': 'One row in the <b>Skills</b> list, shown on '
                            '<b>/skills/</b> and on <b>/cv/</b>.',
-            'fields': ('group', 'name', 'level', 'years', 'is_core'),
+            'fields': ('group', 'name', 'level', 'is_core'),
         }),
         ('Position in the group', {'fields': ('order',)}),
     )

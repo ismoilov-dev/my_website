@@ -881,9 +881,9 @@ main.main-centered {
 
 /* --- Skills (CV) --------------------------------------------------------
    Two columns of plain rows. A CV is scanned rather than read and it gets
-   printed, so this is text in a grid: the name carries the meaning, the bar
-   is a glance at the level, and the years sit where the eye leaves the row.
-   Nothing here is drawn by script, so it survives print and no-JS intact. */
+   printed, so this is text in a grid: the name carries the meaning and the
+   bar is a quick visual cue. Nothing here is drawn by script, so it survives
+   print and no-JS intact. */
 
 .skill-columns {
     /* Columns rather than a grid: the groups are different lengths, and
@@ -970,16 +970,6 @@ main.main-centered {
     height: 100%;
     border-radius: 999px;
     background-color: var(--accent);
-}
-
-/* Fixed width, right aligned: the years form their own column down the page
-   even though every row is an independent flex line. */
-.skill-years {
-    flex: none;
-    width: 26px;
-    text-align: right;
-    font-size: 0.75rem;
-    color: var(--faint);
 }
 
 /* --- Feed --------------------------------------------------------------- */

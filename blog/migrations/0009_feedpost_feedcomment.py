@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(blank=True, help_text='Optional post title', max_length=250, null=True)),
                 ('content', models.TextField(help_text='Share a story, thought or life update')),
                 ('image', models.ImageField(blank=True, help_text='Optional photo/image for the post', null=True, upload_to='feed/')),
-                ('location', models.CharField(blank=True, help_text='e.g. Tashkent, Uzbekistan', max_length=150, null=True)),
+                ('location', models.CharField(blank=True, help_text='e.g. Karshi, Uzbekistan', max_length=150, null=True)),
                 ('mood_emoji', models.CharField(blank=True, help_text='e.g. ☕, 💻, 🚀, 🏔️', max_length=20, null=True)),
                 ('likes_count', models.PositiveIntegerField(default=0)),
                 ('created_at', models.DateTimeField(default=django.utils.timezone.now)),

@@ -159,7 +159,7 @@ class FeedPost(models.Model):
         validators=[FileExtensionValidator(allowed_extensions=['mp4', 'mov', 'avi', 'mkv', 'webm'])],
         help_text="Optional video for the post (MP4, MOV, AVI, MKV, WEBM)"
     )
-    location = models.CharField(max_length=150, blank=True, null=True, help_text="e.g. Tashkent, Uzbekistan")
+    location = models.CharField(max_length=150, blank=True, null=True, help_text="e.g. Karshi, Uzbekistan")
     mood_emoji = models.CharField(max_length=20, blank=True, null=True, help_text="e.g. ☕, 💻, 🚀, 🏔️")
     likes_count = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(default=timezone.now)
@@ -248,10 +248,6 @@ class Skill(models.Model):
     level = models.PositiveSmallIntegerField(
         choices=LEVELS, default=3,
         help_text='Sets how far the level bar is filled on the CV.',
-    )
-    years = models.CharField(
-        max_length=20, blank=True,
-        help_text='Optional, e.g. "4y". Shown next to the skill.',
     )
     is_core = models.BooleanField(
         'Highlight', default=False,

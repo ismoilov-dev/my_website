@@ -127,7 +127,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 LANGUAGE_CODE = os.environ.get('LANGUAGE_CODE', 'en-us')
-TIME_ZONE = os.environ.get('TIME_ZONE', 'Asia/Tashkent')
+TIME_ZONE = os.environ.get('TIME_ZONE', 'Asia/Samarkand')
 USE_I18N = True
 USE_TZ = True
 

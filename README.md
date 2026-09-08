@@ -27,7 +27,7 @@ Loyiha barcha maxfiy va muhitga bog'liq sozlamalarni `.env` faylidan o'qiydi. Na
 | `ALLOWED_HOSTS` | Ruxsat berilgan domen va IP'lar | `localhost,127.0.0.1,ismatismoilov.uz` |
 | `CSRF_TRUSTED_ORIGINS` | CSRF ruxsat berilgan manbalar | `https://ismatismoilov.uz` |
 | `DATABASE_URL` | *(Ixtiyoriy)* PostgreSQL ulanish manzili | `postgres://user:pass@localhost:5432/dbname` |
-| `TIME_ZONE` | Vaqt zonasi | `Asia/Tashkent` |
+| `TIME_ZONE` | Vaqt zonasi | `Asia/Samarkand` |
 
 ---
 

@@ -1,13 +1,6 @@
 {% comment %}
-  The Skills block, shared by /skills/ and the CV so the two can never drift.
-
-  Two columns of plain rows: name, how far along it is, how long it has been
-  in hand. A CV is scanned rather than read, and it gets printed, so the
-  layout is ordinary text and CSS -- there is nothing here for JavaScript to
-  draw and nothing that disappears on paper.
-
-  Include it with the `skill_groups` in context; the surrounding <section> and
-  its heading belong to the including page, which knows what it is titled.
+  Shared by /skills/ and the CV so the two can never drift. The level bar is
+  decorative; the text remains useful when printed or viewed without scripts.
 {% endcomment %}
 
 <div class="skill-columns">
@@ -36,7 +29,6 @@
                 </span>
                 <span class="visually-hidden">{{ skill.get_level_display }}</span>
 
-                <span class="skill-years">{{ skill.years|default:"—" }}</span>
             </li>
             {% endfor %}
         </ul>

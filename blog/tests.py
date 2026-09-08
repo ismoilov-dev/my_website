@@ -87,7 +87,7 @@ class SkillTests(TestCase):
     def setUpTestData(cls):
         cls.group = SkillGroup.objects.create(name='Backend', tagline='Most of my hours')
         cls.skill = Skill.objects.create(
-            group=cls.group, name='Django', level=5, years='4y', is_core=True
+            group=cls.group, name='Django', level=5, is_core=True
         )
         cls.empty = SkillGroup.objects.create(name='Nothing here', order=9)
 
@@ -97,13 +97,13 @@ class SkillTests(TestCase):
             with self.subTest(page=name):
                 self.assertNotContains(self.client.get(reverse(name)), 'href="/skills/"')
 
-    def test_a_skill_row_states_everything_it_knows(self):
-        """Name, group, how far along, how long -- all of it as readable text."""
+    def test_a_skill_row_states_its_name_and_level(self):
+        """Name and proficiency are readable text; no duration is displayed."""
         response = self.client.get(reverse('skills'))
 
         self.assertContains(response, 'Backend')
         self.assertContains(response, 'Django')
-        self.assertContains(response, '4y')
+        self.assertNotContains(response, 'skill-years')
         # The bar is decoration; the level itself is spelled out for screen
         # readers and for the printed page.
         self.assertContains(response, 'Core strength')
